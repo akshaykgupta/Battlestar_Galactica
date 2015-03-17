@@ -11,8 +11,12 @@
 	@author : B,H
 	
 	glm was used, luckily its a header only library.
-
 	Ideally, for computations, one would use arbitray precision. But screw that, doubles, we love you.
+	
+	Possible Uses: 
+		For mouse clicks, use Ray/Line.
+		For lasers, use LineSeg.
+		For cuboids, well...
 */
 
 
@@ -20,24 +24,35 @@
 typedef Length double;
 typedef Orientation double;
 
-typedef Position glm::vec3;
-typedef Velocity glm::vec3;
-typedef Acceleration glm::vec3;
+/** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
+typedef Position glm::vec4;
+typedef Direction glm::vec4;
+typedef Velocity glm::vec4;
+typedef Acceleration glm::vec4;
+
 /** A class for line segments */
 class LineSeg {
 public:
 	Position start,end;
 	Length length;
+	LineSeg();
+	~LineSeg();
 };
 /** A class for infinite rays. */
 class Ray { 
 public:
-	Position start , direction;
+	Position start ; 
+	Direction direction;
+	Ray();
+	~Ray();
 };
 /** A class for complete lines. Should be absolutely useless. */
 class Line {
 public:
-	Position start, direction; //Extends in both directions. 
+	Position start; //Every line must pass through a point. 
+	Direction direction; //Extends in both directions. 
+	Line();
+	~Line();
 };
 
 class Cuboid { //acts a sthe bounding box for everything.
