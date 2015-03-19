@@ -1,5 +1,5 @@
 #ifndef CUBOID_H
-#define CUBOID_H value
+#define CUBOID_H
 
 #include <iostream>
 #include <cmath>
