@@ -21,6 +21,8 @@
 
 
 /** All the jugaad. */
+
+using namespace std;
 typedef Length double;
 typedef Orientation double;
 
