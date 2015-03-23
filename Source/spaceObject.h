@@ -14,6 +14,17 @@ typedef std::string OBJFilepath;
 typedef double Mass;
 /** This is the mother of all things. All ships, asteroids etc derive from this. */
 
+enum OBJECT_TYPE {
+	ASTEROID = 0,
+	
+	HEALTH = 1,
+	AMMO = 2,
+	
+	XWING = 3,
+	TIE = 4,
+	MF = 5
+};
+
 class SpaceObject {
 public:
 	/** Each space object is a collection of Cuboids. Ideally, the Collection would be a vector<Cuboid> */	
@@ -21,6 +32,7 @@ public:
 	/** Creation/Loading */
 	SpaceObject() {}
 	~SpaceObject() {}
+	void init(OBJECT_TYPE _objtype);
 
 	/** get/sets */
 	Position getPosition();
@@ -57,10 +69,10 @@ public:
 	void dprint(bool debug_spaceobj=false);
 	void drender(bool debug_spaceobj=false);
 private:
-	////
 	std::vector<Cuboid> pieces; //Do we need a better data-structure? If we were using more complicated shapes, we'd use a AABBTree. 
-	OBJFilepath objfile; /* Different space ships */
 	
+	OBJFilepath objFile; /* Different space ships */
+	OBJECT_TYPE objType;
 	/** Physics and rendering stuff. */
 	Mass mass;
 	Position com;
