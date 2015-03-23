@@ -1,0 +1,46 @@
+\documentclass[]{article}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\newcommand{\ty}[1]{\texttt{#1}}
+\begin{document}
+
+\title{COP 290 - Assignment 3\\Battlestar Galactica}
+\author{Akshay Kumar Gupta\\ \ty{2013CS50275} \\[.1in]  Barun Patra\\ \ty{2013CS10773} \and  Haroun Habeeb\\ \ty{2013CS10225} \\[.1in] J. Shikhar Murty\\ \ty{2013EE10462}}
+\date{}
+\maketitle
+\begin{abstract}
+\noindent The game is a real-time racing cum FPS game. It takes place in space. Each player owns a spaceship and the objective is to be the first to reach the end. Players can also shoot at other players and try and destroy their ships. Each spaceship has different stats like accuracy, speed, ammo etc. The game is designed for a maximum of four human and four AI players.
+\end{abstract}
+\section{Overall Design}
+\section{Network}
+We will use UDP to handle network connections. It is a completely connected peer-to-peer network.
+\subsection{Start of game}
+One user starts the game and the P2P network. This user specifies how many people will be joining the game. A new user can connect to the network by sending his IP to any existing player in the network. As UDP is being used there is no notion of an actual `connection', all each user needs is the IP address of each other player. The existing player will give the IP of the new user to all other users and the IP of all other users to the new user.
+\subsection{Message Passing}
+\begin{itemize}
+\item A user broadcasts his state to all other users at regular time intervals.
+\item We have a separate thread for listening to incoming messages. 
+\item When a new message is received from another user it is passed on to the rendering thread which renders that user according to his state.
+\item In case another user sends us a message which drops, the new position of the user is simply extrapolated from his old position, velocity, and acceleration.
+\end{itemize}
+\subsection{Handling Drops}
+If we have not received a message from a user for the last T seconds, then we assume that the user has dropped. T is large enough compared to the average time interval between messages for the probability to be very low that the user has not dropped.
+\section{Graphics}
+\subsection{Model Rendering}
+\begin{itemize}
+\item Blender will be used to create models of spaceships, asteroids, debris etc.
+\item We will load the object files for these models using our own code.
+\item We will also have our display function for each model.
+\end{itemize}
+\subsection{User Interface / HUD}
+\subsection{Camera Positions}
+\section{Music}
+Music will be incorporated in our project using openAL.
+\section{Physics and Collision Detection}
+\subsection{Collision Detection and Handling}
+\subsection{Hit Detection}
+\section{AI}
+\section{Testing}
+\section{Planned Improvements}
+\end{document}
