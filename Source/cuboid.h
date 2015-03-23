@@ -23,14 +23,14 @@
 /** All the jugaad. */
 
 using namespace std;
-typedef Length double;
-typedef Orientation double;
 
 /** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
-typedef Position glm::vec4;
-typedef Direction glm::vec4;
-typedef Velocity glm::vec4;
-typedef Acceleration glm::vec4;
+typedef Dimension glm::vec4; //w=0
+typedef Orientation glm::vec4; //w=0
+typedef Position glm::vec4; //w=1
+typedef Direction glm::vec4; //w=0
+typedef Velocity glm::vec4; //w=0
+typedef Acceleration glm::vec4; //w=0
 
 /** A class for line segments */
 class LineSeg {
@@ -60,9 +60,8 @@ public:
 class Cuboid { //acts a sthe bounding box for everything.
 public: //Public was used for easy modification of cuboids.
 	Position centre;
-	Length l_x,l_y,l_z;
-	Orientation o_x,o_y,o_z;
-
+	Dimension dimensions;
+	Orientation orientation;
 	Cuboid() {} //Default constructor does nothing.
 	~Cuboid() {}
 	//Need a bunch of set/gets.
@@ -75,7 +74,6 @@ public: //Public was used for easy modification of cuboids.
 	bool intersects(Ray& r);
 	bool intersects(Line& l);
 	bool intersects(Cuboid& cub);
-
 	/** Debugging functions -- The boolean is for toggle debug mode. */
 	void dprint(bool debug_cuboid=false); //the d stands for Debug.
 	void drender(bool debug_cuboid=false);
