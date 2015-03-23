@@ -18,19 +18,17 @@
 		For lasers, use LineSeg.
 		For cuboids, well...
 */
-
-
 /** All the jugaad. */
 
 using namespace std;
 
 /** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
-typedef Dimension glm::vec4; //w=0
-typedef Orientation glm::vec4; //w=0
-typedef Position glm::vec4; //w=1
-typedef Direction glm::vec4; //w=0
-typedef Velocity glm::vec4; //w=0
-typedef Acceleration glm::vec4; //w=0
+typedef  glm::vec4 Dimension; //w=0
+typedef  glm::vec4 Orientation; //w=0
+typedef  glm::vec4 Position; //w=1
+typedef  glm::vec4 Direction; //w=0
+typedef  glm::vec4 Velocity; //w=0
+typedef  glm::vec4 Acceleration; //w=0
 
 /** A class for line segments */
 class LineSeg {
@@ -70,6 +68,9 @@ public: //Public was used for easy modification of cuboids.
 	glm::vec3 rotate(glm::vec3 rotation); 		 //Should it return the rotation matrix?
 	glm::vec3 scale(glm::vec3 vec_scale); 		 //Scale along each directions.
 	/** Queries to the cuboid .*/
+	bool inside(Position& p);
+	bool outside(Position& p);
+	bool onsurface(Position& p);
 	bool intersects(LineSeg& l);
 	bool intersects(Ray& r);
 	bool intersects(Line& l);

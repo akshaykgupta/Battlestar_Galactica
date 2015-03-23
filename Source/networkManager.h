@@ -1,5 +1,13 @@
 #ifndef NETWORK_MANAGER
 #define NETWORK_MANAGER
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <boost/bind.hpp>
+#include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/chrono.hpp>
+#include <ctime>
 
 
 /* TODO: Include boost sockets, threads, mention library includes and so on.
@@ -10,7 +18,7 @@
 
 #include <tuple>
 using namespace std;
-typedef tIP tuple< int,int,int,int >
+typedef  tuple< int,int,int,int > tIP4;
 
 class NetworkManager {
 public:
