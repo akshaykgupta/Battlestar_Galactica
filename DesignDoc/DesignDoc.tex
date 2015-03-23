@@ -96,8 +96,20 @@ Music will be incorporated in our project using openAL. Every client will have a
 \item If a hit has happened, both parties involved will get a visual cue.
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Players & AI}
+\section{Players \& AI}
 %%TODO
+\begin{itemize}
+\item Player : 
+
+\item AI : The AI is another player in the race. It is modelled as a utlity based agent handling partial observability. 
+\begin{enumerate}
+\item Each user will host atmost 1 AI. 
+\item The game state space can be formulated as a $Markov Decision Process$. 
+\item The AI will use reinforcement learning to choose the best action at every point of time. 
+\item The $reward function$ is fairly simple - a high reward for winning, a neutral reward for existence and a punishment for dying.
+\item The difficulty level is essentially how long the AI Player has learnt.
+\end{enumerate} 
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Testing}
 %%TODO

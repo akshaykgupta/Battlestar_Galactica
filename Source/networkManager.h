@@ -23,7 +23,10 @@ typedef  tuple< int,int,int,int > tIP4;
 class NetworkManager {
 public:
 	/** Need a heap/queue of messages/things */
+	void sendMessage();
 private:
 	/** Need stuff here. */
+	//vector of IPs of all players.
+
 };
 #endif
