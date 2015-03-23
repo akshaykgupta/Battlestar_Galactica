@@ -12,7 +12,35 @@
 \begin{abstract}
 \noindent The game is a real-time racing cum FPS game. It takes place in space. Each player owns a spaceship and the objective is to be the first to reach the end. Players can also shoot at other players and try and destroy their ships. Each spaceship has different stats like accuracy, speed, ammo etc. The game is designed for a maximum of four human and four AI players.
 \end{abstract}
+\begin{figure}[h]
+\setlength{\unitlength}{0.14in}
+
+\begin{picture}(24,8)
+
+\put(3,5){\framebox(6,2){Open}}
+\put(15,5){\framebox(6,2){Select Ship}}
+\put(27,5){\framebox(6,2){Start/Join}}
+\put(3,1){\framebox(6,2){Game Over}}
+\put(15,1){\framebox(6,2){Play}}
+\put(27,1){\framebox(6,2){Waiting}}
+%%Now, for arrows!
+\put(9,6){\vector(1,0){6}}
+\put(15,2){\vector(-1,0){6}}
+\put(21,6.4){\vector(1,0){6}}
+\put(27,5.6){\vector(-1,0){6}}
+\put(27,2){\vector(-1,0){6}}
+%%Now for verticals.
+\put(30.4,3){\vector(0,1){2}}
+\put(29.6,5){\vector(0,-1){2}}
+\put(18.4,3){\vector(0,1){2}}
+%%Diagonal
+\put(7,3){\vector(4,1){8.2}}
+
+\end{picture}
+\caption{Game Loop}
+\end{figure}
 \section{Overall Design}
+%%TODO
 \section{Network}
 We will use UDP to handle network connections. It is a completely connected peer-to-peer network.
 \subsection{Start of game}
@@ -26,21 +54,54 @@ One user starts the game and the P2P network. This user specifies how many peopl
 \end{itemize}
 \subsection{Handling Drops}
 If we have not received a message from a user for the last T seconds, then we assume that the user has dropped. T is large enough compared to the average time interval between messages for the probability to be very low that the user has not dropped.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Graphics}
 \subsection{Model Rendering}
 \begin{itemize}
 \item Blender will be used to create models of spaceships, asteroids, debris etc.
 \item We will load the object files for these models using our own code.
 \item We will also have our display function for each model.
+\item However, the bodies actually have bounding boxes. These bounding boxes are what the physics engine will handle.
 \end{itemize}
 \subsection{User Interface / HUD}
+We will offer a certain degree of customizability of the UI to the user. 
+\begin{itemize}
+\item Select Ship : On this screen, the user sees what ships he can select, we may modify some properties of the ship - such as the droid. he can alter the mouse sensitivity and the keyboard mappings. There'll also be a $Play$ button that takes the user to the Start/Join screen.
+\item Start/Join : This screen allows the user to either
+	\begin{enumerate}
+	\item Start: He can start the game with some options, such as the number of players and the number of AI.
+	\item Join : He can join a game by providing the IP of any member of a network.
+	\end{enumerate}
+\item Waiting : This is the screen shown before the match actually begins. On this screen, the user waits while more people join the match.
+	\item Play : This is what is displayed while the player actually plays the game. The world is rendered with a HUD. The HUD displays properties such as health, ammo.	
+\end{itemize}
+
+All of these screens can be implemented using openGL/freeglut/glui/myGUI. %%TODO
 \subsection{Camera Positions}
+According to the ship, various camera positions will be available. For example, the TIE fighter might have only two views - first person and the third person. The X-Wing will have an additional Droid-view. The user can toggle between these views during the game. This can be handled by simply moving the camera of that user.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Music}
-Music will be incorporated in our project using openAL.
+Music will be incorporated in our project using openAL. Every client will have a seperate thread to play the music.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Physics and Collision Detection}
 \subsection{Collision Detection and Handling}
+\begin{itemize}
+\item Players' ships can collide with other ships and floating space debris. Our code needs to be able to detect and handle such collisions. We will use bounding boxes for detection of collisions.
+\item Once a collision has been detected, using the point of contact and vectors along collision, we can resolve the equations and assign the bodies their respective velocities.
+\end{itemize}
 \subsection{Hit Detection}
-\section{AI}
+\begin{itemize}
+
+\item When a user shoots his weapons, we need to check if the projectile hit any of the players. This again, will be done by using bounding boxes for each ship.
+\item If a hit has happened, both parties involved will get a visual cue.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Players & AI}
+%%TODO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Testing}
+%%TODO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Planned Improvements}
+%%TODO
 \end{document}
