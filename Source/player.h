@@ -11,8 +11,8 @@
 #include <boost/config.hpp>
 #include <boost/bimap.hpp>
 
-#include "networkManager.h"
 #include "spaceObject.h"
+#include "networkManager.h"
 
 /**
 This file is the header file for userSettings and also the player.
@@ -20,33 +20,6 @@ This file is the header file for userSettings and also the player.
 using namespace std;
 
 /* Auxillary things for keyboard mapping. */
-enum KeyboardInput {};
-typedef boost::bimap<int,KeyboardInput> KeyboardMapping;
-typedef KeyboardMapping::value_type keymap_type;
-
-struct GameEvent {
-	PLAYER_PROTOCOL eventType;
-	//TODO: +Aux data.
-};
-
-struct WorldState {
-	//needs to contain a lot of stuff.
-	vector<PlayerInfo> playerInfo;
-	vector<SpaceObject> objectsInSpace;
-};
-
-class UserSettings {
-public:
-	/* Sensitivity and stuff. */
-	glm::vec3 mouseSensitivity;	   //Along x,y,z.
-	KeyboardMapping keyboardMapping;
-
-	UserSettings() {}
-	~UserSettings() {}
-
-	void read_settings(); //Read from setting files.
-	void save_settings(); //Save to setting files
-};
 
 class Player {
 public:
@@ -70,7 +43,7 @@ private:
 	UserSettings settings;
 	NetworkManager manager;
 	std::vector< GameEvent > todolist; //List of all messages received etc.
-
+	SpaceObject fighter; //his ship.
 	WorldState world;
 };
 #endif

@@ -9,7 +9,6 @@
 #include "cuboid.h"
 
 /** Some more jugaad. */
-typedef std::vector<Cuboid>::iterator iter;
 typedef std::string OBJFilepath;
 typedef double Mass;
 /** This is the mother of all things. All ships, asteroids etc derive from this. */
@@ -74,10 +73,14 @@ private:
 	OBJFilepath objFile; /* Different space ships */
 	OBJECT_TYPE objType;
 	/** Physics and rendering stuff. */
+	
 	Mass mass;
+
 	Position com;
+	//translational
 	Velocity v;
 	Acceleration a;
+	//rotational.
 	Velocity rotv; //rotation velocity.
 	Acceleration rota; //rotation acceleration.
 	Quat rotation;

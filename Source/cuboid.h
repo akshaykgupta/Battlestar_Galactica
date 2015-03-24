@@ -27,40 +27,7 @@
 
 using namespace std;
 
-/** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
-typedef glm::quat Quat; // QUATERNIONS!
-//glm::mat4x4 == glm::mat4 and yeah.
-typedef  glm::vec4 Dimension; //w=0
-typedef  glm::vec4 Orientation; //w=0
-typedef  glm::vec4 Position; //w=1
-typedef  glm::vec4 Direction; //w=0
-typedef  glm::vec4 Velocity; //w=0
-typedef  glm::vec4 Acceleration; //w=0
-
-/** A class for line segments */
-class LineSeg {
-public:
-	Position start,end;
-	Length length;
-	LineSeg();
-	~LineSeg();
-};
-/** A class for infinite rays. */
-class Ray { 
-public:
-	Position start ; 
-	Direction direction;
-	Ray();
-	~Ray();
-};
-/** A class for complete lines. Should be absolutely useless. */
-class Line {
-public:
-	Position start; //Every line must pass through a point. 
-	Direction direction; //Extends in both directions. 
-	Line();
-	~Line();
-};
+#include "helpers.h"
 
 class Cuboid { //acts a sthe bounding box for everything.
 public: //Public was used for easy modification of cuboids.
