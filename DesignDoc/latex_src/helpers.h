@@ -23,7 +23,6 @@ struct PlayerInfo {
 	tIP4 ipAddress;
 	Time lastMessageTime;
 	OBJECT_TYPE objtype; //Communicated this to the player, maybe?
-	//TODO: Aux data.
 };
 
 /**Physics hepler classes*/
