@@ -1,24 +1,3 @@
-class LineSeg {
-public:
-	Position start, end;
-	Length length;
-	LineSeg();
-};
-
-class Ray { 
-public:
-	Position start; 
-	Direction direction;
-	Ray();
-};
-
-class Line {
-public:
-	Position start; //Every line must pass through a point. 
-	Direction direction; //Extends in both directions. 
-	Line();
-};
-
 class Cuboid { //acts as the bounding box for everything.
 public:
 	Cuboid() {}

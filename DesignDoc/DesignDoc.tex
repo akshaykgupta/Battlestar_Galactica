@@ -22,7 +22,7 @@ backgroundcolor=\color{lbcolor},
     language=[GNU]C++,
         basicstyle=\scriptsize,
         upquote=true,
-        aboveskip={1.5\baselineskip},
+        aboveskip={1\baselineskip},
         columns=fixed,
         showstringspaces=false,
         extendedchars=false,
@@ -66,7 +66,7 @@ backgroundcolor=\color{lbcolor},
 \noindent The game is a real-time racing cum FPS game. It takes place in space. Each player owns a spaceship and the objective is to be the first to reach the end. Players can also shoot at other players and try and destroy their ships. Each spaceship has different stats like accuracy, speed, ammo etc. The game is designed for a maximum of four human and four AI players.
 \end{abstract}
 \tikzstyle{line} = [draw, -latex']
-\tikzstyle{cloud2} = [draw, circle,fill=red!40, node distance=3cm,
+\tikzstyle{cloud2} = [draw, circle,fill=blue!25, node distance=3cm,
 minimum height=6em]
 \begin{center}
 \begin{tikzpicture}
@@ -89,7 +89,28 @@ minimum height=6em]
 \\[0.3in]Game Loop
 \end{center}
 \section{Overall Design}
-%%TODO
+\subsection{Core Classes}
+The main classes that our project will have are the following : 
+\begin{itemize}
+\item \ty{class NetworkManager}
+\item \ty{class Cuboid}
+\item \ty{class SpaceObject}
+\item \ty{class Player}
+\item \ty{class AIPlayer}
+These classes are described in detail below.
+\end{itemize}
+\subsection{Helper Classes}
+These are all the other classes, structs and enums that are needed by the core classes.
+\lstinputlisting[label=samplecode,title=Helper classes]{helpers.h}
+\vfill
+\subsection{Libraries}
+We will be using the following libraries in our project:
+\begin{itemize}
+\item \textbf{Graphics : }openGL, freeGLUT, myGUI/GLUI
+\item \textbf{Physics and Math : }GLM
+\item \textbf{Music : }openAL
+\item \textbf{Network : }Boost::Asio
+\end{itemize}
 \section{Network}
 We will use UDP to handle network connections. It is a completely connected peer-to-peer network.
 \subsection{Start of game}
@@ -104,7 +125,7 @@ One user starts the game and the P2P network. This user specifies how many peopl
 \subsection{Handling Drops}
 If we have not received a message from a user for the last T seconds, then we assume that the user has dropped. T is large enough compared to the average time interval between messages for the probability to be very low that the user has not dropped.
 
-\lstinputlisting[label=samplecode,caption=Network Manager]{networkManager.h}
+\lstinputlisting[label=samplecode,title=Network Manager]{networkManager.h}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -116,7 +137,7 @@ If we have not received a message from a user for the last T seconds, then we as
 \item We will also have our display function for each model.
 \item However, the bodies actually have bounding boxes. These bounding boxes are what the physics engine will handle.
 \end{itemize}
-\lstinputlisting[label=samplecode,caption=Space Object]{spaceObject.h}
+\lstinputlisting[label=samplecode,title=Space Object]{spaceObject.h}
 \subsection{User Interface / HUD}
 We will offer a certain degree of customizability of the UI to the user. 
 \begin{itemize}
@@ -150,7 +171,7 @@ Music will be incorporated in our project using openAL. Every client will have a
 \item If a hit has happened, both parties involved will get a visual cue.
 \end{itemize}
 \vfill
-\lstinputlisting[label=samplecode,caption=Physics]{cuboid.h}
+\lstinputlisting[label=samplecode,title=Physics]{cuboid.h}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Players \& AI}
@@ -160,9 +181,9 @@ Each player has a unique Player No. The different properties of the player are :
 \begin{itemize}
 \item Player settings : This includes the player's keyboard and mouse preferences, colour choices etc.
 \item Player spaceship : The spaceship that the player chooses.
-\item Player state : This is a tuple of 
+\item Player state : This is a tuple of (\emph{Player No.}, \emph{Spaceship details}). This state is sent across to all players at regular intervals. Spaceship details include its current position, velocity, acceleration, angular velocity, angular acceleration and health.
 \end{itemize}
-\lstinputlisting[label=samplecode,caption=Player]{Player.h}
+\lstinputlisting[label=samplecode,title=Player]{Player.h}
 \subsection{AI}
 The AI is another player in the race. It is modelled as a utlity based agent handling partial observability.
 \begin{itemize}
@@ -195,6 +216,11 @@ The AI is another player in the race. It is modelled as a utlity based agent han
 \item We will play against our AI to test how good it is.
 \item We will check whether the three levels correctly reflect how the AI's actually play.
 \end{itemize}
-\section{Planned Improvements}
-%%TODO
+\section{Possible Improvements}
+\begin{itemize}
+\item \textbf{Multiple maps : } We want to incorporate multiple maps into our game like a Death Star map etc.
+\item \textbf{Improved physics : } Currently we use bounding cuboids to approximate a space object. We want to use better approximations of objects to make the physics even more realistic.
+\item \textbf{Bullets and missiles : } Currently we have different lasers as weapons. We want to incorporate bullets and missiles with accurate hit physics.
+\item \textbf{Improved visual effects : } We want to improve on the visual effects to make the user experience even better.
+\end{itemize}
 \end{document}

@@ -26,4 +26,5 @@ private:
 	NetworkManager manager;
 	std::vector< GameEvent > todolist; //List of all messages received etc.
 	WorldState world;
+	SpaceObject fighter;
 };
