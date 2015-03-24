@@ -1,12 +1,6 @@
 #ifndef CUBOID_H
 #define CUBOID_H
 
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <glm/glm.hpp>
-
-
 /** Defines the base class for cuboids.
 	@author : B,H
 	
@@ -18,11 +12,24 @@
 		For lasers, use LineSeg.
 		For cuboids, well...
 */
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <glm/glm.hpp>
+
+/* TODO: Include a bunch of glm things, for transformation matrices. */
+/* go hand in hand. */
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/quaternion.hpp> //Quaternions!
+
 /** All the jugaad. */
 
 using namespace std;
 
 /** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
+typedef glm::quat Quat; // QUATERNIONS!
+//glm::mat4x4 == glm::mat4 and yeah.
 typedef  glm::vec4 Dimension; //w=0
 typedef  glm::vec4 Orientation; //w=0
 typedef  glm::vec4 Position; //w=1
@@ -95,7 +102,8 @@ public: //Public was used for easy modification of cuboids.
 private:
 	Position centre;
 	Dimension dimensions;
-	Orientation orientation;
+	Quat rotation;
+	glm::mat4 matRotation, matTranslation, matScale;
 
 };
 

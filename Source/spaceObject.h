@@ -76,9 +76,13 @@ private:
 	/** Physics and rendering stuff. */
 	Mass mass;
 	Position com;
-	Orientation o;
 	Velocity v;
 	Acceleration a;
+	Velocity rotv; //rotation velocity.
+	Acceleration rota; //rotation acceleration.
+	Quat rotation;
+	glm::mat4 matRotation, matTranslation, matScale;
+
 };
 
 #endif

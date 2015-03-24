@@ -9,8 +9,8 @@
 bool Cuboid::inside(Position& _p) {
 	//Need to check if a point p is inside the cuboid or not.
 	/*
-
-	*/
 	
+	*/
+	Position pwrtc = _p - centre; //Relative position of the point from the centre. in Oriented world.	
 }
 #endif
