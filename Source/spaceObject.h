@@ -8,21 +8,8 @@
 
 #include "cuboid.h"
 
-/** Some more jugaad. */
-typedef std::string OBJFilepath;
-typedef double Mass;
 /** This is the mother of all things. All ships, asteroids etc derive from this. */
 
-enum OBJECT_TYPE {
-	ASTEROID = 0,
-	
-	HEALTH = 1,
-	AMMO = 2,
-	
-	XWING = 3,
-	TIE = 4,
-	MF = 5
-};
 
 class SpaceObject {
 public:
@@ -68,6 +55,11 @@ public:
 	void dprint(bool debug_spaceobj=false);
 	void drender(bool debug_spaceobj=false);
 private:
+	/** Rendering part of things.*/
+	//The body is composed of vertices. we must read them into vectors so that we may draw them.
+
+
+	/** physics part of things. */
 	std::vector<Cuboid> pieces; //Do we need a better data-structure? If we were using more complicated shapes, we'd use a AABBTree. 
 	
 	OBJFilepath objFile; /* Different space ships */
