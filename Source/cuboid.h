@@ -16,13 +16,12 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <glm/glm.hpp>
 
 /* TODO: Include a bunch of glm things, for transformation matrices. */
 /* go hand in hand. */
 #define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp> //Quaternions!
-
 /** All the jugaad. */
 
 using namespace std;
@@ -35,13 +34,14 @@ public: //Public was used for easy modification of cuboids.
 	~Cuboid() {}
 	//Need a bunch of set/gets.
 	/** Movement functions */
-	glm::vec3 translate(glm::vec3 displacement); //Returns the new position of the centre.
-	glm::vec3 rotate(glm::vec3 rotation); 		 //Should it return the rotation matrix?
-	glm::vec3 scale(glm::vec3 vec_scale); 		 //Scale along each directions.
+	glm::vec4 translate(glm::vec4 displacement); //Returns the new position of the centre.
+	Quat rotate(glm::vec3 rotation); 		 //Should it return the rotation matrix?
+	Quat rotate(Quat q);
+	//glm::vec4 scale(glm::vec4 vec_scale); 		 //Scale along each directions. --unimplemented.
 	/** Queries to the cuboid .*/
-	bool inside(Position& p);
-	bool outside(Position& p);
-	bool onsurface(Position& p);
+	bool inside(Position p);
+	bool outside(Position p);
+	bool onsurface(Position p);
 	
 	bool intersects(LineSeg& l);
 	bool intersects(Ray& r);
@@ -61,17 +61,18 @@ public: //Public was used for easy modification of cuboids.
 	/** Getters and setters. */
 	Position getCentre();
 	Dimension getDimension();
-	Orientation getOrientation();
+	Quat getQuatRotation();
 
-	void setCentre(Position& _p);
-	void setDimension();
-	void setOrientation();
+	void setCentre(Position _p);
+	void setDimension(Dimension _d);
+	void setRotation(glm::vec3 eulerAngles);
+	void setRotation(Quat _q);
+
 private:
 	Position centre;
 	Dimension dimensions;
-	Quat rotation;
-	glm::mat4 matRotation, matTranslation, matScale;
-
+	Quat quatRot;
+	glm::mat4 matRotation, matTranslation;
 };
 
 #endif
