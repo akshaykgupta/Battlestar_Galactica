@@ -5,9 +5,10 @@ LIBS= -lboost_system -lboost_thread
 SRC=Source/
 OBJ=Objects/
 RSC=Resource/
-all: bg
+EXEC=bg
+all: $(EXEC)
 bg: $(OBJ)main.o $(OBJ)cuboid.o
-	$(CC) $(OBJ)main.o $(OBJ)cuboid.o -o bg
+	$(CC) $(OBJ)main.o $(OBJ)cuboid.o -o $(EXEC)
 
 $(OBJ)main.o: $(SRC)main.cpp
 	$(CC) -c $(SRC)main.cpp
@@ -19,3 +20,4 @@ $(OBJ)cuboid.o: $(SRC)cuboid.h $(SRC)cuboid.cpp
 
 clean:
 	rm $(OBJ)*.o
+	rm $(EXEC)

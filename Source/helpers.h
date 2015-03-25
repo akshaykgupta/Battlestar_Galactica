@@ -19,13 +19,14 @@ typedef  glm::vec4 Direction; //w=0
 typedef  glm::vec4 Velocity; //w=0
 typedef  glm::vec4 Acceleration; //w=0
 
-void print(Quat q) {
-	std::cout << "quat(" << q.x << "," << q.y << "," << q.z << "," << q.w << ").\n";
-}
-void print(glm::vec4 q) {
-	std::cout << "vec4(" << q.x <<","<<q.y<<","<<q.z<<","<<q.w<<").\n";
-}
 
+//i want to print glm stuff.
+#include <glm/gtx/string_cast.hpp>
+template<typename genType>
+std::ostream& operator<<(std::ostream& out, const genType& g)
+{
+    return out << glm::to_string(g);
+}
 
 #include <tuple>
 /** networking typedefs */

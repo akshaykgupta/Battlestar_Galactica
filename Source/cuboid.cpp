@@ -6,6 +6,8 @@
 					And to check if two cubes intersect, we can just check if ANY point of one cube is inside the other.
 */
 /** Movement functions */
+#include "cuboid.h"
+
 glm::vec4 Cuboid::translate(glm::vec4 displacement) {
 	centre = centre+displacement;
 	//Do i want to update my translation matrix?
