@@ -41,6 +41,8 @@ typedef std::string OBJFilepath;
 
 /** Geometry */
 /** A class for line segments */
+enum AXIS { X=1, Y=2, Z=3 };
+
 class LineSeg {
 public:
 	Position start,end;

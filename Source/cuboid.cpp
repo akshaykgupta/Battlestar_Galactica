@@ -63,6 +63,18 @@ bool Cuboid::onsurface(Position _p) {
 
 /** */
 bool Cuboid::intersects(LineSeg& l) {
+	/*l.start , l.end define the line segment. */
+	/*glm::vec4 xaxis(1.0,0.0,0.0,0.0);
+	glm::vec4 yaxis(0.0,1.0,0.0,0.0);
+	glm::vec4 zaxis(0.0,0.0,1.0,0.0);
+	*/
+	/* The lstart and lend are with respect to the cuboid now */
+	Position lstart = quatRot*(l.start - centre);
+	Position lend = quatRot*(l.end - centre);
+
+	//Now, to get the min and max of the box.
+	Position bmin = getMinPoint();
+	Position bmax = getMaxPoint();
 	return false;
 }
 bool Cuboid::intersects(Ray& r) {
@@ -129,4 +141,13 @@ void Cuboid::setRotation(Quat _q) {
 	quatRot = _q;
 }
 
+Position getMinPoint() {
+	Position p = glm::vec4( centre.x - (0.5*dimensions.x) , centre.y - (0.5*dimensions.y) , centre.z - (0.5*dimensions.z) , 1.0);
+	return p;
+}
+
+Position getMaxPoint() {
+	Position p = glm::vec4( centre.x + (0.5*dimensions.x) , centre.y + (0.5*dimensions.y) , centre.z + (0.5*dimensions.z) , 1.0);
+	return p;
+}
 #endif

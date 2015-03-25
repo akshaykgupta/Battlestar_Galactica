@@ -67,12 +67,19 @@ public: //Public was used for easy modification of cuboids.
 	void setDimension(Dimension _d);
 	void setRotation(glm::vec3 eulerAngles);
 	void setRotation(Quat _q);
+	Position getMinPoint();
+	Position getMaxPoint();
+
 
 private:
 	Position centre;
 	Dimension dimensions;
 	Quat quatRot;
 	glm::mat4 matRotation, matTranslation;
+
+	/** Auxillary functions. */
+	bool in_aabb(Position p);
+	bool in_aabb(Position p, AXIS ax);
 };
 
 #endif
