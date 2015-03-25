@@ -20,13 +20,10 @@ typedef  glm::vec4 Velocity; //w=0
 typedef  glm::vec4 Acceleration; //w=0
 
 void print(Quat q) {
-	std::cout << "quat(" << q.x << "," << q.y << "," << q.z << "," << q.w << ").";
-}
-void print(Position q) {
-	std::cout << "pont(" << q.x << "," << q.y << "," << q.z << "," << q.w << ").";	
+	std::cout << "quat(" << q.x << "," << q.y << "," << q.z << "," << q.w << ").\n";
 }
 void print(glm::vec4 q) {
-
+	std::cout << "vec4(" << q.x <<","<<q.y<<","<<q.z<<","<<q.w<<").\n";
 }
 
 

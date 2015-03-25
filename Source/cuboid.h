@@ -78,7 +78,7 @@ private:
 	glm::mat4 matRotation, matTranslation;
 
 	/** Auxillary functions. */
-	bool in_aabb(Position p);
+	bool get_intersection_on_plane(double dist1, double dist2 , Position ls , Position le , Position& hitp);	
 	bool in_aabb(Position p, AXIS ax);
 };
 
