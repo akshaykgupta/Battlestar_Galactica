@@ -114,21 +114,82 @@ bool Cuboid::intersects(Cuboid& cub) {
 		Refer: http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
 	*/
 	//There are 15 possible seperating axis. If any of them returns a false, we return a false.
-	//The usual axis.
+	// 0-> X , 1-> Y , 2-> Z.
 	glm::vec4 x_axis(1.0,0.0,0.0,0.0);
 	glm::vec4 y_axis(0.0,1.0,0.0,0.0);
 	glm::vec4 z_axis(0.0,0.0,1.0,0.0);
 	//Axes of the cuboids.
-	glm::vec4 d = centre - cub.centre;
-	glm::vec4 a0,a1,a2,b0,b1,b2;
-	a0 = quatRot*x_axis;
-	b0 = cub.quatRot*x_axis;
-	a1 = quatRot*y_axis;
-	b1 = cub.quatRot*y_axis;
-	a2 = quatRot*z_axis;
-	b2 = cub.quatRot*z_axis;
+	glm::vec4 D = centre - cub.centre;
+	glm::vec4 A0,A1,A2,B0,B1,B2;
+	A0 = quatRot*x_axis;
+	B0 = cub.quatRot*x_axis;
+	A1 = quatRot*y_axis;
+	B1 = cub.quatRot*y_axis;
+	A2 = quatRot*z_axis;
+	B2 = cub.quatRot*z_axis;
+	
+	std::vector<float> a(3);
+	a[0] = dimensions.x;
+	a[1] = dimensions.y;
+	a[2] = dimensions.z;
+	std::vector<float> b(3);
+	b[0] = dimensions.x;
+	b[1] = dimensions.y;
+	b[2] = dimensions.z;
 
+	vector< vector<float> > c(3 , vector<float>(3)); //c[i][j] = glm::dot(Ai , Bj)
+	//9 lines of code for initialization.
+	c[0][0] = glm::dot(A0,B0);
+	c[0][1] = glm::dot(A0,B1);
+	c[0][2] = glm::dot(A0,B2);
+	c[1][0] = glm::dot(A1,B0);
+	c[1][1] = glm::dot(A1,B1);
+	c[1][2] = glm::dot(A1,B2);
+	c[2][0] = glm::dot(A2,B0);
+	c[2][1] = glm::dot(A2,B1);
+	c[2][2] = glm::dot(A2,B2);
+	//Possible optimization : calculate these things only when required.
 
+	if ( abs(glm::dot(D,A0)) > ( a[0] + b[0]*abs(c[0][0]) + b[1]*abs(c[0][1]) + b[2]*abs(c[0][2])) ) { //A0
+		return false;
+	} else if ( abs(glm::dot(D,A1)) > ( a[1] + b[0]*abs(c[1][0]) + b[1]*abs(c[1][1]) + b[2]*abs(c[1][2])) ) { //A1
+		return false;
+	} else if ( abs(glm::dot(D,A2)) > ( a[2] + b[0]*abs(c[2][0]) + b[1]*abs(c[2][1]) + b[2]*abs(c[2][2])) ) { //A2
+		return false;
+	} else if ( abs(glm::dot(D,B0)) > ( b[0] + a[0]*abs(c[0][0]) + a[1]*abs(c[1][0]) + a[2]*abs(c[2][0])) ) { //B0
+		return false;
+	} else if ( abs(glm::dot(D,B1)) > ( b[1] + a[0]*abs(c[0][1]) + a[1]*abs(c[1][1]) + a[2]*abs(c[2][1])) ) { //B1
+		return false;
+	} else if ( abs(glm::dot(D,B2)) > ( b[2] + a[0]*abs(c[0][2]) + a[1]*abs(c[1][2]) + a[2]*abs(c[2][2])) ) { //B2
+		return false;
+	/*
+	##################################END OF NORMAL CASES################################################
+	*/
+	} else if ( abs( c[1][0]*glm::dot(D,A2) - c[2][0]*glm::dot(D,A1) ) > ( ( a[1]*abs(c[2][0]) + a[2]*abs(c[1][0]) ) + ( b[1]*abs(c[0][2]) + b[2]*abs(c[0][1]) ) ) ) { //A0xB0
+		return false;
+	} else if ( abs( c[1][1]*glm::dot(D,A2) - c[2][1]*glm::dot(D,A1) ) > ( ( a[1]*abs(c[2][1]) + a[2]*abs(c[1][1]) ) + ( b[1]*abs(c[0][2]) + b[2]*abs(c[0][0]) ) ) ) { //A0xB1
+		return false;
+	} else if ( abs( c[1][2]*glm::dot(D,A2) - c[2][2]*glm::dot(D,A1) ) > ( ( a[1]*abs(c[2][2]) + a[2]*abs(c[1][2]) ) + ( b[1]*abs(c[0][1]) + b[2]*abs(c[0][0]) ) ) ) { //A0xB2
+		return false;
+	/*
+	##################################END OF CROSS CASES-1################################################
+	*/
+	} else if ( abs( c[2][0]*glm::dot(D,A0) - c[0][0]*glm::dot(D,A2) ) > ( ( a[0]*abs(c[2][0]) + a[2]*abs(c[0][0]) ) + ( b[1]*abs(c[1][2]) + b[2]*abs(c[1][1]) ) ) ) { //A1xB0
+		return false;
+	} else if ( abs( c[2][1]*glm::dot(D,A0) - c[0][1]*glm::dot(D,A2) ) > ( ( a[0]*abs(c[2][1]) + a[2]*abs(c[0][1]) ) + ( b[0]*abs(c[1][2]) + b[2]*abs(c[1][0]) ) ) ) { //A1xB1
+		return false;
+	} else if ( abs( c[2][2]*glm::dot(D,A0) - c[0][2]*glm::dot(D,A2) ) > ( ( a[0]*abs(c[2][2]) + a[2]*abs(c[0][2]) ) + ( b[0]*abs(c[1][1]) + b[1]*abs(c[1][0]) ) ) ) { //A1xB2
+		return false;
+	/*
+	##################################END OF CROSS CASES-2################################################
+	*/
+	} else if ( abs( c[0][0]*glm::dot(D,A1) - c[1][0]*glm::dot(D,A0) ) > ( ( a[0]*abs(c[1][0]) + a[1]*abs(c[0][0]) ) + ( b[1]*abs(c[2][2]) + b[2]*abs(c[2][1]) ) ) ) { //A2xB0
+		return false;
+	} else if ( abs( c[0][1]*glm::dot(D,A1) - c[1][1]*glm::dot(D,A0) ) > ( ( a[0]*abs(c[1][1]) + a[1]*abs(c[0][1]) ) + ( b[0]*abs(c[2][2]) + b[2]*abs(c[2][0]) ) ) ) { //A2xB1
+		return false;
+	} else if ( abs( c[0][2]*glm::dot(D,A1) - c[1][2]*glm::dot(D,A0) ) > ( ( a[0]*abs(c[1][2]) + a[1]*abs(c[0][2]) ) + ( b[0]*abs(c[2][1]) + b[1]*abs(c[2][0]) ) ) ) { //A2xB2
+		return false;
+	}
 	return true;
 }
 
