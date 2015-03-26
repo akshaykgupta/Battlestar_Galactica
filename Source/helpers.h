@@ -20,13 +20,13 @@ typedef  glm::vec4 Velocity; //w=0
 typedef  glm::vec4 Acceleration; //w=0
 
 
-//i want to print glm stuff.
-#include <glm/gtx/string_cast.hpp>
-template<typename genType>
-std::ostream& operator<<(std::ostream& out, const genType& g)
-{
-    return out << glm::to_string(g);
-}
+// //i want to print glm stuff.
+// #include <glm/gtx/string_cast.hpp>
+// template<typename genType>
+// std::ostream& operator<<(std::ostream& out, const genType& g)
+// {
+//     return out << glm::to_string(g);
+// }
 
 #include <tuple>
 /** networking typedefs */
