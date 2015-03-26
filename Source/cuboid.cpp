@@ -110,7 +110,26 @@ bool Cuboid::intersects(Line& l) {
 	return false;
 }
 bool Cuboid::intersects(Cuboid& cub) {
-	return false;
+	/** Idea: SAT. Seperating Axis Theorem. 
+		Refer: http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
+	*/
+	//There are 15 possible seperating axis. If any of them returns a false, we return a false.
+	//The usual axis.
+	glm::vec4 x_axis(1.0,0.0,0.0,0.0);
+	glm::vec4 y_axis(0.0,1.0,0.0,0.0);
+	glm::vec4 z_axis(0.0,0.0,1.0,0.0);
+	//Axes of the cuboids.
+	glm::vec4 d = centre - cub.centre;
+	glm::vec4 a0,a1,a2,b0,b1,b2;
+	a0 = quatRot*x_axis;
+	b0 = cub.quatRot*x_axis;
+	a1 = quatRot*y_axis;
+	b1 = cub.quatRot*y_axis;
+	a2 = quatRot*z_axis;
+	b2 = cub.quatRot*z_axis;
+
+
+	return true;
 }
 
 /** physics stuff */
