@@ -11,6 +11,11 @@
 		For mouse clicks, use Ray/Line.
 		For lasers, use LineSeg.
 		For cuboids, well...
+
+	Collision testing:
+		point-cuboid, check if inside etc.
+		line-cuboid, 
+		cuboid-cuboid : Seperating Axis Theorem.
 */
 
 #include <iostream>
@@ -77,6 +82,7 @@ private:
 	Quat quatRot;
 	glm::mat4 matRotation, matTranslation;
 
+	float outerBoundingRadius, innerBoundingRadius; //Use this to speed up bounding etc.
 	/** Auxillary functions. */
 	bool get_intersection_on_plane(double dist1, double dist2 , Position ls , Position le , Position& hitp);	
 	bool in_aabb(Position p, AXIS ax);

@@ -115,11 +115,19 @@ bool Cuboid::intersects(Cuboid& cub) {
 	*/
 	//There are 15 possible seperating axis. If any of them returns a false, we return a false.
 	// 0-> X , 1-> Y , 2-> Z.
+	glm::vec4 D = centre - cub.centre;
+	float dist_temp = glm::dot(D,D);
+	//Quick elimination.
+	if( dist_temp > pow((outerBoundingRadius + cub.outerBoundingRadius),2)) {
+		return false;
+	} else if ( dist_temp < pow(( innerBoundingRadius + cub.innerBoundingRadius ),2)) {
+		return true; //this line might be wrong.
+	}
+
 	glm::vec4 x_axis(1.0,0.0,0.0,0.0);
 	glm::vec4 y_axis(0.0,1.0,0.0,0.0);
 	glm::vec4 z_axis(0.0,0.0,1.0,0.0);
 	//Axes of the cuboids.
-	glm::vec4 D = centre - cub.centre;
 	glm::vec4 A0,A1,A2,B0,B1,B2;
 	A0 = quatRot*x_axis;
 	B0 = cub.quatRot*x_axis;
@@ -212,6 +220,9 @@ std::pair<Position,Direction> Cuboid::solveCollision(Line& l) {
 std::pair<Position,Direction> Cuboid::solveCollision(Cuboid& cub) {
 	Position p;
 	Dimension d;
+	if ( intersects(cub) ) { //intersection does happen. we want to return the normal, i think.
+
+	}
 	return std::make_pair(p,d);
 }
 
@@ -238,6 +249,8 @@ void Cuboid::setCentre(Position _p) {
 }
 void Cuboid::setDimension(Dimension _d) {
 	dimensions = _d;
+	outerBoundingRadius = 1.5*(0.5*std::max(dimensions.x , std::max(dimensions.y,dimensions.z)));
+	innerBoundingRadius = 0.5*(0.5*std::min(dimensions.x , std::min(dimensions.y,dimensions.z)));
 }	
 void Cuboid::setRotation(glm::vec3 eulerAngles) {
 	Quat nq(glm::radians(eulerAngles));
