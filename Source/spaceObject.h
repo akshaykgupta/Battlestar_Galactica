@@ -22,17 +22,18 @@ public:
 
 	/** get/sets */
 	Position getPosition();
-	Orientation getOrientation();
+	Quat getQuatRot();
 	Velocity getVelocity();
 	Acceleration getAcceleration();
 	void setPosition(Position& p);
-	void setOrientaiton(Orientation& _o);
+	void setQuatRot(glm::vec3 _ea);
+	void setQuatRot(Quat& _q);
 	void setVelocity(Velocity& _v);
 	void setAcceleration(Acceleration& _acc);
 
 	/** rendering things. */
-	void loadOBJ();
-	void renderOBJ();
+	bool loadOBJ();
+	bool renderOBJ();
 
 	/** Queries. */
 	bool inside(Position& p);
@@ -57,6 +58,10 @@ public:
 private:
 	/** Rendering part of things.*/
 	//The body is composed of vertices. we must read them into vectors so that we may draw them.
+	std::vector<Position> object_vertices;
+	std::vector<Direction> object_normals;
+	std::vector< glm::vec4 > object_tVertices;
+	std::vector<Face> object_faces;
 
 
 	/** physics part of things. */
@@ -75,9 +80,8 @@ private:
 	//rotational.
 	Velocity rotv; //rotation velocity.
 	Acceleration rota; //rotation acceleration.
-	Quat rotation;
+	Quat quatRot;
 	glm::mat4 matRotation, matTranslation, matScale;
-
 };
 
 #endif

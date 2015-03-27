@@ -6,7 +6,7 @@ library includes.
 */
 #include <boost/config.hpp>
 #include <boost/bimap.hpp>
-
+#include <vector>
 /** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
 
 /** math/physics typedefs */
@@ -19,6 +19,9 @@ typedef  glm::vec4 Direction; //w=0
 typedef  glm::vec4 Velocity; //w=0
 typedef  glm::vec4 Acceleration; //w=0
 
+
+/** rendering typedefs */
+typedef std::vector<int> Face; //this uses a vector of "ints" because thats how objects are loaded.  you dont pass a vertex for each face. you just pass the index of the vertex.
 
 // //i want to print glm stuff.
 // #include <glm/gtx/string_cast.hpp>
