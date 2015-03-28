@@ -1,7 +1,7 @@
 #this is a comment.
 CC= g++ -std=c++11
 CFLAGS= -Wall
-LIBS= -lboost_system -lboost_thread
+LIBS= -lboost_system -lboost_thread -lsfml-graphics -lsfml-window -lsfml-system
 SRC=Source/
 OBJ=Objects/
 RSC=Resource/
