@@ -8,21 +8,8 @@
 
 #include "cuboid.h"
 
-/** Some more jugaad. */
-typedef std::string OBJFilepath;
-typedef double Mass;
 /** This is the mother of all things. All ships, asteroids etc derive from this. */
 
-enum OBJECT_TYPE {
-	ASTEROID = 0,
-	
-	HEALTH = 1,
-	AMMO = 2,
-	
-	XWING = 3,
-	TIE = 4,
-	MF = 5
-};
 
 class SpaceObject {
 public:
@@ -35,17 +22,18 @@ public:
 
 	/** get/sets */
 	Position getPosition();
-	Orientation getOrientation();
+	Quat getQuatRot();
 	Velocity getVelocity();
 	Acceleration getAcceleration();
 	void setPosition(Position& p);
-	void setOrientaiton(Orientation& _o);
+	void setQuatRot(glm::vec3 _ea);
+	void setQuatRot(Quat& _q);
 	void setVelocity(Velocity& _v);
 	void setAcceleration(Acceleration& _acc);
 
 	/** rendering things. */
-	void loadOBJ();
-	void renderOBJ();
+	bool loadOBJ();
+	bool renderOBJ();
 
 	/** Queries. */
 	bool inside(Position& p);
@@ -68,6 +56,15 @@ public:
 	void dprint(bool debug_spaceobj=false);
 	void drender(bool debug_spaceobj=false);
 private:
+	/** Rendering part of things.*/
+	//The body is composed of vertices. we must read them into vectors so that we may draw them.
+	std::vector<Position> object_vertices;
+	std::vector<Direction> object_normals;
+	std::vector< glm::vec4 > object_tVertices;
+	std::vector<Face> object_faces;
+
+
+	/** physics part of things. */
 	std::vector<Cuboid> pieces; //Do we need a better data-structure? If we were using more complicated shapes, we'd use a AABBTree. 
 	
 	OBJFilepath objFile; /* Different space ships */
@@ -83,9 +80,8 @@ private:
 	//rotational.
 	Velocity rotv; //rotation velocity.
 	Acceleration rota; //rotation acceleration.
-	Quat rotation;
+	Quat quatRot;
 	glm::mat4 matRotation, matTranslation, matScale;
-
 };
 
 #endif
