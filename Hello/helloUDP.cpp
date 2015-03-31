@@ -19,7 +19,7 @@ try
     udp::socket s(io_service, udp::endpoint(udp::v4(), 0));
 
     udp::resolver resolver(io_service);
-    udp::resolver::query query(udp::v4(), "127.0.0.1" , "3002");
+    udp::resolver::query query(udp::v4(), "10.192.15.180" , "3002");
     udp::resolver::iterator iterator = resolver.resolve(query);
 
     using namespace std; // For strlen.

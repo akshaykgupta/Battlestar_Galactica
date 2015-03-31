@@ -107,7 +107,6 @@ class Server{
 		    return nextClientID;
 		}
 
-
 		
 		void SendToAllExcept(const std::string& message, unsigned long long clientID){
 			typedef ClientList::const_iterator it;
