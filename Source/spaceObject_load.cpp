@@ -27,13 +27,6 @@ void print(bool dflag) {
 //inits
 void SpaceObject::init(Player* _usr , BulletWorld* _world) {
 	usr = _usr; //User pointer.
-	physics_init();
-	render_init();
-	return;
-}
-
-void SpaceObject::physics_init() {
-	int nchildren;
 	switch (obj_type) {
 		//TODO : set path names and load the file.
 		case ASTEROID : {
@@ -49,22 +42,32 @@ void SpaceObject::physics_init() {
 			phypath += AMMO_FNAME + PHY_EXTENSION;
 			break;
 		} case XWING : {
-			objpath += XWING + OBJ_EXTENSION;
-			phypath += XWING + PHY_EXTENSION;
+			objpath += XWING_FNAME + OBJ_EXTENSION;
+			phypath += XWING_FNAME + PHY_EXTENSION;
 			break;
 		} case MF : {
-			objpath += MF + OBJ_EXTENSION;
-			phypath += MF + PHY_EXTENSION;
+			objpath += MF_FNAME + OBJ_EXTENSION;
+			phypath += MF_FNAME + PHY_EXTENSION;
 			break;
 		} case UFO : {
-			objpath += UFO + OBJ_EXTENSION;
-			phypath += UFO + PHY_EXTENSION;
+			objpath += UFO_FNAME + OBJ_EXTENSION;
+			phypath += UFO_FNAME + PHY_EXTENSION;
 			break;
 		} default : {
 			std::cout << " Unknown object type. Please ensure that OBJ_Type=" << obj_type << " is defined appropriately. \n";
 			return;
 		}
 	}
+	physics_init();
+	render_init();
+	return;
+}
+
+void SpaceObject::physics_init() {
+	int nchildren; //TODO
+	vector<btCollisionShape*>
+	//read the file format.
+	//create the objects.
 }
 
 void SpaceObject::render_init() {

@@ -5,6 +5,7 @@
 int main (void)
 {
 
+    /* btDbvtBroadphase is an AABB tree by default. woohoo. */
     btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 
     btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -15,13 +16,14 @@ int main (void)
     btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
     dynamicsWorld->setGravity(btVector3(0, -10, 0));
+    /* end of world init */
 
-
+    /* create the objects - the ground and the ball. */
     btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
 
     btCollisionShape* fallShape = new btSphereShape(1);
 
-
+    /* how to simulate motion? */
     btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
     btRigidBody::btRigidBodyConstructionInfo
             groundRigidBodyCI(0, groundMotionState, groundShape, btVector3(0, 0, 0));
@@ -39,7 +41,7 @@ int main (void)
     dynamicsWorld->addRigidBody(fallRigidBody);
 
 
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 50; i++) {
             dynamicsWorld->stepSimulation(1 / 60.f, 10);
 
             btTransform trans;

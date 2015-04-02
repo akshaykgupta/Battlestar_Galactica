@@ -55,7 +55,10 @@ private:
 	/*user pointer types*/
 	Player* usr;
 	
+	
 	/*physics*/
+
+	std::vector<btCollisionShape*> children;
 	btCompoundShape* shape;
 	btRigidBody* body;
 	BulletWorld* world;

@@ -16,6 +16,7 @@ ifndef HELPERS_H
 const std::string RSC_DIR= "../Resource/"; //shouldn't need this, ideally.
 const std::string OBJ_EXTENSION = "";
 const std::string PHY_EXTENSION = "";
+
 class SpaceObject;
 class Player;
 class NetworkManager;
