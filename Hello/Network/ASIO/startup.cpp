@@ -4,7 +4,7 @@
 int main(){
 	cout << "HELLO server" << '\n';
 
-	Server s("10.192.23.65", 3001); //
+	Server s("10.192.31.236", 3001); //
 
 	cout << "break 1" << '\n';
 

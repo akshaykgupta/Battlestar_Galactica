@@ -10,12 +10,22 @@ private:
 
 public:
 
-	void push(T value);
-	
+	void push(T value) {
+		boost::mutex::scoped_lock lock(mutex);
+		queue.push(value);
+	}
 
-	T pop();
+	T pop() {
+		boost::mutex::scoped_lock lock(mutex);
+		T value;
+		std::swap(value, queue.front());
+		queue.pop();
+		return value;	
+	}
 
-	bool empty();
-
+	bool empty() {
+		boost::mutex::scoped_lock lock(mutex);
+		return queue.empty();
+	}
 
 };
