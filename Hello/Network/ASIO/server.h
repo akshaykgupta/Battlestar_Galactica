@@ -46,9 +46,7 @@ class Server{
 
 		void send(const std::string& message, boost::asio::ip::udp::endpoint target_endpoint)
 		{
-			cout << target_endpoint <<"\n";
 		    socket.send_to(boost::asio::buffer(message), target_endpoint);
-			cout << "hi\n";
 		    sentBytes += message.size();
 		    sentMessages++;
 		}
@@ -66,11 +64,16 @@ class Server{
 	public:
 
 		// CTOR and DTOR
-		Server(string IP, unsigned short local_port) : socket(io_service, udp::endpoint(udp::v4(), local_port))
+		Server(string IP, unsigned short server_port, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&Server::run_service, this))
 		{
 			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(IP, boost::lexical_cast< string >(local_port));
+			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			nextClientID = 0;
+			receivedMessages = 0;
+			receivedBytes = 0;
+			sentMessages = 0;
+			sentBytes = 0;
 			remote_endpoint = *iterator;
 			get_client_id(remote_endpoint);
 		}
@@ -132,7 +135,6 @@ class Server{
 
 		void SendToAll(const std::string& message){
 			typedef ClientList::const_iterator it;
-			cout << "hi\n";
 			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ){
 				SendToClient(message,iter->left);
 			}

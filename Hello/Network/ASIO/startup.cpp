@@ -14,9 +14,10 @@ int main(){
 
 	cout << "break 2" << '\n';
 
-
-
-	s.SendToAll("HELLO");
+	
+	int i = 20;
+	while (true)
+		s.SendToAll("HELLO");
 
 	cout << "DONE" << '\n';
 }

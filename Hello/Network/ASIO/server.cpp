@@ -14,12 +14,16 @@ void Server::handle_receive(const boost::system::error_code& error, std::size_t 
 			messages.push(message.first);
 			cout << message.first <<"\n";
 		}
+		else
+		{
+			cout << "empty message\n";
+		}
 	    receivedBytes += bytes_transferred;
 	    receivedMessages++;
 	}
 	else
 	{
-	  //  LogMessage::error("NetworkClient::handle_receive:",error);
+		cout << "error!" <<"\n";
 	}
 
 	start_receive();
