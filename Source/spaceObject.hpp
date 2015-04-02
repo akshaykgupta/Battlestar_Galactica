@@ -41,8 +41,8 @@ public:
 	void getAcceleration(btVector3&);
 	void setRotation(btVector3);
 	void getRotation(btVector3&);
-	void setRotation(btVector3);
-	void getRotation(btVector3&);
+	void setAngularVelocity(btVector3);
+	void getAngularVelocity(btVector3&);
 
 	void tick(double dt);
 	void drawBox(btVector3&);

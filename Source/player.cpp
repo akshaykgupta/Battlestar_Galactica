@@ -19,7 +19,7 @@ void Player::init_bulletWorld() {
 void Player::init_fighter() {
 	fighter = new SpaceObject(fighterType);
 	fighter->init(this , bulletWorld);
-	fighter->setVelocity(btVector3(0,0,-5.0));
+	//fighter->setVelocity(btVector3(0,0,-5.0));
 }
 void Player::debug() {
 
@@ -31,7 +31,7 @@ void Player::update_state() {
 }
 
 void Player::render_state() {
-	usr->getFighter()->render(true);
+	fighter->render(true);
 }
 void Player::setup_game_screen(double winX, double winY) {
 	glEnable(GL_DEPTH_TEST);
