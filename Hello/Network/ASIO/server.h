@@ -15,6 +15,7 @@ typedef ClientList::value_type Client;
 typedef std::pair<std::string, long long> ClientMessage;
 
 using namespace std;
+using boost::asio::ip::udp;
 
 class Server{
 	private:
@@ -45,7 +46,9 @@ class Server{
 
 		void send(const std::string& message, boost::asio::ip::udp::endpoint target_endpoint)
 		{
+			cout << target_endpoint <<"\n";
 		    socket.send_to(boost::asio::buffer(message), target_endpoint);
+			cout << "hi\n";
 		    sentBytes += message.size();
 		    sentMessages++;
 		}
@@ -63,7 +66,7 @@ class Server{
 	public:
 
 		// CTOR and DTOR
-		Server(string IP, unsigned short local_port) : socket(io_service)
+		Server(string IP, unsigned short local_port) : socket(io_service, udp::endpoint(udp::v4(), local_port))
 		{
 			boost::asio::ip::udp::resolver resolver(io_service);
 			boost::asio::ip::udp::resolver::query query(IP, boost::lexical_cast< string >(local_port));
@@ -129,6 +132,7 @@ class Server{
 
 		void SendToAll(const std::string& message){
 			typedef ClientList::const_iterator it;
+			cout << "hi\n";
 			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ){
 				SendToClient(message,iter->left);
 			}
