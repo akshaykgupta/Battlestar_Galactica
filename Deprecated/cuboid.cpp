@@ -109,7 +109,7 @@ bool Cuboid::intersects(Ray& r) {
 bool Cuboid::intersects(Line& l) {
 	return false;
 }
-bool Cuboid::intersects(Cuboid& cub) {
+bool Cuboid::intersects_stationary(Cuboid& cub) {
 	/** Idea: SAT. Seperating Axis Theorem. 
 		Refer: http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
 	*/
@@ -217,20 +217,50 @@ std::pair<Position,Direction> Cuboid::solveCollision(Line& l) {
 	Direction d;
 	return std::make_pair(p,d);
 }
-std::pair<Position,Direction> Cuboid::solveCollision(Cuboid& cub) {
-	Position p;
-	Dimension d;
-	if ( intersects(cub) ) { //intersection does happen. we want to return the normal, i think.
 
-	}
-	return std::make_pair(p,d);
+std::float Cuboid::timeOfCollision(Cuboid& cub , Velocity& my_v , Velocity& ot_v , float dt) {
+	/** Idea: SAT. Seperating Axis Theorem. 
+		Refer: http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
+	*/
+	glm::vec4 x_axis(1.0,0.0,0.0,0.0);
+	glm::vec4 y_axis(0.0,1.0,0.0,0.0);
+	glm::vec4 z_axis(0.0,0.0,1.0,0.0);
+
+	glm::vec4 P = centre - cub.centre;
+	glm::vec4 D0 , DT;
+	glm::vec4 A0,A1,A2,B0,B1,B2,W;
+	
+	W = ot_v - my_v; //relative velocity.
+	D0 = P; DT = P + glm::scale( glm::mat4(dt) , W);
+	float Rt , R0 , R1;
+
+	
+	//TODO: Complete this.
+}
+std::tuple<bool , Position , Direction> Cuboid::solveCollision(Cuboid& cub , Velocity& my_v , Velocity& ot_v , float dt) { //takes my velocity and his velocity.
+	/** Idea: SAT. Seperating Axis Theorem. 
+		Refer: http://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf
+	*/
 }
 
 /** debugging stuff. */
 void Cuboid::dprint(bool debug_cuboid) { //the d stands for Debug.
-	
+	if (!debug_cuboid) return; // if its false, dont print.
+
+	cout << "Centre=(" << centre.x << "," << centre.y << "," << centre.z << ")\n";
+	cout << "Dimens=(" << dimensions.x << "," << dimensions.y << "," << dimensions.z << ")\n";
+	std::vector<Position> v;
+	getVertices(v);
+	cout << "vertices are:\n"
+	for(int i=0; i<v.size(); ++i) {
+		cout << "\nVertex(" << v[i].x << "," << v[i].y << "," << v[i].z << ")\n";
+	}
+	cout << "quat(w,x,y,z)=(" << quatRot.w << "," << quatRot.x << "," << quatRot.y << "," << quatRot.z << ")\n";
 }
 void Cuboid::drender(bool debug_cuboid) {
+	if (!debug_cuboid) return;
+
+	
 //TODO:
 }
 
@@ -271,6 +301,89 @@ Position Cuboid::getMaxPoint() {
 }
 
 /** Auxillary functions . */
+void Cuboid::getVertices(std::vector<Position>& vec) { //Gives you vertices after rotation wrt centre.
+	//treat like binary-gray code.. 000,001,011,010,110,111,101,100 . 1 means negative.
+	Position delta,p;
+	delta.x = 0.5*dimensions.x;
+	delta.y = 0.5*dimensions.y;
+	delta.z = 0.5*dimensions.z;
+	delta.w = 0.0;
+	//Note, i need to push rotated vertices.
+	p = delta; //000 - index [0]
+	vec.push_back(quatRot*p + centre);
+	p.x -= dimensions.x; //001 - index[1]
+	vec.push_back(quatRot*p + centre);
+	p.y -= dimensions.y; //011 - index[2]
+	vec.push_back(quatRot*p + centre);
+	p.x += dimensions.x; //010 - index[3]
+	vec.push_back(quatRot*p + centre);
+	p.z -= dimensions.z; //110 - index[4]
+	vec.push_back(quatRot*p + centre);
+	p.x -= dimensions.x; //111 - index[5]
+	vec.push_back(quatRot*p + centre);
+	p.y += dimensions.y; //101 - index[6]
+	vec.push_back(quatRot*p + centre);
+	p.x += dimensions.x; //100 - index[7]
+	vec.push_back(quatRot*p + centre);
+	return;
+}
+
+void Cuboid::getFaces(std::vector<Face>& faces) {
+	//returns vectors of ints.
+	Face f(4); //Square faces for cuboids.
+	f[0] = 0;
+	f[1] = 1;
+	f[2] = 2;
+	f[3] = 3; //hurrah gray code.
+	faces.push_back(f); // z=+ve , front face.
+	f[0] = 7;
+	f[1] = 6;
+	f[2] = 5;
+	f[3] = 4; //hurrah gray code.
+	faces.push_back(f); // z=-ve , back face.
+	f[0] = 0;
+	f[1] = 1;
+	f[2] = 6;
+	f[3] = 7; //hurrah gray code.
+	faces.push_back(f); // y=+ve , top face.
+	f[0] = 2;
+	f[1] = 3;
+	f[2] = 4;
+	f[3] = 5; //hurrah gray code.
+	faces.push_back(f); // y=-ve , bottom face.
+	f[0] = 0;
+	f[1] = 3;
+	f[2] = 4;
+	f[3] = 7; //hurrah gray code.
+	faces.push_back(f); // x=+ve , right face
+	f[0] = 1;
+	f[1] = 2;
+	f[2] = 5;
+	f[3] = 6; //hurrah gray code.
+	faces.push_back(f); // x=-ve , left face.
+}
+
+void Cuboid::getEdges(std::vector< std::pair<int,int> >& ej) {
+	std::pair<int,int> e;
+	//12 edges. in gray code, single bit changes.
+	e.first = 0; 		e.second = 1; ej.push_back(e);
+	/*e.first = 0;*/ 	e.second = 3; ej.push_back(e);
+	/*e.first = 0;*/ 	e.second = 7; ej.push_back(e);
+	
+	e.first = 2; 		e.second = 3; ej.push_back(e);
+	/*e.first = 2;*/ 	e.second = 1; ej.push_back(e);
+	/*e.first = 2;*/ 	e.second = 5; ej.push_back(e);
+
+	e.first = 6; 		e.second = 1; ej.push_back(e);
+	/*e.first = 6;*/ 	e.second = 5; ej.push_back(e);
+	/*e.first = 6;*/ 	e.second = 7; ej.push_back(e);
+
+	e.first = 4; 		e.second = 3; ej.push_back(e);
+	/*e.first = 4;*/ 	e.second = 5; ej.push_back(e);
+	/*e.first = 4;*/ 	e.second = 7; ej.push_back(e);
+	return;
+}
+
 bool Cuboid::get_intersection_on_plane(double dist1, double dist2 , Position ls , Position le , Position& hitp) {
 	if ( dist1*dist2 >= 0 || dist1==dist2 ) {
 		return false;

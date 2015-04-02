@@ -1,65 +1,27 @@
-#ifndef HELPERS_H
+ifndef HELPERS_H
 #define HELPERS_H
+/** c++ includes */
+#include <string.h> //because character arrays.
+#include <iostream>
+/** sfml includes */
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
+/** physics includes */
+#include <btBulletDynamicsCommon.h>
 
 /**
-library includes.
+#defines.
 */
-#include <boost/config.hpp>
-#include <boost/bimap.hpp>
-#include <vector>
-/** Pedagogical. Why? we shall use the fourth dimension correctly. For a point, w=1, for a direction(read: velocity, acc) , w=0. */
-
-/** math/physics typedefs */
-typedef double Mass;
-typedef glm::quat Quat; // QUATERNIONS!
-typedef  glm::vec4 Dimension; //w=0
-typedef  glm::vec4 Orientation; //w=0 //Unused
-typedef  glm::vec4 Position; //w=1
-typedef  glm::vec4 Direction; //w=0
-typedef  glm::vec4 Velocity; //w=0
-typedef  glm::vec4 Acceleration; //w=0
-
-
-/** rendering typedefs */
-typedef std::vector<int> Face; //this uses a vector of "ints" because thats how objects are loaded.  you dont pass a vertex for each face. you just pass the index of the vertex.
-
-// //i want to print glm stuff.
-// #include <glm/gtx/string_cast.hpp>
-// template<typename genType>
-// std::ostream& operator<<(std::ostream& out, const genType& g)
-// {
-//     return out << glm::to_string(g);
-// }
+const std::string RSC_DIR= "../Resource/"; //shouldn't need this, ideally.
+class SpaceObject;
+class Player;
+class NetworkManager;
 
 #include <tuple>
 /** networking typedefs */
 typedef std::tuple< int,int,int,int > tIP4;
 typedef int Time ; //discretized?
-
-/** file typedef. readability. */
-typedef std::string OBJFilepath;
-
-
-/** Geometry */
-/** A class for line segments */
-enum AXIS { X=1, Y=2, Z=3 };
-
-class LineSeg {
-public:
-	Position start,end;
-};
-/** A class for infinite rays. */
-class Ray { 
-public:
-	Position start ; 
-	Direction direction;
-};
-/** A class for complete lines. Should be absolutely useless. */
-class Line {
-public:
-	Position start; //Every line must pass through a point. 
-	Direction direction; //Extends in both directions. 
-};
 
 /** communication protocols. */
 enum OBJECT_TYPE {
@@ -70,8 +32,11 @@ enum OBJECT_TYPE {
 	
 	XWING = 3,
 	TIE = 4,
-	MF = 5
+	MF = 5,
+
+	UFO = 10000
 };
+
 
 /** Message_type is the protocol within the network manager. */
 enum MESSAGE_PROTOCOL { GENDATA=0 , //use these messages as an internal protocol.
@@ -81,7 +46,6 @@ enum MESSAGE_PROTOCOL { GENDATA=0 , //use these messages as an internal protocol
 					CONNECTDATA=4,
 					PINGDATA=5
 };
-
 /** enum Event Type is the protocol between NetworkManager and Player */
 enum PLAYER_PROTOCOL { //push these messages into the player's queue.
 	GENDATA_P=0 , 
@@ -91,8 +55,31 @@ enum PLAYER_PROTOCOL { //push these messages into the player's queue.
 	CONNECTDATA_P=4,
 	DROPDATA_P=5
 };
-
 /** Intra-player helper functions */
+
+/** Bullet Physics' World. */
+struct BulletWorld {
+    btBroadphaseInterface* broadphase;// = new btDbvtBroadphase();
+    btDefaultCollisionConfiguration* collisionConfiguration;// = new btDefaultCollisionConfiguration();
+    btCollisionDispatcher* dispatcher;// = new btCollisionDispatcher(collisionConfiguration);
+    btSequentialImpulseConstraintSolver* solver;// = new btSequentialImpulseConstraintSolver;
+    btDiscreteDynamicsWorld* dynamicsWorld;// = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+
+    BulletWorld() {
+    	broadphase = new btDbvtBroadphase();
+		collisionConfiguration = new btDefaultCollisionConfiguration();
+		dispatcher = new btCollisionDispatcher(collisionConfiguration);
+		solver = new btSequentialImpulseConstraintSolver;
+		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+    }
+    ~BulletWorld() {
+    	    delete dynamicsWorld;
+		    delete solver;
+		    delete collisionConfiguration;
+		    delete dispatcher;
+		    delete broadphase;
+    }
+};
 
 /** PlayerInfo is used by the network for initializing player*/
 struct PlayerInfo {

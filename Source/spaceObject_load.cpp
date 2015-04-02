@@ -1,41 +1,57 @@
-#ifndef SPACE_OBJECT_LOAD_CPP
-#define SPACE_OBJECT_LOAD_CPP
+#ifndef SPACE_OBJECT_CPP
+#define SPACE_OBJECT_CPP
+#include "spaceObject.hpp"
 
+/** file with functions for loading and initializing things.
+	Bucket list : Use static VBOs while drawing complicated
+*/
 
-/** The load function for the object. */
-bool SpaceObject::loadOBJ() {
-	//Assume that the file path is in objFile.
-	ifstream objf;
-	objf.open(OBJFilepath);
-	if ( !objf.is_open() ) {
-		std::cout << " failed to open file=" << OBJFilepath << "! Please ensure its present in the correct locaiton\n";
-		return false;
+SpaceObject(OBJECT_TYPE _type) {
+	obj_type = _type;
+}
+
+~SpaceObject() {
+
+}
+
+void print(bool dflag) {
+	if (!dflag) {
+		return;
 	}
+}
+//inits
+void SpaceObject::init(Player* _usr , BulletWorld* _world) {
+	usr = _usr; //User pointer.
+	physics_init();
+	render_init();
+	return;
+}
 
-	string next_line;
-	while (objf) {
-		getline(objf,next_line,'\n'); //I can set delimiters in this? cool.
-		if ( next_line[0] == '#' ) { //comment line.
-			continue;
-		} else if ( next_line[0] == 'v' && next_line[1] == ' ' ) { //geometry vertex.
-			Position vertex;
-			sscanf(next_line.c_str(), "v %f %f %f" , vertex.x , vertex.y , vertex.z);
-			vertex.w = 1.0;
-			object_vertices.push_back(vertex);
-		} else if ( next_line[0] == 'v' && next_line[1] == 'n' ) { //normal to the face?
-			Direction normal;
-			sscanf(next_line.c_str(), "v %f %f %f" , normal.x , normal.y , normal.z);
-			normal.w = 0.0;
-			object_normals.push_back(normal);
-		} else if ( next_line[0] == 'v' && next_line[1] == 't' ) { //texture vertex!
-			glm::vec4 tVertex;
-			sscanf(next_line.c_str() , "vt %f %f" , tVertex.x, tVertex.y);
-			tVertex.z = 0.0; tVertex.w = 0.0;
-			object_tVertices.push_back(tVertex);
-		} else if ( next_line[0] == 'f' ) { //faces?
-
+void SpaceObject::physics_init() {
+	switch (obj_type) {
+		//TODO : set path names and load the file.
+		case ASTEROID : {
+			break;
+		} case HEALTH : {
+			break;
+		} case TIE : {
+			break;
+		} default : {
+			std::cout << " Unknown object type. Please ensure that OBJ_Type=" << obj_type << " is defined appropriately. \n";
+			return;
 		}
 	}
+}
 
+void SpaceObject::render_init() {
+	return;
+}
+
+void loadRenderGeometry() {
+	return;
+}
+
+void loadPhysicsGeometry() {
+	return;
 }
 #endif

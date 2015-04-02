@@ -51,13 +51,15 @@ public: //Public was used for easy modification of cuboids.
 	bool intersects(LineSeg& l);
 	bool intersects(Ray& r);
 	bool intersects(Line& l);
-	bool intersects(Cuboid& cub);
+	bool intersects_stationary(Cuboid& cub);
 	
 	/** Solving collision related stuff. It should probably also check if a collision DOES occur. */
-	std::pair<Position,Direction> solveCollision(LineSeg& l);
-	std::pair<Position,Direction> solveCollision(Ray& r);
-	std::pair<Position,Direction> solveCollision(Line& l);
-	std::pair<Position,Direction> solveCollision(Cuboid& cub);
+	std::pair<Position,Direction> solveCollision(LineSeg& l); //not implemented.
+	std::pair<Position,Direction> solveCollision(Ray& r); //not implemented.
+	std::pair<Position,Direction> solveCollision(Line& l); //not implemented.
+	
+	float timeOfCollision(Cuboid& cub , Velocity& my_v , Velocity& ot_v , float dt);
+	std::tuple<bool,Position,Direction> solveCollision(Cuboid& cub, Velocity& my_velo , Velocity& other_velo , float dt);
 
 	/** Debugging functions -- The boolean is for toggle debug mode. */
 	void dprint(bool debug_cuboid=false); //the d stands for Debug.
@@ -80,8 +82,17 @@ private:
 	Position centre;
 	Dimension dimensions;
 	Quat quatRot;
+	/* physics related. Things need velocity afterall. */
+
+
+	/* for rendering if ever needed. */
 	glm::mat4 matRotation, matTranslation;
 
+	void getVertices(vector<Position>& vertices);
+	/* ints are lighter to create, in comparision to glm::vec4 , hence, faces and edges are integer vectors/pairs. */
+	void getFaces(std::vector<Face>& faces);
+	void getEdges(std::vector< std::pair<int,int> >& edges);
+	
 	float outerBoundingRadius, innerBoundingRadius; //Use this to speed up bounding etc.
 	/** Auxillary functions. */
 	bool get_intersection_on_plane(double dist1, double dist2 , Position ls , Position le , Position& hitp);	
