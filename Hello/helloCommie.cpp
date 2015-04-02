@@ -12,6 +12,7 @@ int main() {
 
     btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
 
+    //Create compund shape
     btCollisionShape* sphere1 = new btSphereShape(1);
     btCollisionShape* sphere2 = new btSphereShape(2);
 
@@ -27,13 +28,18 @@ int main() {
 
     int n = commie->getNumChildShapes();
     cout << n << "\n";
-    for(int i=0; i<n , ++i) {
+    for(int i=0; i<n ; ++i) {
         btCollisionShape* s = commie->getChildShape(i);
-        btTransform t = s->getChildTransform(i);
-        float mat[16];
-        t.getOpenGLMatrix();
+        cout << s->getName();
+        btTransform t = commie->getChildTransform(i);
     }
  	btScalar mass = 1;
-       
-    
+    //done with compound shape.
+
+    btDefaultMotionState* compound_state = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+    btRigidBody::btRigidBodyConstructionInfo compoundCI(0 , compound_state , commie , btVector3(0,0,0));
+    btRigidBody* body = new btRigidBody(compoundCI);
+    //now to create motion state.
+    dynamicsWorld->addRigidBody(body);
+    return 0 ;
 }
