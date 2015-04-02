@@ -1,14 +1,17 @@
-ifndef HELPERS_H
+#ifndef HELPERS_H
 #define HELPERS_H
 /** c++ includes */
 #include <string.h> //because character arrays.
 #include <iostream>
+#include <fstream>
 /** sfml includes */
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 /** physics includes */
 #include <btBulletDynamicsCommon.h>
+#include <boost/bimap.hpp>
+#include <boost/config.hpp>
 
 /**
 #defines.
@@ -127,8 +130,9 @@ typedef KeyboardMapping::value_type keymap_type;
 class UserSettings {
 public:
 	/* Sensitivity and stuff. */
-	glm::vec3 mouseSensitivity;	   //Along x,y,z.
+	btVector3 mouseSensitivity;	   //Along x,y,z.
 	KeyboardMapping keyboardMapping;
+	float fov;
 	void read_settings(); //Read from setting files.
 	void save_settings(); //Save to setting files
 };

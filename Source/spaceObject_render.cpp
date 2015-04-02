@@ -3,6 +3,19 @@
 
 #include "spaceObject.hpp"
 /** file with functions for rendering things. */
+void SpaceObject::render(bool dflag) {
+	if (dflag) {
+		// std::cout<<"About to enter render_physics \n";
+		render_physics(true);
+		// std::cout<<"Exited render physics \n";
+	}
+	render_geometry();
+}
+
+void SpaceObject::render_geometry() {
+	return;
+}
+
 void SpaceObject::render_physics(bool dflag) {
 	if ( !dflag ) { //not in debug mode.
 		return; 
@@ -11,16 +24,21 @@ void SpaceObject::render_physics(bool dflag) {
 	body->getMotionState()->getWorldTransform(trans_com);
 	float mat_gl[16];
 	trans_com.getOpenGLMatrix(mat_gl);
+
 	glPushMatrix();
-		glMultMatrix(mat_gl);
+		glMultMatrixf(mat_gl);
 		//TODO for each cuboid, render the shape.
 		for(int i=0; i<children.size(); ++i) {
+			// cout<<"Calculating for child\n";
 			float mat_child[16];
-			childrenTransform[i].getOpenGLMatrix(mat_child);
+			childTransform[i].getOpenGLMatrix(mat_child);
 			glPushMatrix();
-			glMultMatrix(mat_child);
-				btvector3 = children->getHalfExtentsWithMargin();
-				drawBox(btVector3& hdim);
+			glMultMatrixf(mat_child);
+				btVector3 hdim = ((btBoxShape*)children[i])->getHalfExtentsWithMargin();
+				drawBox(hdim);
+			// for (int i=0;i<16;i++)
+				// cout<<mat_gl[i]<<" ";
+			// cout<<"\n";
 			glPopMatrix();
 		}
 	glPopMatrix();
@@ -32,53 +50,59 @@ void SpaceObject::drawBox(btVector3& dim) {
 	x = dim.getX();
 	y = dim.getY();
 	z = dim.getZ();
-	glBegin(GL_LINE);
-		glVertex3f(x,y,z);
-		glVertex3f(-x,y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(x,y,z);
-		glVertex3f(x,-y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(x,y,z);
-		glVertex3f(x,y,-z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(-x,-y,-z);
-		glVertex3f(-x,-y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(-x,-y,-z);
-		glVertex3f(-x,y,-z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(-x,-y,-z);
-		glVertex3f(x,-y,-z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(-x,-y,z);
-		glVertex3f(-x,y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(-x,-y,z);
-		glVertex3f(x,-y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(-x,-y,z);
-		glVertex3f(x,y,-z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(x,y,z);
-		glVertex3f(x,y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(x,y,z);
-		glVertex3f(x,y,z);
-	glEnd();
-	glBegin(GL_LINE);
-		glVertex3f(x,y,z);
-		glVertex3f(x,y,z);
-	glEnd();
+	// cout<<x<<" "<<y<<" "<<z<<"\n";
+    glLineWidth(1.0);
+	//Back face
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(-x, -y, -z);
+        glVertex3f(-x, y, -z);
+        glVertex3f(x, y, -z);
+        glVertex3f(x, -y, -z);
+        glEnd();
+        
+        //Front face
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(-x, -y, z);
+        glVertex3f(-x, y, z);
+        glVertex3f(x, y, z);
+        glVertex3f(x, -y, z);
+        glVertex3f(-x, -y, z);
+        glEnd();
+        
+        
+        
+        //Left face
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(-x, -y, -z);
+        glVertex3f(-x, -y, z);
+        glVertex3f(-x, y, z);
+        glVertex3f(-x, y, -z);
+        glEnd();
+        
+        //Right face
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(x, -y, -z);
+        glVertex3f(x, -y, z);
+        glVertex3f(x, y, z);
+        glVertex3f(x, y, -z);
+        glEnd();
+        
+        
+        
+        //Top face
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(-x, y, -z);
+        glVertex3f(x, y, -z);
+        glVertex3f(x, y, z);
+        glVertex3f(-x, y, z);
+        glEnd();
+        
+        //Bottom face
+        glBegin(GL_LINE_LOOP);
+        glVertex3f(-x, -y, -z);
+        glVertex3f(x, -y, -z);
+        glVertex3f(x, -y, z);
+        glVertex3f(-x, -y, z);
+        glEnd();
 }
 #endif

@@ -6,21 +6,21 @@
 	Bucket list : Use static VBOs while drawing complicated
 */
 
-SpaceObject(OBJECT_TYPE _type) {
+SpaceObject::SpaceObject(OBJECT_TYPE _type) {
 	obj_type = _type;
 	objpath = OBJ_RSC_DIR;
 	phypath = PHY_RSC_DIR;
 
 }
 
-~SpaceObject() {
+SpaceObject::~SpaceObject() {
 	//figure out which order to delete things in.
 	delete body;
 	delete dms;
 	delete shape;
 }
 
-void print(bool dflag) {
+void SpaceObject::print(bool dflag) {
 	if (!dflag) {
 		return;
 	}
@@ -68,24 +68,26 @@ void SpaceObject::init(Player* _usr , BulletWorld* _world) {
 void SpaceObject::physics_init() {
 	//read the file format.
 	readPhysicsFile(); //reads into children and childTransform
+	// std::cout << "read phy file\n";
 	//create the objects.
 	createCompoundShape();
+	// cout << "#brk2\n";
 	return;
 }
 
 
 void SpaceObject::createCompoundShape() {
 	//Child transforms are all in the vectors.
+	shape = new btCompoundShape();
 	for(int i=0; i< children.size(); ++i) {
-		shape->addChildShape(childrenTransform[i] , children[i]);
+		shape->addChildShape(childTransform[i] , children[i]);
+		// cout << children[i]->getName() << "\n";
 	}
 	//my shape is now ready.
 	dms = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
 	shape->calculateLocalInertia(mass, moment_inertia);
-	
 	btRigidBody::btRigidBodyConstructionInfo bodyCI(mass, dms, (btCollisionShape*)shape , moment_inertia );
-    body = new btRigidBody(fallRigidBodyCI);
-    
+    body = new btRigidBody(bodyCI);
     world->dynamicsWorld->addRigidBody(body);
 }
 void SpaceObject::render_init() {
@@ -101,7 +103,7 @@ void SpaceObject::loadPhysicsGeometry() {
 }
 void SpaceObject::readPhysicsFile(){
 	fstream f;
-	f.open(filePath);
+	f.open(phypath);
 	if(f.fail()){
 		cout<<"Error in file path";
 		return;
@@ -127,9 +129,9 @@ void SpaceObject::readPhysicsFile(){
 			exit(1);
 		}
 		btCollisionShape* nbox = new btBoxShape(btVector3(ans[3],ans[4],ans[5]));
-			btTransform t(btQuaternion(0,0,0,1) , btVector(ans[0],ans[1],ans[2]));
+			btTransform t(btQuaternion(0,0,0,1) , btVector3(ans[0],ans[1],ans[2]));
 			children.push_back(nbox);
-			childrenTransform.push_back(t);
+			childTransform.push_back(t);
 	}
 }
 #endif

@@ -8,17 +8,6 @@
 	What follows are the file paths and so on.
 */
 
-const std::string PHY_RSC_DIR =  "../Resource/Physics/";
-const std::string OBJ_RSC_DIR = "../Resource/Render/";
-const std::string HEALTH_FNAME  = "health";
-const std::string AMMO_FNAME  = "ammo";
-const std::string TIEF_FNAME  = "tiefighter";
-const std::string ASTEROID_FNAME  = "asteroid";
-const std::string XWING_FNAME  = "xwing";
-const std::string MF_FNAME  = "mf";
-const std::string UFO_FNAME  = "ufo";
-const std::string OBJ_EXTENSION = ".obj";
-const std::string PHY_EXTENSION = ".lhc";
 class SpaceObject {
 public:
 	/* constructors */
@@ -41,12 +30,22 @@ public:
 	/* for rendering into opengl around the centre itself. */
 	void render(bool debuf_flag = false);
 		void render_geometry();
-			void finalizeVBO();
-			void bindVBO();
+			// void finalizeVBO();
+			// void bindVBO();
 		void render_physics(bool dflag = false);
 
-	void tick(double dt);
+	
+	void setVelocity(btVector3);
+	void getVelocity(btVector3&);
+	void setAcceleration(btVector3);
+	void getAcceleration(btVector3&);
+	void setRotation(btVector3);
+	void getRotation(btVector3&);
+	void setRotation(btVector3);
+	void getRotation(btVector3&);
 
+	void tick(double dt);
+	void drawBox(btVector3&);
 private:
 	/* misc data */
 	OBJECT_TYPE obj_type;
