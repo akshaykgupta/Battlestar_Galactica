@@ -73,11 +73,11 @@ struct BulletWorld {
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
     }
     ~BulletWorld() {
-    	    delete dynamicsWorld;
 		    delete solver;
 		    delete collisionConfiguration;
 		    delete dispatcher;
 		    delete broadphase;
+		    delete dynamicsWorld;
     }
 };
 
