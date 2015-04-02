@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
     Player* usr = new Player();
     usr->setFighterType(UFO);
     usr->init_fighter();
+    usr->setup_game_screen( 800 , 600 );
     while (running)
     {
         // handle events
@@ -38,12 +39,12 @@ int main(int argc, char** argv) {
                 
             }
         }
-        
+        // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         usr->update_state();
         usr->render_state();
-        // clear the buffers
         
+        //---------------------------------------------//
         //usr->getFighter()->render(true);
         // end the current frame (internally swaps the front and back buffers)
         window.display();

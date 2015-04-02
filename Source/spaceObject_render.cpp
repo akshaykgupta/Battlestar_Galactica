@@ -51,8 +51,8 @@ void SpaceObject::drawBox(btVector3& dim) {
 	x = dim.getX();
 	y = dim.getY();
 	z = dim.getZ();
-	// cout<<x<<" "<<y<<" "<<z<<"\n";
-    glLineWidth(10.0);
+	 cout<<x<<" "<<y<<" "<<z<<"\n";
+    glLineWidth(1.0);
 	//Back face
         glBegin(GL_LINE_LOOP);
         glVertex3f(-x, -y, -z);
