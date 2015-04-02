@@ -60,7 +60,14 @@ class Server{
 	public:
 
 		// CTOR and DTOR
-		Server(unsigned short local_port);
+		Server(string IP, unsigned short local_port) : socket(io_service)
+		{
+			boost::asio:ip::udp::resolver resolver(io_service);
+			boost::asio:ip::udp::resolver::query query(ip, boost::lexical_cast<string>(local_port));
+			boost::asio:ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			remote_endpoint = *iterator;
+			get_client_id(remote_endpoint);
+		}
 		~Server();
 
 		
@@ -72,13 +79,13 @@ class Server{
 		        try {
 		            io_service.run();
 		        } catch( const std::exception& e ) {
-		            LogMessage::error("Server network exception: ",e.what());
+		            //LogMessage::error("Server network exception: ",e.what());
 		        }
 		        catch(...) {
-		            LogMessage::error("Unknown exception in server network thread");
+		            //LogMessage::error("Unknown exception in server network thread");
 		        }
 		    }
-		    LogMessage::Debug("Server network thread stopped");
+		    //LogMessage::Debug("Server network thread stopped");
 		};
 
 
@@ -90,7 +97,7 @@ class Server{
 		        send(message, clients.left.at(clientID));
 		    }
 		    catch (std::out_of_range) {
-		        LogMessage::error("Unknown client ID");
+		        //LogMessage::error("Unknown client ID");
 		    }
 		}
 
