@@ -10,7 +10,13 @@
 
 const std::string PHY_RSC_DIR =  "../Resource/Physics/";
 const std::string OBJ_RSC_DIR = "../Resource/Render/";
-const std::string TIEF_FNAME  = "tiefighter"
+const std::string HEALTH_FNAME  = "health";
+const std::string AMMO_FNAME  = "ammo";
+const std::string TIEF_FNAME  = "tiefighter";
+const std::string ASTEROID_FNAME  = "asteroid";
+const std::string XWING_FNAME  = "xwing";
+const std::string MF_FNAME  = "mf";
+const std::string UFO_FNAME  = "ufo";
 
 class SpaceObject {
 public:
@@ -50,7 +56,7 @@ private:
 	Player* usr;
 	
 	/*physics*/
-	btCompoundShape* mesh;
+	btCompoundShape* shape;
 	btRigidBody* body;
 	BulletWorld* world;
 	/*render*/
