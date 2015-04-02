@@ -14,7 +14,7 @@ public:
 	SpaceObject(OBJECT_TYPE _type);
 	~SpaceObject();
 	/** functions for loading, etc. */
-	void init(Player* _usr, BulletWorld* _world);
+	void init(BulletWorld* _world);
 		void physics_init();
 			void readPhysicsFile();
 			void createCompoundShape();
@@ -51,10 +51,6 @@ private:
 	OBJECT_TYPE obj_type;
 	std::string objpath;
 	std::string phypath;
-
-	/*user pointer types*/
-	Player* usr;
-	
 	
 	/*physics*/
 	btScalar mass;

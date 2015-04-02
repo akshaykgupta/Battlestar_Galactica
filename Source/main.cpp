@@ -22,9 +22,11 @@ int main(int argc, char** argv) {
     usr->init_fighter();
     usr->setup_game_screen( 800 , 600 );
 
+    
+    Player* usr2 = new Player();
     SpaceObject* otr;
     otr = new SpaceObject(UFO);
-    otr->init(usr , usr->bulletWorld);
+    otr->init(usr->getBulletWorld());
     double dt = 1.0;
     while (running)
     {
@@ -59,6 +61,8 @@ int main(int argc, char** argv) {
                 cout << "front pressed \n";
                 usr->getFighter()->setVelocity(btVector3(-1.0,0,0.0));
             }
+            //--------------------Accelerate --------------//
+            //--------------------Physics files for max veclocity--------//
 
         }
         // clear the buffers
@@ -66,7 +70,7 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         usr->update_state(dt);
         usr->render_state(dt);
-        
+        otr->render(true);
         //---------------------------------------------//
         //usr->getFighter()->render(true);
         // end the current frame (internally swaps the front and back buffers)

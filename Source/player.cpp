@@ -18,7 +18,7 @@ void Player::init_bulletWorld() {
 
 void Player::init_fighter() {
 	fighter = new SpaceObject(fighterType);
-	fighter->init(this , bulletWorld);
+	fighter->init(bulletWorld);
 	//fighter->setVelocity(btVector3(0,0,-5.0));
 }
 void Player::debug() {

@@ -26,8 +26,8 @@ void SpaceObject::print(bool dflag) {
 	}
 }
 //inits
-void SpaceObject::init(Player* _usr , BulletWorld* _world) {
-	usr = _usr; //User pointer.
+void SpaceObject::init(BulletWorld* _world) {
+	
 	world = _world;
 	switch (obj_type) {
 		//TODO : set path names and load the file.
