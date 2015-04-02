@@ -20,6 +20,7 @@ void SpaceObject::render_physics(bool dflag) {
 	if ( !dflag ) { //not in debug mode.
 		return; 
 	}
+    cout<<"In render physics \n";
 	btTransform trans_com;
 	body->getMotionState()->getWorldTransform(trans_com);
 	float mat_gl[16];
@@ -51,7 +52,7 @@ void SpaceObject::drawBox(btVector3& dim) {
 	y = dim.getY();
 	z = dim.getZ();
 	// cout<<x<<" "<<y<<" "<<z<<"\n";
-    glLineWidth(1.0);
+    glLineWidth(10.0);
 	//Back face
         glBegin(GL_LINE_LOOP);
         glVertex3f(-x, -y, -z);

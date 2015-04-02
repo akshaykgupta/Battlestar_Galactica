@@ -38,11 +38,13 @@ int main(int argc, char** argv) {
                 
             }
         }
+        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         usr->update_state();
         usr->render_state();
         // clear the buffers
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        usr->getFighter()->render(true);
+        
+        //usr->getFighter()->render(true);
         // end the current frame (internally swaps the front and back buffers)
         window.display();
     }

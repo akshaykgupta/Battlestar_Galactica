@@ -81,7 +81,7 @@ void SpaceObject::createCompoundShape() {
 	shape = new btCompoundShape();
 	for(int i=0; i< children.size(); ++i) {
 		shape->addChildShape(childTransform[i] , children[i]);
-		// cout << children[i]->getName() << "\n";
+		 //cout << children[i]->getName() << "\n";
 	}
 	//my shape is now ready.
 	dms = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
