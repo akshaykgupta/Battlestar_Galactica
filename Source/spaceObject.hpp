@@ -35,16 +35,16 @@ public:
 		void render_physics(bool dflag = false);
 
 	
-	void setVelocity(btVector3);
+	void setVelocity(const btVector3&);
 	void getVelocity(btVector3&);
-	void setAcceleration(btVector3);
+	void setAcceleration(const btVector3&);
 	void getAcceleration(btVector3&);
-	void setRotation(btVector3);
+	void setRotation(const btVector3&);
 	void getRotation(btVector3&);
-	void setAngularVelocity(btVector3);
+	void setAngularVelocity(const btVector3&);
 	void getAngularVelocity(btVector3&);
-
-	void tick(double dt);
+	btRigidBody* getRigidBody();
+	
 	void drawBox(btVector3&);
 private:
 	/* misc data */

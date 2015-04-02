@@ -26,11 +26,12 @@ void Player::debug() {
 }
 
 
-void Player::update_state() {
-
+void Player::update_state(double dt) {
+	
 }
 
-void Player::render_state() {
+void Player::render_state(double dt) {
+	bulletWorld->dynamicsWorld->stepSimulation(dt);
 	fighter->render(true);
 }
 void Player::setup_game_screen(double winX, double winY) {

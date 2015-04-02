@@ -6,6 +6,8 @@
 #include "spaceObject_load.cpp"
 #include "spaceObject_render.cpp"
 #include "spaceObject_event.cpp"
+#include "spaceObject_getsets.cpp"
+
 class HUD{
 //Elements to show on the screen.
 };
@@ -20,7 +22,8 @@ private:
 	/* Rendering geometry */
 
 	/* Physics geometry. */
-	BulletWorld* bulletWorld;	
+	BulletWorld* bulletWorld;
+		
 public:
 	Player();
 	~Player();
@@ -28,8 +31,8 @@ public:
 	void init_bulletWorld();
 	void init_fighter();
 
-	void update_state();
-	void render_state();
+	void update_state(double dt);
+	void render_state(double dt);
 	void setup_game_screen(double,double);
 	void loadSettings(); //includes HUD settings.
 	void saveSettings();
@@ -38,8 +41,6 @@ public:
 	void handleEvent();
 	/* game loop functions. */
 	void game_loop();
-	void updateState();
-	void renderState();
 
 	void select_ship_screen();
 	void startjoin_screen();
@@ -51,10 +52,10 @@ public:
 	void game_over();
 	
 	/** gets and sets */
-	BulletWorld* getBulletWorld();
-	SpaceObject* getFighter();
-	void setFighterType(OBJECT_TYPE _t);
-	OBJECT_TYPE getFighterType();
+	BulletWorld* 	getBulletWorld();
+	SpaceObject* 	getFighter();
+	void 			setFighterType(OBJECT_TYPE _t);
+	OBJECT_TYPE 	getFighterType();
 	/** debuggers */
 	void debug();
 

@@ -21,6 +21,11 @@ int main(int argc, char** argv) {
     usr->setFighterType(UFO);
     usr->init_fighter();
     usr->setup_game_screen( 800 , 600 );
+
+    SpaceObject* otr;
+    otr = new SpaceObject(UFO);
+    otr->init(usr , usr->bulletWorld);
+    double dt = 1.0;
     while (running)
     {
         // handle events
@@ -38,11 +43,29 @@ int main(int argc, char** argv) {
                 usr->setup_game_screen( event.size.width , event.size.height );
                 
             }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ) {
+                cout << "front pressed \n";
+                usr->getFighter()->setVelocity(btVector3(0,0,-1.0));
+            }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ) {
+                cout << "front pressed \n";
+                usr->getFighter()->setVelocity(btVector3(0,0,+1.0));
+            }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ) {
+                cout << "front pressed \n";
+                usr->getFighter()->setVelocity(btVector3(1.0,0,0.0));
+            }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ) {
+                cout << "front pressed \n";
+                usr->getFighter()->setVelocity(btVector3(-1.0,0,0.0));
+            }
+
         }
         // clear the buffers
+        cout << usr->getFighter()->getRigidBody()->getLinearVelocity().getZ() << "\n";
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        usr->update_state();
-        usr->render_state();
+        usr->update_state(dt);
+        usr->render_state(dt);
         
         //---------------------------------------------//
         //usr->getFighter()->render(true);

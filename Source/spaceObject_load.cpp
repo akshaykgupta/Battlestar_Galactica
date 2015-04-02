@@ -72,6 +72,7 @@ void SpaceObject::physics_init() {
 	//create the objects.
 	createCompoundShape();
 	// cout << "#brk2\n";
+	body->setActivationState(DISABLE_DEACTIVATION);
 	return;
 }
 

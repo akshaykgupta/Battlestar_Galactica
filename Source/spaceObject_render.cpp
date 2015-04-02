@@ -20,10 +20,14 @@ void SpaceObject::render_physics(bool dflag) {
 	if ( !dflag ) { //not in debug mode.
 		return; 
 	}
-    cout<<"In render physics \n";
+    // cout<<"In render physics \n";
 	btTransform trans_com;
 	body->getMotionState()->getWorldTransform(trans_com);
-	float mat_gl[16];
+
+    //debugging
+    // cout << trans_com.getOrigin().getZ() << "\n";
+	
+    float mat_gl[16];
 	trans_com.getOpenGLMatrix(mat_gl);
 
 	glPushMatrix();
@@ -51,7 +55,7 @@ void SpaceObject::drawBox(btVector3& dim) {
 	x = dim.getX();
 	y = dim.getY();
 	z = dim.getZ();
-	 cout<<x<<" "<<y<<" "<<z<<"\n";
+	 // cout<<x<<" "<<y<<" "<<z<<"\n";
     glLineWidth(1.0);
 	//Back face
         glBegin(GL_LINE_LOOP);
