@@ -99,4 +99,34 @@ void SpaceObject::loadRenderGeometry() {
 void SpaceObject::loadPhysicsGeometry() {
 	return;//TODO
 }
+void SpaceObject::readPhysicsFile(){
+	fstream f;
+	f.open(filePath);
+	if(f.fail()){
+		cout<<"Error in file path";
+		return;
+	}
+	int count=0;
+	string temp,temp2;
+	getline(f,temp);
+	mass = (float)atoi(temp.c_str());
+	count++;	
+	while(getline(f,temp)){
+		count++;
+		vector<int> ans;
+		istringstream s(temp);
+		while(!s.eof()){
+			s>>temp2;
+			ans.push_back(atoi(temp2.c_str()));
+		}
+		if(ans.size()!= 6){
+			cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
+			exit(1);
+		}
+		btCollisionShape* nbox = new btBoxShape(btVector3(ans[3],ans[4],ans[5]));
+			btTransform t(btQuaternion(0,0,0,1) , btVector(ans[0],ans[1],ans[2]));
+			children.push_back(nbox);
+			childrenTransform.push_back(t);
+	}
+}
 #endif
