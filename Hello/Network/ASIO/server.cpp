@@ -19,7 +19,7 @@ Server::handle_receive(const boost::system::error_code& error, std::size_t bytes
 	}
 	else
 	{
-	    LogMessage::error("NetworkClient::handle_receive:",error);
+	  //  LogMessage::error("NetworkClient::handle_receive:",error);
 	}
 
 	start_receive();
