@@ -16,6 +16,7 @@ SpaceObject(OBJECT_TYPE _type) {
 ~SpaceObject() {
 	//figure out which order to delete things in.
 	delete body;
+	delete dms;
 	delete shape;
 }
 
@@ -27,6 +28,7 @@ void print(bool dflag) {
 //inits
 void SpaceObject::init(Player* _usr , BulletWorld* _world) {
 	usr = _usr; //User pointer.
+	world = _world;
 	switch (obj_type) {
 		//TODO : set path names and load the file.
 		case ASTEROID : {
@@ -64,21 +66,37 @@ void SpaceObject::init(Player* _usr , BulletWorld* _world) {
 }
 
 void SpaceObject::physics_init() {
-	int nchildren; //TODO
-	vector<btCollisionShape*>
 	//read the file format.
+	readPhysicsFile(); //reads into children and childTransform
 	//create the objects.
+	createCompoundShape();
+	return;
 }
 
+
+void SpaceObject::createCompoundShape() {
+	//Child transforms are all in the vectors.
+	for(int i=0; i< children.size(); ++i) {
+		shape->addChildShape(childrenTransform[i] , children[i]);
+	}
+	//my shape is now ready.
+	dms = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0)));
+	shape->calculateLocalInertia(mass, moment_inertia);
+	
+	btRigidBody::btRigidBodyConstructionInfo bodyCI(mass, dms, (btCollisionShape*)shape , moment_inertia );
+    body = new btRigidBody(fallRigidBodyCI);
+    
+    world->dynamicsWorld->addRigidBody(body);
+}
 void SpaceObject::render_init() {
 	return;//TODO
 }
 
-void loadRenderGeometry() {
+void SpaceObject::loadRenderGeometry() {
 	return;//TODO
 }
 
-void loadPhysicsGeometry() {
+void SpaceObject::loadPhysicsGeometry() {
 	return;//TODO
 }
 #endif

@@ -26,8 +26,9 @@ public:
 	/** functions for loading, etc. */
 	void init(Player* _usr, BulletWorld* _world);
 		void physics_init();
+			void readPhysicsFile();
+			void createCompoundShape();
 		void render_init();
-
 
 	void loadRenderGeometry(/*objpath*/);
 	void loadPhysicsGeometry(/*phypath*/);
@@ -45,7 +46,6 @@ public:
 
 	void tick(double dt);
 
-
 private:
 	/* misc data */
 	OBJECT_TYPE obj_type;
@@ -57,13 +57,15 @@ private:
 	
 	
 	/*physics*/
-
+	btScalar mass;
+	std::vector<btTransform> childTransform;
 	std::vector<btCollisionShape*> children;
 	btCompoundShape* shape;
+	btDefaultMotionState* dms; //default motion state.
+	btVector3 moment_inertia;
 	btRigidBody* body;
 	BulletWorld* world;
 	/*render*/
-
 };
 
 #endif
