@@ -107,17 +107,20 @@ void SpaceObject::readPhysicsFile(){
 		return;
 	}
 	int count=0;
-	string temp,temp2;
+	string temp;
+	float temp2;
 	getline(f,temp);
-	mass = (float)atoi(temp.c_str());
+	stringstream mTemp(temp);
+	mTemp>>temp2;
+	mass = temp2;
 	count++;	
 	while(getline(f,temp)){
 		count++;
-		vector<int> ans;
+		vector<float> ans;
 		istringstream s(temp);
 		while(!s.eof()){
 			s>>temp2;
-			ans.push_back(atoi(temp2.c_str()));
+			ans.push_back(temp2);
 		}
 		if(ans.size()!= 6){
 			cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
