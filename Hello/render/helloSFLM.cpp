@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
-
+#include <iostream>
 /*
 linker:
 -lsfml-graphics -lsfml-window -lsfml-system -lGL
@@ -30,6 +30,29 @@ int main(int argc, char** argv) {
             {
                 // adjust the viewport when the window is resized
                 glViewport(0, 0, event.size.width, event.size.height);
+            } else if ( event.type == sf::Event::KeyPressed ) {
+                //a key was pressed.
+                double x,y,z; x = y = z = 0;
+                if (event.key.code == sf::Keyboard::W) {
+                    x += 0.05;
+                } else if ( event.key.code ==sf::Keyboard::S) {
+                    x -= 0.05;
+                }
+                glTranslated(x,y,z);
+            } else if ( event.type == sf::Event::MouseMoved ) {
+                double x,y,z; x = y = z = 0;
+                std::cout << "mouseMove=(" << event.mouseMove.x << "," << event.mouseMove.y << ")\n";
+                if ( event.mouseMove.x < 50 ) {
+                    x -= 0.05;
+                } else if ( event.mouseMove.x > 750) {
+                    x += 0.05;
+                }
+                if (event.mouseMove.y < 50 ) {
+                    y += 0.05;
+                } else if (event.mouseMove.y > 550 ) {
+                    y -= 0.05;
+                }
+                glTranslated(x,y,z);
             }
         }
 
