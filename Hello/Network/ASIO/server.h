@@ -1,6 +1,7 @@
 #include <boost/array.hpp>
 #include <boost/bimap.hpp>
 #include <boost/asio.hpp>
+#include "boost/lexical_cast.hpp"
 #include <boost/thread.hpp>
 #include "mQ.h"
 #include <memory>
@@ -9,18 +10,20 @@
 
 #define NETWORK_BUFFER_SIZE 4096
 
-typedef boost::bimap<long long, udp::endpoint> ClientList;
+typedef boost::bimap<long long, boost::asio::ip::udp::endpoint> ClientList;
 typedef ClientList::value_type Client;
 typedef std::pair<std::string, long long> ClientMessage;
+
+using namespace std;
 
 class Server{
 	private:
 
 		// NETWORK MEMBER FUNCTIONS
 		boost::asio::io_service io_service;
-		udp::socket socket;
-		udp::endpoint server_endpoint;
-		udp::endpoint remote_endpoint;
+		boost::asio::ip::udp::socket socket;
+		boost::asio::ip::udp::endpoint server_endpoint;
+		boost::asio::ip::udp::endpoint remote_endpoint;
 		boost::thread service_thread;
 
 
@@ -40,7 +43,7 @@ class Server{
 
 
 
-		void send(const std::string& message, udp::endpoint target_endpoint)
+		void send(const std::string& message, boost::asio::ip::udp::endpoint target_endpoint)
 		{
 		    socket.send_to(boost::asio::buffer(message), target_endpoint);
 		    sentBytes += message.size();
@@ -53,7 +56,7 @@ class Server{
 		void start_receive()
 		{
 		    socket.async_receive_from(boost::asio::buffer(recv_buffer), remote_endpoint,
-		        boost::bind(&NetworkServer::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		        boost::bind(&Server::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 
 
@@ -62,9 +65,9 @@ class Server{
 		// CTOR and DTOR
 		Server(string IP, unsigned short local_port) : socket(io_service)
 		{
-			boost::asio:ip::udp::resolver resolver(io_service);
-			boost::asio:ip::udp::resolver::query query(ip, boost::lexical_cast<string>(local_port));
-			boost::asio:ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			boost::asio::ip::udp::resolver resolver(io_service);
+			boost::asio::ip::udp::resolver::query query(IP, boost::lexical_cast< string >(local_port));
+			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
 			remote_endpoint = *iterator;
 			get_client_id(remote_endpoint);
 		}
@@ -103,9 +106,9 @@ class Server{
 
 
 
-		unsigned long long get_client_id(udp::endpoint endpoint)
+		unsigned long long get_client_id(boost::asio::ip::udp::endpoint endpoint)
 		{
-		    unsigned long long cit = clients.right.find(endpoint);
+		    auto cit = clients.right.find(endpoint);
 		    if (cit != clients.right.end())
 		        return (*cit).second;
 
@@ -117,7 +120,7 @@ class Server{
 		
 		void SendToAllExcept(const std::string& message, unsigned long long clientID){
 			typedef ClientList::const_iterator it;
-			for (it iter = clients.begin(); iend = clients.end(); iter != iend; iter++){
+			for (it iter = clients.begin(), iend = clients.end(); iter != iend; iter++){
 				if (iter->left != clientID)
 					SendToClient(message,  iter->left);
 			}
