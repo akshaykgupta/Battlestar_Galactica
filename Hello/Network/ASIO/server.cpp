@@ -9,9 +9,11 @@ void Server::handle_receive(const boost::system::error_code& error, std::size_t 
 	if (!error)
 	{
 	   	ClientMessage message = ClientMessage(std::string(recv_buffer.data(), recv_buffer.data() + bytes_transferred),  get_client_id(remote_endpoint));
-
 		if (!message.first.empty())
+		{
 			messages.push(message.first);
+			cout << message.first <<"\n";
+		}
 	    receivedBytes += bytes_transferred;
 	    receivedMessages++;
 	}
