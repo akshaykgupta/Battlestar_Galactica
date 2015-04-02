@@ -17,7 +17,8 @@ const std::string ASTEROID_FNAME  = "asteroid";
 const std::string XWING_FNAME  = "xwing";
 const std::string MF_FNAME  = "mf";
 const std::string UFO_FNAME  = "ufo";
-
+const std::string OBJ_EXTENSION = ".obj";
+const std::string PHY_EXTENSION = ".lhc";
 class SpaceObject {
 public:
 	/* constructors */

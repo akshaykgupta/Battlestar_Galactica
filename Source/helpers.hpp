@@ -14,8 +14,17 @@ ifndef HELPERS_H
 #defines.
 */
 const std::string RSC_DIR= "../Resource/"; //shouldn't need this, ideally.
-const std::string OBJ_EXTENSION = "";
-const std::string PHY_EXTENSION = "";
+const std::string PHY_RSC_DIR =  "../Resource/Physics/";
+const std::string OBJ_RSC_DIR = "../Resource/Render/";
+const std::string HEALTH_FNAME  = "health";
+const std::string AMMO_FNAME  = "ammo";
+const std::string TIEF_FNAME  = "tiefighter";
+const std::string ASTEROID_FNAME  = "asteroid";
+const std::string XWING_FNAME  = "xwing";
+const std::string MF_FNAME  = "mf";
+const std::string UFO_FNAME  = "ufo";
+const std::string OBJ_EXTENSION = ".obj";
+const std::string PHY_EXTENSION = ".lhc";
 
 class SpaceObject;
 class Player;

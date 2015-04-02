@@ -29,7 +29,6 @@ public:
 
 
 	void handleEvent();
-
 	/* game loop functions. */
 	void game_loop(); //Start here
 	void select_ship_screen();
