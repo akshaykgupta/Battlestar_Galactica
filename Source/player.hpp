@@ -35,9 +35,9 @@ public:
 	void init_bulletWorld();
 	void init_fighter();
 	/* collision */
-	bool collisionCallback(btManifoldPoint& cp,
-		const btCollisionObject* obj1,int id1,int index1,
-		const btCollisionObject* obj2,int id2,int index2);
+	static bool collisionCallback(btManifoldPoint& cp,
+		const btCollisionObjectWrapper* obj1,int id1,int index1,
+		const btCollisionObjectWrapper* obj2,int id2,int index2);
 
 
 	void update_state(double dt);

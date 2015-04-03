@@ -105,11 +105,15 @@ bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 }
 
 bool Player::collisionCallback(btManifoldPoint& cp,
-	const btCollisionObject* obj1,int id1,int index1,
-	const btCollisionObject* obj2,int id2,int index2) {
-
+	const btCollisionObjectWrapper* obj1,int id1,int index1,
+	const btCollisionObjectWrapper* obj2,int id2,int index2) {
+	#define obj1 obj1->getCollisionObject()
+	#define obj2 obj2->getCollisionObject()
+	
 	((SpaceObject*)(obj1->getUserPointer()))->handleCollision(((SpaceObject*)(obj2->getUserPointer())));
 	((SpaceObject*)(obj2->getUserPointer()))->handleCollision(((SpaceObject*)(obj1->getUserPointer())));
-
+	return false;
+	#undef obj1
+	#undef obj2
 }
 #endif

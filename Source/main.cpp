@@ -17,11 +17,12 @@ int main(int argc, char** argv) {
     Player* usr = new Player();
     usr->setFighterType(UFO);
     usr->init_fighter();
-    usr->setup_game_screen( usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY );
-    //gContactAddedCallback=Player::collisionCallback;
 
     sf::Window window(sf::VideoMode(usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY), "spaceRash" , sf::Style::Default, sf::ContextSettings(32));
-	window.setVerticalSyncEnabled(true);
+    usr->setup_game_screen( usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY );
+    gContactAddedCallback=(Player::collisionCallback);
+
+    window.setVerticalSyncEnabled(true);
 	bool running = true;
     usr->playMusic(true);
     Player* usr2 = new Player();
