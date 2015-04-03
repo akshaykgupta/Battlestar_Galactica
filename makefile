@@ -3,7 +3,7 @@ CC= g++ -std=c++11
 CFLAGS= -Wall
 LIBS= -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath \
  -lboost_system -lboost_thread \ 
- -lsfml-graphics -lsfml-window -lsfml-system -lGL -lGLU
+ -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
 INCS= -I/usr/include/bullet
 SRC=Source/
 OBJ=Objects/
