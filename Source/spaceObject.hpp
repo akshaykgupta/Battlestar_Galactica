@@ -47,7 +47,7 @@ public:
 	int 	getHealth();
 	void 	setHealth(int h);
 	
-	int 	getActiveWeapon();
+	Weapon* 	getActiveWeapon();
 	void 	setActiveWeapon(int w);
 
 	btRigidBody* getRigidBody();

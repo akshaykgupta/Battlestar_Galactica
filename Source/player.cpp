@@ -5,7 +5,8 @@
 Player::Player() {
 	//Do things.
 	init_bulletWorld();
-	settings.fov = 90.0f;
+	settings =  new UserSettings();
+	settings->read_settings();
 }
 
 Player::~Player() {
@@ -53,7 +54,16 @@ void Player::update_state(double dt) {
 
 void Player::render_state(double dt) {
 	bulletWorld->dynamicsWorld->stepSimulation(dt);
+
+	//render me.
 	fighter->render(true);
+	//render all spaceobjects.
+	for ( spaceObjWeed::const_iterator obj_iterator = EveryOne.begin()
+		; obj_iterator != EveryOne.end()
+		; ++obj_iterator) {
+		//--------------------------------
+		obj_iterator->right->render(true);
+	}
 }
 void Player::setup_game_screen(double winX, double winY) {
 	glEnable(GL_DEPTH_TEST);
@@ -62,7 +72,7 @@ void Player::setup_game_screen(double winX, double winY) {
 	glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(settings.fov/2,winX/winY,1.0f,1000.0f);
+    gluPerspective(settings->fov/2,winX/winY,1.0f,1000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0,0,10 , 0,0,0 ,0,1.0,0);

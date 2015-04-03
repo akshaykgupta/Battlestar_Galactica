@@ -14,35 +14,21 @@ using namespace std;
 #include "player_getsets.cpp"
 using namespace std;
 int main(int argc, char** argv) {
-	sf::Window window(sf::VideoMode(800,600), "spaceRash" , sf::Style::Default, sf::ContextSettings(32));
-	window.setVerticalSyncEnabled(true);
-	bool running = true;
     Player* usr = new Player();
     usr->setFighterType(UFO);
     usr->init_fighter();
-    usr->setup_game_screen( 800 , 600 );
-    gContactAddedCallback=Player::collisionCallback;
+    usr->setup_game_screen( usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY );
+    //gContactAddedCallback=Player::collisionCallback;
 
-    //bool isSoundThere = false;
-    //string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;
-    //sf::Music music;
-    
-    // cout<<path.c_str()<<"\n";
-    // cout<<isSoundThere<<"\n";
-    // if(music.openFromFile(path.c_str())){
-    //     isSoundThere=true;
-    // }
-
-    // if(isSoundThere){
-    // cout<<isSoundThere<<"\n";
-    // music.play();
-    // cout<<isSoundThere<<"\n";
-    // }
+    sf::Window window(sf::VideoMode(usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY), "spaceRash" , sf::Style::Default, sf::ContextSettings(32));
+	window.setVerticalSyncEnabled(true);
+	bool running = true;
     usr->playMusic(true);
     Player* usr2 = new Player();
     SpaceObject* otr;
     otr = new SpaceObject(UFO);
     otr->init(usr->getBulletWorld());
+    usr->addToEveryOne(1,otr);
     double dt = 1.0;
     while (running)
     {
@@ -102,7 +88,6 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         usr->update_state(dt);
         usr->render_state(dt);
-        otr->render(true);
         //---------------------------------------------//
         //usr->getFighter()->render(true);
         // end the current frame (internally swaps the front and back buffers)

@@ -19,7 +19,7 @@ class Player {
 private:
 	/* misc data. */
 	OBJECT_TYPE fighterType;
-	UserSettings settings;
+	UserSettings* settings;
 	HUD hud;
 	SpaceObject* fighter;
 	/* Rendering geometry */
@@ -49,18 +49,20 @@ public:
 	void handleEvent();
 	/* game loop functions. */
 	void game_loop();
-
 	void select_ship_screen();
 	void startjoin_screen();
-		void start_game(); 
-		void connect_game();
+	void start_game(); 
+	void connect_game();
 	void waiting_screen();
 	void race_begin();
 	void race_end();
 	void game_over();
+	
+	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	
 	/** gets and sets */
+	UserSettings* 	getSettings();
 	BulletWorld* 	getBulletWorld();
 	SpaceObject* 	getFighter();
 	void 			setFighterType(OBJECT_TYPE _t);

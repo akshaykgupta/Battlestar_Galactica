@@ -24,4 +24,8 @@ int Player::getID(SpaceObject* spaceObject){
 	}
 	return temporary;	
 }
+
+UserSettings* Player::getSettings() {
+	return settings;
+}
 #endif

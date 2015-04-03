@@ -42,28 +42,28 @@ btRigidBody* SpaceObject::getRigidBody() {
 	return body;
 }
 
-int getHealth() {
+int SpaceObject::getHealth() {
 	return health;
 }
 
-void setHealth(int _h) {
+void SpaceObject::setHealth(int _h) {
 	health = _h;
 }
 
-Weapon* getActiveWeapon() {
+Weapon* SpaceObject::getActiveWeapon() {
 	return weapons[activeWeapon];
 }
 
-void setActiveWeapon(int w) {
+void SpaceObject::setActiveWeapon(int w) {
 	activeWeapon = w;
 }
 
-OBJECT_TYPE getType() {
-	return type;
+OBJECT_TYPE SpaceObject::getType() {
+	return obj_type;
 }
 
-void setType(OBJECT_TYPE _type) {
-	type = _type;
+void SpaceObject::setType(OBJECT_TYPE _type) {
+	obj_type = _type;
 	return;
 }
 #endif

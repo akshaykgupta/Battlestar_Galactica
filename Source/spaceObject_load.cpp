@@ -135,5 +135,6 @@ void SpaceObject::readPhysicsFile(){
 			children.push_back(nbox);
 			childTransform.push_back(t);
 	}
+	f.close();
 }
 #endif

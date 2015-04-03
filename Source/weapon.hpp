@@ -18,9 +18,10 @@ struct Weapon {
 	double regen_rate;
 	int max_ammo,ammo;
 	bool active;
+	int time_left;
 	SpaceObject* fighter;
 	BulletWorld* world;
-	btVector3 last_from, btVector3 last_to;
+	btVector3 last_from, last_to;
 	Weapon(WEAPON_TYPE t , btVector3& color) {
 		type = t;
 		switch (t) {
@@ -33,7 +34,7 @@ struct Weapon {
 			case STRONG_LASER : {
 				ammo = max_ammo = 1000; break;
 			}
-			case default : {
+			default : {
 				break;
 			}
 		}
@@ -70,7 +71,7 @@ struct Weapon {
 					break;
 				}
 			}
-			case default : {
+			default : {
 				break;
 			}
 		}
@@ -95,7 +96,7 @@ struct Weapon {
 			ammo += (regen_rate*max_ammo);
 			if (ammo>max_ammo) { ammo = max_ammo ; }
 		}
-		drawProjectile();
+		drawProjectile(last_from , last_to);
 	}
 };
 #endif

@@ -1,5 +1,5 @@
-#ifndef SPACE_OBJECT_CPP
-#define SPACE_OBJECT_CPP
+#ifndef SPACE_OBJECT_EVENT_CPP
+#define SPACE_OBJECT_EVENT_CPP
 #include "spaceObject.hpp"
 
 void SpaceObject::handleCollision(SpaceObject* other) {

@@ -10,9 +10,16 @@
 #include <SFML/OpenGL.hpp>
 /** physics includes */
 #include <btBulletDynamicsCommon.h>
-#include <boost/bimap.hpp>
-#include <boost/config.hpp>
 
+#include <boost/config.hpp>
+#include <boost/bimap.hpp>
+#include <boost/bimap/support/lambda.hpp>
+
+#include <sys/stat.h>
+inline bool doesFileExist(std::string fname) {
+	struct stat buffer;
+	return (stat( fname.c_str() , &buffer ) == 0 );
+}
 /**
 #defines.
 */
@@ -122,19 +129,6 @@ struct GameEvent {
 
 
 /** event handlers */
-enum KeyboardInput {};
-typedef boost::bimap<int,KeyboardInput> KeyboardMapping;
-typedef KeyboardMapping::value_type keymap_type;
-
-//class user settings. 
-class UserSettings {
-public:
-	/* Sensitivity and stuff. */
-	btVector3 mouseSensitivity;	   //Along x,y,z.
-	KeyboardMapping keyboardMapping;
-	float fov;
-	void read_settings(); //Read from setting files.
-	void save_settings(); //Save to setting files
-};
-
+#include "userSettings.hpp"
+#include "weapon.hpp"
 #endif
