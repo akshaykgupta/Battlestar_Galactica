@@ -1,8 +1,6 @@
 #ifndef WEAPON_HPP
 #define WEAPON_HPP
 
-#include "helper.hpp"
-
 enum WEAPON_TYPE {
 	WEAK_LASER = 1,
 	MEDIUM_LASER = 2,

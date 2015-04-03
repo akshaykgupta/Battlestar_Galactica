@@ -69,4 +69,15 @@ void Player::setup_game_screen(double winX, double winY) {
 	glViewport(0, 0, winX, winY);
     glFlush();
 }
+
+
+bool Player::collisionCallback(btManifoldPoint& cp,
+	const btCollisionObject* obj1,int id1,int index1,
+	const btCollisionObject* obj2,int id2,int index2) {
+
+	((SpaceObject*)(obj1->getUserPointer()))->handleCollision(((SpaceObject*)(obj2->getUserPointer())));
+	((SpaceObject*)(obj2->getUserPointer()))->handleCollision(((SpaceObject*)(obj1->getUserPointer())));
+
+}
+
 #endif

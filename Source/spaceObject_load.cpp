@@ -89,6 +89,7 @@ void SpaceObject::createCompoundShape() {
 	shape->calculateLocalInertia(mass, moment_inertia);
 	btRigidBody::btRigidBodyConstructionInfo bodyCI(mass, dms, (btCollisionShape*)shape , moment_inertia );
     body = new btRigidBody(bodyCI);
+    body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
     world->dynamicsWorld->addRigidBody(body);
 }
 void SpaceObject::render_init() {

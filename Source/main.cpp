@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
     usr->setFighterType(UFO);
     usr->init_fighter();
     usr->setup_game_screen( 800 , 600 );
+    gContactAddedCallback=Player::collisionCallback;
 
     //bool isSoundThere = false;
     //string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;

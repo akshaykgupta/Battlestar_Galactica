@@ -17,8 +17,9 @@ private:
 	/* misc data. */
 	OBJECT_TYPE fighterType;
 	UserSettings settings;
-	HUD hud;
+	HUD* hud;
 	SpaceObject* fighter;
+
 	/* Rendering geometry */
 
 	/* Physics geometry. */
@@ -31,6 +32,11 @@ public:
 
 	void init_bulletWorld();
 	void init_fighter();
+	/* collision */
+	bool collisionCallback(btManifoldPoint& cp,
+		const btCollisionObject* obj1,int id1,int index1,
+		const btCollisionObject* obj2,int id2,int index2);
+
 
 	void update_state(double dt);
 	void render_state(double dt);

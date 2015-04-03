@@ -10,6 +10,7 @@ void SpaceObject::render(bool dflag) {
 		// std::cout<<"Exited render physics \n";
 	}
 	render_geometry();
+    wasHit = false;
 }
 
 void SpaceObject::render_geometry() {
@@ -18,8 +19,11 @@ void SpaceObject::render_geometry() {
 
 void SpaceObject::render_physics(bool dflag) {
 	if ( !dflag ) { //not in debug mode.
-		return; 
+		return;
 	}
+    if(wasHit) {
+        std::cout << " i got hit :(\n";
+    }
     // cout<<"In render physics \n";
 	btTransform trans_com;
 	body->getMotionState()->getWorldTransform(trans_com);
@@ -41,9 +45,9 @@ void SpaceObject::render_physics(bool dflag) {
 			glMultMatrixf(mat_child);
 				btVector3 hdim = ((btBoxShape*)children[i])->getHalfExtentsWithMargin();
 				drawBox(hdim);
-			// for (int i=0;i<16;i++)
-				// cout<<mat_gl[i]<<" ";
-			// cout<<"\n";
+			//for (int i=0;i<16;i++)
+				//cout<<mat_gl[i]<<" ";
+			//cout<<"\n";
 			glPopMatrix();
 		}
 	glPopMatrix();

@@ -34,7 +34,7 @@ const std::string MUSIC_EXTENSION = ".ogg";
 class SpaceObject;
 class Player;
 class NetworkManager;
-
+struct Weapon;
 #include <tuple>
 /** networking typedefs */
 typedef std::tuple< int,int,int,int > tIP4;
@@ -43,14 +43,11 @@ typedef int Time ; //discretized?
 /** communication protocols. */
 enum OBJECT_TYPE {
 	ASTEROID = 0,
-	
 	HEALTH = 1,
-	AMMO = 2,
-	
+	AMMO = 2,	
 	XWING = 3,
 	TIE = 4,
 	MF = 5,
-
 	UFO = 10000
 };
 
