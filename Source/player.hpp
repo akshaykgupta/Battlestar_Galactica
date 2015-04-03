@@ -7,7 +7,10 @@
 #include "spaceObject_render.cpp"
 #include "spaceObject_event.cpp"
 #include "spaceObject_getsets.cpp"
-
+typedef boost::bimap< int, SpaceObject* > spaceObjWeed;
+typedef spaceObjWeed::value_type spaceObjWeedNormal;
+typedef spaceObjWeed::left_value_type spaceObjWeedLeft; 
+typedef spaceObjWeed::right_value_type spaceObjWeedRight;
 class HUD{
 //Elements to show on the screen.
 };
@@ -17,15 +20,14 @@ private:
 	/* misc data. */
 	OBJECT_TYPE fighterType;
 	UserSettings settings;
-	HUD* hud;
+	HUD hud;
 	SpaceObject* fighter;
-
 	/* Rendering geometry */
 
 	/* Physics geometry. */
 	BulletWorld* bulletWorld;
 	sf::Music* music;
-		
+	boost::bimap< int, SpaceObject* > EveryOne; 	
 public:
 	Player();
 	~Player();
@@ -56,12 +58,15 @@ public:
 	void race_begin();
 	void race_end();
 	void game_over();
+	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	
 	/** gets and sets */
 	BulletWorld* 	getBulletWorld();
 	SpaceObject* 	getFighter();
 	void 			setFighterType(OBJECT_TYPE _t);
 	OBJECT_TYPE 	getFighterType();
+	SpaceObject*	getSpaceObject(int); 
+	int 			getID(SpaceObject*);
 	/** debuggers */
 	void debug();
 

@@ -69,7 +69,17 @@ void Player::setup_game_screen(double winX, double winY) {
 	glViewport(0, 0, winX, winY);
     glFlush();
 }
-
+bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
+	if(!OBJ){
+		cout<<"NULL OBJECT PASSED \n";
+		return false;
+	}
+	if((EveryOne.left.insert(spaceObjWeedLeft(ID,OBJ))).second==false){
+		cout<<" ID ALREADY TAKEN \n";
+		return false;
+	}
+	return true;
+}
 
 bool Player::collisionCallback(btManifoldPoint& cp,
 	const btCollisionObject* obj1,int id1,int index1,
@@ -79,5 +89,4 @@ bool Player::collisionCallback(btManifoldPoint& cp,
 	((SpaceObject*)(obj2->getUserPointer()))->handleCollision(((SpaceObject*)(obj1->getUserPointer())));
 
 }
-
 #endif
