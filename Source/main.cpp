@@ -8,7 +8,7 @@ using namespace std;
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/System.hpp>
-
+#include <SFML/Audio.hpp>
 #include "spaceObject.hpp"
 #include "player.cpp"
 #include "player_getsets.cpp"
@@ -22,7 +22,22 @@ int main(int argc, char** argv) {
     usr->init_fighter();
     usr->setup_game_screen( 800 , 600 );
 
+    //bool isSoundThere = false;
+    //string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;
+    //sf::Music music;
     
+    // cout<<path.c_str()<<"\n";
+    // cout<<isSoundThere<<"\n";
+    // if(music.openFromFile(path.c_str())){
+    //     isSoundThere=true;
+    // }
+
+    // if(isSoundThere){
+    // cout<<isSoundThere<<"\n";
+    // music.play();
+    // cout<<isSoundThere<<"\n";
+    // }
+    usr->playMusic(true);
     Player* usr2 = new Player();
     SpaceObject* otr;
     otr = new SpaceObject(UFO);
@@ -44,6 +59,9 @@ int main(int argc, char** argv) {
                 // adjust the viewport when the window is resized
                 usr->setup_game_screen( event.size.width , event.size.height );
                 
+            }
+            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+                running = false;
             }
             if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W)  ) {
                 cout << "front pressed \n";
@@ -80,7 +98,6 @@ int main(int argc, char** argv) {
 
         }
         // clear the buffers
-        cout << usr->getFighter()->getRigidBody()->getLinearVelocity().getZ() << "\n";
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         usr->update_state(dt);
         usr->render_state(dt);
@@ -90,5 +107,6 @@ int main(int argc, char** argv) {
         // end the current frame (internally swaps the front and back buffers)
         window.display();
     }
+    delete usr;
 	return 1;
 }

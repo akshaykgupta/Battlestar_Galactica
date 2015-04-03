@@ -19,6 +19,8 @@
 const std::string RSC_DIR= "../Resource/"; //shouldn't need this, ideally.
 const std::string PHY_RSC_DIR =  "../Resource/Physics/";
 const std::string OBJ_RSC_DIR = "../Resource/Render/";
+const std::string MUSIC_RSC_DIR = "../Resource/Music/";
+const std::string SW_MUSIC = "SW";
 const std::string HEALTH_FNAME  = "health";
 const std::string AMMO_FNAME  = "ammo";
 const std::string TIEF_FNAME  = "tiefighter";
@@ -28,7 +30,7 @@ const std::string MF_FNAME  = "mf";
 const std::string UFO_FNAME  = "ufo";
 const std::string OBJ_EXTENSION = ".obj";
 const std::string PHY_EXTENSION = ".lhc";
-
+const std::string MUSIC_EXTENSION = ".ogg";
 class SpaceObject;
 class Player;
 class NetworkManager;

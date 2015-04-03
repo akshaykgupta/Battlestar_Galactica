@@ -23,6 +23,7 @@ private:
 
 	/* Physics geometry. */
 	BulletWorld* bulletWorld;
+	sf::Music* music;
 		
 public:
 	Player();
@@ -36,8 +37,7 @@ public:
 	void setup_game_screen(double,double);
 	void loadSettings(); //includes HUD settings.
 	void saveSettings();
-
-
+	void playMusic(bool dflag = false);
 	void handleEvent();
 	/* game loop functions. */
 	void game_loop();

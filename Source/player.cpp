@@ -10,7 +10,9 @@ Player::Player() {
 
 Player::~Player() {
 	//Do things.
-	delete bulletWorld;
+	music->stop();
+	delete music;
+	//delete bulletWorld;
 }
 void Player::init_bulletWorld() {
 	bulletWorld = new BulletWorld();
@@ -25,7 +27,26 @@ void Player::debug() {
 
 }
 
-
+void Player::playMusic(bool dflag){
+	if(!dflag){
+		return;
+	}
+	bool isSoundThere = false;
+    string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;
+	//sf::Music music;
+    music = new sf::Music;
+    cout<<path.c_str()<<"\n";
+    cout<<isSoundThere<<"\n";
+    if(music->openFromFile(path.c_str())){
+        isSoundThere=true;
+    }
+    if(isSoundThere){
+    cout<<isSoundThere<<"\n";
+    music->play();
+    cout<<isSoundThere<<"\n";
+    }
+    
+}
 void Player::update_state(double dt) {
 	
 }
