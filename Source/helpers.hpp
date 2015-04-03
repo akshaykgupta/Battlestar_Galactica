@@ -30,10 +30,10 @@ inline bool doesFileExist(std::string fname) {
 /**
 #defines.
 */
-const std::string RSC_DIR= "../Resource/"; //shouldn't need this, ideally.
-const std::string PHY_RSC_DIR =  "../Resource/Physics/";
-const std::string OBJ_RSC_DIR = "../Resource/Render/";
-const std::string MUSIC_RSC_DIR = "../Resource/Music/";
+const std::string RSC_DIR= "Resource/"; //shouldn't need this, ideally.
+const std::string PHY_RSC_DIR =  "Resource/Physics/";
+const std::string OBJ_RSC_DIR = "Resource/Render/";
+const std::string MUSIC_RSC_DIR = "Resource/Music/";
 const std::string SW_MUSIC = "SW";
 const std::string HEALTH_FNAME  = "health";
 const std::string AMMO_FNAME  = "ammo";
