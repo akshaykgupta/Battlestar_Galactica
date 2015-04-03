@@ -46,7 +46,9 @@ public:
 	void 	getAngularVelocity(btVector3&);
 	int 	getHealth();
 	void 	setHealth(int h);
-	
+	void 	getTrans(float* mat);
+
+
 	Weapon* 	getActiveWeapon();
 	void 	setActiveWeapon(int w);
 

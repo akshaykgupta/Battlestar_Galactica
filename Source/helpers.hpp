@@ -1,6 +1,9 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 /** c++ includes */
+
+#include <sys/stat.h>
+
 #include <string.h> //because character arrays.
 #include <iostream>
 #include <fstream>
@@ -15,7 +18,11 @@
 #include <boost/bimap.hpp>
 #include <boost/bimap/support/lambda.hpp>
 
-#include <sys/stat.h>
+/* math! */
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 inline bool doesFileExist(std::string fname) {
 	struct stat buffer;
 	return (stat( fname.c_str() , &buffer ) == 0 );

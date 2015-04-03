@@ -66,4 +66,10 @@ void SpaceObject::setType(OBJECT_TYPE _type) {
 	obj_type = _type;
 	return;
 }
+
+void SpaceObject::getTrans(float* mat) {
+	btTransform trans_com;
+	body->getMotionState()->getWorldTransform(trans_com);
+	trans_com.getOpenGLMatrix(mat);
+}
 #endif

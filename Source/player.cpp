@@ -54,7 +54,19 @@ void Player::update_state(double dt) {
 
 void Player::render_state(double dt) {
 	bulletWorld->dynamicsWorld->stepSimulation(dt);
+	float invmat[16];
+	fighter->getTrans(invmat);
 
+	//glm magic.
+	glm::mat4 invmattemp = glm::inverse(glm::make_mat4(invmat));
+	const float *pSource = (const float*)glm::value_ptr(invmattemp);
+	for (int i = 0; i < 16; ++i) {
+    	invmat[i] = pSource[i];
+	}
+
+
+	glPushMatrix();
+	glMultMatrixf(invmat);
 	//render me.
 	fighter->render(true);
 	//render all spaceobjects.
@@ -64,6 +76,7 @@ void Player::render_state(double dt) {
 		//--------------------------------
 		obj_iterator->right->render(true);
 	}
+	glPopMatrix();
 }
 void Player::setup_game_screen(double winX, double winY) {
 	glEnable(GL_DEPTH_TEST);
@@ -75,7 +88,7 @@ void Player::setup_game_screen(double winX, double winY) {
     gluPerspective(settings->fov/2,winX/winY,1.0f,1000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0,0,10 , 0,0,0 ,0,1.0,0);
+	gluLookAt(0,7.5,10, 0,0,0, 0,1.0,0);
 	glViewport(0, 0, winX, winY);
     glFlush();
 }
