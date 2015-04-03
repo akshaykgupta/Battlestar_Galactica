@@ -45,22 +45,36 @@ int main(int argc, char** argv) {
                 usr->setup_game_screen( event.size.width , event.size.height );
                 
             }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ) {
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W)  ) {
                 cout << "front pressed \n";
                 usr->getFighter()->setVelocity(btVector3(0,0,-1.0));
             }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+                otr->setVelocity(btVector3(0,0,-1.0));
+            }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) ) {
                 cout << "front pressed \n";
                 usr->getFighter()->setVelocity(btVector3(0,0,+1.0));
             }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ) {
+            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ){
+                otr->setVelocity(btVector3(0,0,+1.0));
+            }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) ) {
                 cout << "front pressed \n";
                 usr->getFighter()->setVelocity(btVector3(1.0,0,0.0));
             }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ) {
+            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+                otr->setVelocity(btVector3(1.0,0,0.0));
+            }
+            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) ) {
                 cout << "front pressed \n";
                 usr->getFighter()->setVelocity(btVector3(-1.0,0,0.0));
             }
+            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+                otr->setVelocity(btVector3(-1.0,0,0.0));
+            }
+            //--------------------TODO----------------------//
+            //-------------------CAMERA---------------------//
             //--------------------Accelerate --------------//
             //--------------------Physics files for max veclocity--------//
 
