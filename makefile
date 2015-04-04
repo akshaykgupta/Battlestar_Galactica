@@ -3,29 +3,30 @@ Compiler=g++ -std=c++11
 SRC=Source/
 OBJ=Objects/
 RSC=Resource/ 
+EXEC=spaceRash.out
 ifeq ($(UNAME), Linux)
 LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
 INCS=-I/usr/include/bullet
-execute:$(SRC)a.out
+execute:$(EXEC)
 	./$<
-$(SRC)a.out:
+$(EXEC):
 	make all
 all:
-	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) -o $(SRC)a.out
+	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) -o $(EXEC)
 clean:
-	rm $(SRC)a.out
+	rm $(EXEC)
 endif
 
 ifeq ($(UNAME), Darwin)
 LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread-mt -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 INCS=-I /usr/local/Cellar/bullet/2.82/include/bullet/
 FRAMEWORKS=-framework OpenGL -framework GLUT
-execute: $(SRC)a.out
+execute: $(EXEC)
 	./$<
-$(SRC)a.out: 
+$(EXEC): 
 	make all
 all:
-	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) $(FRAMEWORKS) -o $(SRC)a.out
+	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) $(FRAMEWORKS) -o $(EXEC)
 clean:
-	rm $(SRC)a.out
+	rm $(EXEC)
 endif
