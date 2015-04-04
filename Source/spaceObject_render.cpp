@@ -4,13 +4,24 @@
 #include "spaceObject.hpp"
 /** file with functions for rendering things. */
 void SpaceObject::render(bool dflag) {
-	if (dflag) {
+	btTransform trans_com;
+    body->getMotionState()->getWorldTransform(trans_com);
+    //debugging
+    // cout << trans_com.getOrigin().getZ() << "\n";
+    float mat_gl[16];
+    trans_com.getOpenGLMatrix(mat_gl);
+
+    glPushMatrix();
+        glMultMatrixf(mat_gl);
+    
+    if (dflag) {
 		// std::cout<<"About to enter render_physics \n";
 		render_physics(true);
 		// std::cout<<"Exited render physics \n";
 	}
 	render_geometry();
     wasHit = false;
+    glPopMatrix();
 }
 
 void SpaceObject::render_geometry() {
@@ -25,17 +36,7 @@ void SpaceObject::render_physics(bool dflag) {
         std::cout << " i got hit :(\n";
     }
     // cout<<"In render physics \n";
-	btTransform trans_com;
-	body->getMotionState()->getWorldTransform(trans_com);
-
-    //debugging
-    // cout << trans_com.getOrigin().getZ() << "\n";
 	
-    float mat_gl[16];
-	trans_com.getOpenGLMatrix(mat_gl);
-
-	glPushMatrix();
-		glMultMatrixf(mat_gl);
 		//TODO for each cuboid, render the shape.
 		for(int i=0; i<children.size(); ++i) {
 			// cout<<"Calculating for child\n";
@@ -50,7 +51,7 @@ void SpaceObject::render_physics(bool dflag) {
 			//cout<<"\n";
 			glPopMatrix();
 		}
-	glPopMatrix();
+	
 }
 
 //not properly rendered.
