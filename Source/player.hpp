@@ -7,12 +7,15 @@
 #include "spaceObject_render.cpp"
 #include "spaceObject_event.cpp"
 #include "spaceObject_getsets.cpp"
+#include "networkManager.cpp"
+
 typedef boost::bimap< int, SpaceObject* > spaceObjWeed;
 typedef spaceObjWeed::value_type spaceObjWeedNormal;
 typedef spaceObjWeed::left_value_type spaceObjWeedLeft; 
 typedef spaceObjWeed::right_value_type spaceObjWeedRight;
-class HUD{
+struct HUD{
 //Elements to show on the screen.
+
 };
 
 class Player {
@@ -22,6 +25,7 @@ private:
 	UserSettings* settings;
 	HUD hud;
 	SpaceObject* fighter;
+	NetworkManager* network;
 	/* Rendering geometry */
 
 	/* Physics geometry. */

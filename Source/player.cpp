@@ -4,16 +4,17 @@
 
 Player::Player() {
 	//Do things.
+	network = new NetworkManager();
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
 }
 
 Player::~Player() {
-	//Do things.
 	music->stop();
 	delete music;
-	//delete bulletWorld;
+	delete network;
+	//delete bulletWorld; //TODO
 }
 void Player::init_bulletWorld() {
 	bulletWorld = new BulletWorld();
