@@ -17,7 +17,7 @@ typedef std::pair<std::string, long long> ClientMessage;
 using namespace std;
 using boost::asio::ip::udp;
 
-class Server{
+class NetworkManager{
 	private:
 
 		// NETWORK MEMBER FUNCTIONS
@@ -57,14 +57,14 @@ class Server{
 		void start_receive()
 		{
 		    socket.async_receive_from(boost::asio::buffer(recv_buffer), remote_endpoint,
-		        boost::bind(&Server::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		        boost::bind(&NetworkManager::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 
 
 	public:
 
 		// CTOR and DTOR
-		Server(string IP, unsigned short server_port, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&Server::run_service, this))
+		NetworkManager(string IP, unsigned short server_port, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
 		{
 			boost::asio::ip::udp::resolver resolver(io_service);
 			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
@@ -77,7 +77,7 @@ class Server{
 			remote_endpoint = *iterator;
 			get_client_id(remote_endpoint);
 		}
-		~Server();
+		~NetworkManager();
 
 		
 
@@ -88,13 +88,13 @@ class Server{
 		        try {
 		            io_service.run();
 		        } catch( const std::exception& e ) {
-		            //LogMessage::error("Server network exception: ",e.what());
+		            //LogMessage::error("NetworkManager network exception: ",e.what());
 		        }
 		        catch(...) {
 		            //LogMessage::error("Unknown exception in server network thread");
 		        }
 		    }
-		    //LogMessage::Debug("Server network thread stopped");
+		    //LogMessage::Debug("NetworkManager network thread stopped");
 		};
 
 
