@@ -136,7 +136,7 @@ struct Message {
 	}
 
 
-	void setData(MESSAGE_PROTOCOL& prot , 
+	void getData(MESSAGE_PROTOCOL& prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo
 		std::string& ip, std::string& chatmsg, std::string& worldfile) {
