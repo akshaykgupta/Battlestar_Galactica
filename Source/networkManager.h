@@ -1,86 +1,150 @@
-#ifndef NETWORK_MANAGER
-#define NETWORK_MANAGER
-#include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include <boost/bind.hpp>
+#include <boost/array.hpp>
+#include <boost/bimap.hpp>
 #include <boost/asio.hpp>
-#include <boost/thread/thread.hpp>
-#include <boost/chrono.hpp>
-#include <ctime>
+#include "boost/lexical_cast.hpp"
+#include <boost/thread.hpp>
+#include "mQ.h"
+#include <memory>
+#include <array>
 
 
-/* Include boost sockets, threads, mention library includes and so on.
-*/
+#define NETWORK_BUFFER_SIZE 4096
 
-/** The header file for network manager. */
+typedef boost::bimap<long long, boost::asio::ip::udp::endpoint> ClientList;
+typedef ClientList::value_type Client;
+typedef std::pair<std::string, long long> ClientMessage;
 
-#include <tuple>
 using namespace std;
-typedef tuple< int,int,int,int > tIP4;
-typedef int Time ; //discretized?
-/** Message_type is the protocol within the network manager. */
-enum MESSAGE_PROTOCOL { GENDATA=0 , //use these messages as an internal protocol.
-					LASERDATA=1,
-					COLLISIONDATA=2,
-					CHATDATA=3,
-					CONNECTDATA=4,
-					PINGDATA=5
+using boost::asio::ip::udp;
+
+class Server{
+	private:
+
+		// NETWORK MEMBER FUNCTIONS
+		boost::asio::io_service io_service;
+		boost::asio::ip::udp::socket socket;
+		boost::asio::ip::udp::endpoint server_endpoint;
+		boost::asio::ip::udp::endpoint remote_endpoint;
+		boost::thread service_thread;
+
+
+		std::array<char, NETWORK_BUFFER_SIZE> recv_buffer;  // statically allocated container class used as a buffer for receiving data
+
+		// SERVER machinery
+		message_queue<std::string> messages;
+		unsigned long long nextClientID;
+		ClientList clients;
+
+		// DATA
+		unsigned long long receivedMessages;
+		unsigned long long receivedBytes;
+		unsigned long long sentMessages;
+		unsigned long long sentBytes;
+
+
+
+
+		void send(const std::string& message, boost::asio::ip::udp::endpoint target_endpoint)
+		{
+		    socket.send_to(boost::asio::buffer(message), target_endpoint);
+		    sentBytes += message.size();
+		    sentMessages++;
+		}
+		
+		void handle_receive(const boost::system::error_code&, std::size_t);
+
+
+		void start_receive()
+		{
+		    socket.async_receive_from(boost::asio::buffer(recv_buffer), remote_endpoint,
+		        boost::bind(&Server::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		}
+
+
+	public:
+
+		// CTOR and DTOR
+		Server(string IP, unsigned short server_port, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&Server::run_service, this))
+		{
+			boost::asio::ip::udp::resolver resolver(io_service);
+			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
+			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			nextClientID = 0;
+			receivedMessages = 0;
+			receivedBytes = 0;
+			sentMessages = 0;
+			sentBytes = 0;
+			remote_endpoint = *iterator;
+			get_client_id(remote_endpoint);
+		}
+		~Server();
+
+		
+
+		void run_service()
+		{
+		    start_receive();
+		    while (!io_service.stopped()){
+		        try {
+		            io_service.run();
+		        } catch( const std::exception& e ) {
+		            //LogMessage::error("Server network exception: ",e.what());
+		        }
+		        catch(...) {
+		            //LogMessage::error("Unknown exception in server network thread");
+		        }
+		    }
+		    //LogMessage::Debug("Server network thread stopped");
+		};
+
+
+
+
+		void SendToClient(const std::string& message, unsigned long long clientID) 
+		{
+		    try {
+		        send(message, clients.left.at(clientID));
+		    }
+		    catch (std::out_of_range) {
+		        //LogMessage::error("Unknown client ID");
+		    }
+		}
+
+
+
+		unsigned long long get_client_id(boost::asio::ip::udp::endpoint endpoint)
+		{
+		    auto cit = clients.right.find(endpoint);
+		    if (cit != clients.right.end())
+		        return (*cit).second;
+
+		    nextClientID++;
+		    clients.insert(Client(nextClientID, endpoint));
+		    return nextClientID;
+		}
+
+		
+		void SendToAllExcept(const std::string& message, unsigned long long clientID){
+			typedef ClientList::const_iterator it;
+			for (it iter = clients.begin(), iend = clients.end(); iter != iend; iter++){
+				if (iter->left != clientID)
+					SendToClient(message,  iter->left);
+			}
+		}
+
+
+		void SendToAll(const std::string& message){
+			typedef ClientList::const_iterator it;
+			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ){
+				SendToClient(message,iter->left);
+			}
+		 }
+
+
+		// STAT QUERIES
+		unsigned long long GetStatReceivedMessages() {return receivedMessages;}
+		unsigned long long GetStatReceivedBytes()	   {return receivedBytes;}
+		unsigned long long GetStatSentMessages()     {return sentMessages;}
+		unsigned long long GetStatSentBytes()        {return sentBytes;}
+
 };
-
-/** enum Event Type is the protocol between NetworkManager and Player */
-enum PLAYER_PROTOCOL { //push these messages into the player's queue.
-	GENDATA=0 , 
-	LASERDATA=1,
-	COLLISIONDATA=2,
-	CHATDATA=3,
-	CONNECTDATA=4,
-	DROPDATA=5
-};
-
-/** PlayerInfo is used by the network for initializing player*/
-struct PlayerInfo {
-	std::string playerName;
-	tIP4 ipAddress;
-	Time lastMessageTime;
-	OBJECT_TYPE objtype; //Communicated this to the player, maybe?
-	//TODO: Aux data.
-};
-
-/*compile using : -lboost_system -lboost_thread might work.
-use the following shorthand namespace? 
-*/
-namespace budp = boost::asio::ip::udp; //check this syntax. Also, udp is a specific thing, apparently.
-
-class NetworkManager {
-public:
-	/** creationism */
-	void init(PlayerInfo& pinfo); //Doesn't create the port.
-	void nullify();
-	/** Need a heap/queue of messages/things */
-	/** */
-	bool createNetwork(); //Creates a port and starts listening.
-	bool connectToNetwork(tIP4 peerIP); //Create a port, listen on it and also send message to peerIP and so on.
-	bool leaveNetwork(); //Close the active port.
-
-	bool isAlive(int p_idx);
-	bool killIdlers(); //Also broadcasts the message across.
-
-	bool broadcastMessage(); //send message to all.
-	bool sendMessage();		 
-	
-	bool getMessages(std::vector< GameEvent >& eventQueue); //All the events that need to be processed for the next render-loop iteration.
-	
-	/** Debugging functions -- The boolean is for toggle debug mode. */
-	void dprint(bool debug_net=false); //the d stands for Debug.
-	void drender(bool debug_net=false);
-
-private:
-	/** Need stuff here. */
-	//vector of IPs of all players.
-	PlayerInfo me;
-	int myIdx;
-	std::vector<PlayerInfo> network;
-	//TODO: UDP Sockets etc
-};
-#endif
