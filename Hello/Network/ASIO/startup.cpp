@@ -4,7 +4,7 @@
 int main(){
 	cout << "HELLO server" << '\n';
 
-	Server s("10.192.31.236", 3001); //
+	Server s("10.192.31.236", 3001, 2000); //
 
 	cout << "break 1" << '\n';
 
@@ -15,9 +15,13 @@ int main(){
 	cout << "break 2" << '\n';
 
 	
-	int i = 20;
 	while (true)
+	{
 		s.SendToAll("HELLO");
+		int i = 0;
+		while(i < 1000000)
+			i++;
+	}
 
 	cout << "DONE" << '\n';
 }

@@ -1,26 +1,31 @@
-#this is a comment.
-CC= g++ -std=c++11
-CFLAGS= -Wall
-LIBS= -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath \
- -lboost_system -lboost_thread \ 
- -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
-INCS= -I/usr/include/bullet
+UNAME := $(shell uname)
+Compiler=g++ -std=c++11
 SRC=Source/
 OBJ=Objects/
-RSC=Resource/
-EXEC=bg
-all: $(EXEC)
-bg: $(OBJ)main.o $(OBJ)cuboid.o
-	$(CC) $(OBJ)main.o $(OBJ)cuboid.o -o $(EXEC)
-
-$(OBJ)main.o: $(SRC)main.cpp
-	$(CC) -c $(SRC)main.cpp
-	mv main.o $(OBJ)main.o
-
-$(OBJ)cuboid.o: $(SRC)cuboid.h $(SRC)cuboid.cpp
-	$(CC) -c $(SRC)cuboid.cpp
-	mv cuboid.o $(OBJ)cuboid.o
-
+RSC=Resource/ 
+ifeq ($(UNAME), Linux)
+LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
+INCS=-I/usr/include/bullet
+execute:$(SRC)a.out
+	./$<
+$(SRC)a.out:
+	make all
+all:
+	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) -o $(SRC)a.out
 clean:
-	rm $(OBJ)*.o
-	rm $(EXEC)
+	rm $(SRC)a.out
+endif
+
+ifeq ($(UNAME), Darwin)
+LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread-mt -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+INCS=-I /usr/local/Cellar/bullet/2.82/include/bullet/
+FRAMEWORKS=-framework OpenGL -framework GLUT
+execute: $(SRC)a.out
+	./$<
+$(SRC)a.out: 
+	make all
+all:
+	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) $(FRAMEWORKS) -o $(SRC)a.out
+clean:
+	rm $(SRC)a.out
+endif
