@@ -7,8 +7,17 @@
 linker:
 -lsfml-graphics -lsfml-window -lsfml-system -lGL
 */
+
+
 using namespace std;
 int main(int argc, char** argv) {
+    sf::Image t;
+    if (!t.loadFromFile("LEFT.bmp") ) {
+            cout << "nooo\n";
+            exit(1);
+        }
+        sf::Texture tex;
+        tex.loadFromImage(t);
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, sf::ContextSettings(32));
     window.setVerticalSyncEnabled(true);
@@ -45,18 +54,28 @@ int main(int argc, char** argv) {
         // glVertex3f(-1.0,0.0,0.0);
         // glEnd();
         window.pushGLStates();
-        sf::Texture t;
-        if (!t.loadFromFile("Top.jpg") ) {
+        
+        /*if (!t.loadFromFile("LEFT.bmp") ) {
             cout << "nooo\n";
             exit(1);
-        }
-        t.setSmooth(true);
-        sf::Texture::bind(&t);
+        }*/
+        /*glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);*/
+        sf::Texture::bind(&tex);
+        //cout<<gluErrorString(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER))<<"\n";
+        //(gluErrorString(36053))?cout<<gluErrorString(36053)<<"\n":cout<<"Hi\n";
         glBegin(GL_POLYGON);
         glTexCoord2f(0,0); glVertex3f(0.0,0.0,0.0);
         glTexCoord2f(0,1); glVertex3f(1.0,0.0,0.0);
-        glTexCoord2f(1,0); glVertex3f(0.0,1.0,0.0);
+        glTexCoord2f(1,1); glVertex3f(1.0,1.0,0.0);
+        glTexCoord2f(1,0); glVertex3f(0.0,1.0,1.0);
+        glTexCoord2f(0,0);glVertex3f(0.0,0.0,0.0);
         glEnd();
+        
+//<<" "<<glCheckFramebufferStatus(GL_READ_FRAMEBUFFER)<<"\n";
         sf::Texture::bind(NULL);
         
         // sf::Text t;
