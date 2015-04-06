@@ -1,15 +1,16 @@
 #ifndef PLAYER_CPP
 #define PLAYER_CPP
 #include "player.hpp"
-
+/*--------TODO: DECIDE ON THE SKY BOX DIMENSIONS---------------*/
 Player::Player() {
 	//network = new NetworkManager();
-	skybox_size = 512;
+	skybox_size = 32;
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
 	SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
 	skybox = new SkyBox(SKYBOX_IMG);
+	skybox->setImage();
 }
 
 Player::~Player() {
@@ -61,7 +62,7 @@ void Player::update_state(double dt) {
 }
 
 void Player::render_state(double dt) {
-	// skybox->renderBox(skybox_size);
+	 skybox->renderBox(skybox_size);
 	bulletWorld->dynamicsWorld->stepSimulation(dt);
 	
 	float invmat[16];
