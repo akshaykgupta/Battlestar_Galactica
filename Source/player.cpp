@@ -4,7 +4,7 @@
 /*--------TODO: DECIDE ON THE SKY BOX DIMENSIONS---------------*/
 Player::Player() {
 	//network = new NetworkManager();
-	skybox_size = 32;
+	skybox_size = 512;
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
@@ -62,9 +62,7 @@ void Player::update_state(double dt) {
 }
 
 void Player::render_state(double dt) {
-	 skybox->renderBox(skybox_size);
 	bulletWorld->dynamicsWorld->stepSimulation(dt);
-	
 	float invmat[16];
 	fighter->getTrans(invmat);
 	//glm magic.
@@ -77,6 +75,9 @@ void Player::render_state(double dt) {
 	glPushMatrix();
 	glMultMatrixf(invmat);
 	//render me.
+		 skybox->renderBox(skybox_size);
+	
+
 		fighter->render(true);
 		//render all spaceobjects.
 		for ( spaceObjWeed::const_iterator obj_iterator = EveryOne.begin()
