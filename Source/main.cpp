@@ -27,9 +27,12 @@ int main(int argc, char** argv) {
     usr->playMusic(true);
     Player* usr2 = new Player();
     SpaceObject* otr;
+    
     otr = new SpaceObject(UFO);
     otr->init(usr->getBulletWorld());
     usr->addToEveryOne(1,otr);
+    
+
     double dt = 1.0;
     while (running)
     {
@@ -37,17 +40,18 @@ int main(int argc, char** argv) {
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-            {
+            if (event.type == sf::Event::Closed) {
                 // end the program
                 running = false;
             }
-            else if (event.type == sf::Event::Resized)
-            {
+            else if (event.type == sf::Event::Resized) {
                 // adjust the viewport when the window is resized
                 usr->setup_game_screen( event.size.width , event.size.height );
                 
             }
+            //usr->handle_event(event);
+
+            
             if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 running = false;
             }

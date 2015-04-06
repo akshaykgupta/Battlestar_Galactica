@@ -8,6 +8,7 @@
 #include "spaceObject_event.cpp"
 #include "spaceObject_getsets.cpp"
 #include "networkManager.cpp"
+#include "skybox.cpp"
 
 typedef boost::bimap< int, SpaceObject* > spaceObjWeed;
 typedef spaceObjWeed::value_type spaceObjWeedNormal;
@@ -25,13 +26,18 @@ private:
 	UserSettings* settings;
 	HUD hud;
 	SpaceObject* fighter;
+	State* myState;
 	NetworkManager* network;
+	Message* myMessage;
 	/* Rendering geometry */
-
+	sf::Window wnd; //Window that things run on.
 	/* Physics geometry. */
 	BulletWorld* bulletWorld;
 	sf::Music* music;
-	boost::bimap< int, SpaceObject* > EveryOne; 	
+	boost::bimap< int, SpaceObject* > EveryOne;
+	std::string SKYBOX_IMG;
+	SkyBox* skybox;
+	float skybox_size;	
 public:
 	Player();
 	~Player();
@@ -43,6 +49,8 @@ public:
 		const btCollisionObjectWrapper* obj1,int id1,int index1,
 		const btCollisionObjectWrapper* obj2,int id2,int index2);
 
+
+	void handle_event(sf::Event& event);
 
 	void update_state(double dt);
 	void render_state(double dt);

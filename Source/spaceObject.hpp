@@ -47,13 +47,19 @@ public:
 	int 	getHealth();
 	void 	setHealth(int h);
 	void 	getTrans(float* mat);
-
-
 	Weapon* 	getActiveWeapon();
 	void 	setActiveWeapon(int w);
 
 	btRigidBody* getRigidBody();
 	void 	drawBox(btVector3&);
+
+	//functions to get the state and stuff.
+	void 	initCommunications(State* state , Message* msg);
+	void 	makeMessage(Message* msg); //generates default message, with health etc.
+	
+
+	/* actions that the spaceobject can do .*/
+	
 private:
 	/* misc data */
 	OBJECT_TYPE obj_type;

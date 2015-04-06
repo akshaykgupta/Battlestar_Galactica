@@ -1,7 +1,8 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
-#include <boost/serialization.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
 struct State {
@@ -112,7 +113,7 @@ struct Message {
 	
 	void setData(MESSAGE_PROTOCOL prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-		btVector3& _laserFrom , btVector3& _laserTo
+		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
 		std::string ip = "" , std::string chatmsg = "" , std::string worldfile = "") {
 		
 		ship.setData(h, am, t, velo, avelo , _t);
@@ -138,7 +139,7 @@ struct Message {
 
 	void getData(MESSAGE_PROTOCOL& prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-		btVector3& _laserFrom , btVector3& _laserTo
+		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
 		std::string& ip, std::string& chatmsg, std::string& worldfile) {
 		
 		prot = msgType;

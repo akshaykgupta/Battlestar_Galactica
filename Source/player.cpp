@@ -3,17 +3,20 @@
 #include "player.hpp"
 
 Player::Player() {
-	//Do things.
-	network = new NetworkManager();
+	//network = new NetworkManager();
+	skybox_size = 512;
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
+	SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
+	skybox = new SkyBox(SKYBOX_IMG);
 }
 
 Player::~Player() {
 	music->stop();
 	delete music;
 	delete network;
+	delete skybox;
 	//delete bulletWorld; //TODO
 }
 void Player::init_bulletWorld() {
@@ -22,9 +25,13 @@ void Player::init_bulletWorld() {
 
 void Player::init_fighter() {
 	fighter = new SpaceObject(fighterType);
+//	fighter->initCommunications(myState , myMessage); //TODO
 	fighter->init(bulletWorld);
 	//fighter->setVelocity(btVector3(0,0,-5.0));
 }
+
+
+
 void Player::debug() {
 
 }
@@ -54,29 +61,29 @@ void Player::update_state(double dt) {
 }
 
 void Player::render_state(double dt) {
+	// skybox->renderBox(skybox_size);
 	bulletWorld->dynamicsWorld->stepSimulation(dt);
+	
 	float invmat[16];
 	fighter->getTrans(invmat);
-
 	//glm magic.
 	glm::mat4 invmattemp = glm::inverse(glm::make_mat4(invmat));
 	const float *pSource = (const float*)glm::value_ptr(invmattemp);
 	for (int i = 0; i < 16; ++i) {
     	invmat[i] = pSource[i];
 	}
-
-
+	//CAMERA MAGIC FOLLOWS.
 	glPushMatrix();
 	glMultMatrixf(invmat);
 	//render me.
-	fighter->render(true);
-	//render all spaceobjects.
-	for ( spaceObjWeed::const_iterator obj_iterator = EveryOne.begin()
-		; obj_iterator != EveryOne.end()
-		; ++obj_iterator) {
-		//--------------------------------
-		obj_iterator->right->render(true);
-	}
+		fighter->render(true);
+		//render all spaceobjects.
+		for ( spaceObjWeed::const_iterator obj_iterator = EveryOne.begin()
+			; obj_iterator != EveryOne.end()
+			; ++obj_iterator) {
+			//--------------------------------
+			obj_iterator->right->render(true);
+		}
 	glPopMatrix();
 }
 void Player::setup_game_screen(double winX, double winY) {
@@ -108,13 +115,13 @@ bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 bool Player::collisionCallback(btManifoldPoint& cp,
 	const btCollisionObjectWrapper* obj1,int id1,int index1,
 	const btCollisionObjectWrapper* obj2,int id2,int index2) {
+
 	#define obj1 obj1->getCollisionObject()
 	#define obj2 obj2->getCollisionObject()
-	
 	((SpaceObject*)(obj1->getUserPointer()))->handleCollision(((SpaceObject*)(obj2->getUserPointer())));
 	((SpaceObject*)(obj2->getUserPointer()))->handleCollision(((SpaceObject*)(obj1->getUserPointer())));
-	return false;
 	#undef obj1
 	#undef obj2
+	return false;
 }
 #endif
