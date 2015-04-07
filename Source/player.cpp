@@ -74,16 +74,10 @@ void Player::render_state(double dt) {
 	//CAMERA MAGIC FOLLOWS.
 	
 	glPushMatrix();
-	float xt,yt,zt;
-	xt = invmat[3];
-	yt = invmat[7];
-	zt = invmat[11];
-	invmat[3] = invmat[7] = invmat[11] = 0;
 	glMultMatrixf(invmat);
 		
 
 		skybox->renderBox(skybox_size);
-		glTranslatef(xt,yt,zt);
 		fighter->render(true);
 		//render all spaceobjects.
 		for ( spaceObjWeed::const_iterator obj_iterator = EveryOne.begin()
@@ -92,8 +86,6 @@ void Player::render_state(double dt) {
 			//--------------------------------
 			obj_iterator->right->render(true);
 		}
-		glTranslatef(-xt,-yt,-zt);
-
 	glPopMatrix();
 }
 void Player::setup_game_screen(double winX, double winY) {
