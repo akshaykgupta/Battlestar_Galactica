@@ -72,6 +72,7 @@ void Player::render_state(double dt) {
     	invmat[i] = pSource[i];
 	}
 	//CAMERA MAGIC FOLLOWS.
+	
 	glPushMatrix();
 	glMultMatrixf(invmat);
 	//render me.

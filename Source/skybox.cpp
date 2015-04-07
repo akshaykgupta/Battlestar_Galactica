@@ -33,12 +33,12 @@ void SkyBox::renderBox(float size){
                 //back face
                 glTexCoord2f(0.75,0.34);      //use the correct texture coordinate
                 glVertex3f(size/2,size/2,size/2);       //and a vertex
-                glTexCoord2f(1.0,0.34);      //and repeat it... 
-                glVertex3f(-size/2,size/2,size/2);
-                glTexCoord2f(1.0,0.65);
-                glVertex3f(-size/2,-size/2,size/2);
                 glTexCoord2f(0.75,0.65);
                 glVertex3f(size/2,-size/2,size/2);
+                glTexCoord2f(1.0,0.65);
+                glVertex3f(-size/2,-size/2,size/2);
+                glTexCoord2f(1.0,0.34);      //and repeat it... 
+                glVertex3f(-size/2,size/2,size/2);
         glEnd();
         glBegin(GL_QUADS);     
                 //left face

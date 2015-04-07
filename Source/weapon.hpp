@@ -78,7 +78,7 @@ struct Weapon {
 	}
 
 	void drawProjectile(btVector3& from, btVector3& to) {
-		if ( time_left = 0 ) {
+		if ( time_left == 0 ) {
 			return;
 		} 
 		time_left--;
