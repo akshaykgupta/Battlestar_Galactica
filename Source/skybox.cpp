@@ -23,11 +23,16 @@ void SkyBox::setImage(){
 }
 void SkyBox::renderBox(float size){
 	
-    bool b1=glIsEnabled(GL_TEXTURE_2D);     
+    bool btex=glIsEnabled(GL_TEXTURE_2D);     
+    bool blight=glIsEnabled(GL_LIGHTING);
+    bool bdepth=glIsEnabled(GL_DEPTH_TEST);
+
+
     glDisable(GL_LIGHTING); 		//turn off lighting, when making the skybox
-	glDisable(GL_DEPTH_TEST);       //turn off depth texting
+	//glDisable(GL_DEPTH_TEST);       //turn off depth texting
     glEnable(GL_TEXTURE_2D);        //and turn on texturing
-	sf::Texture::bind(texture);
+
+    sf::Texture::bind(texture);
 
 	glBegin(GL_QUADS);      //and draw a face
                 //back face
@@ -107,5 +112,24 @@ void SkyBox::renderBox(float size){
         glEnable(GL_LIGHTING);  //turn everything back, which we turned on, and turn everything off, which we have turned on.
         glEnable(GL_DEPTH_TEST);
         sf::Texture::bind(NULL);
+
+        //restoring gl context :)
+        if ( btex ) {
+            glEnable(GL_TEXTURE_2D);
+        } else {
+            glDisable(GL_TEXTURE_2D);
+        }
+
+        if( blight ) {
+            glEnable(GL_LIGHTING);
+        } else {
+            glDisable(GL_LIGHTING);
+        }
+
+        if ( bdepth ) {
+            glEnable(GL_DEPTH_TEST);
+        } else {
+            glDisable(GL_DEPTH_TEST);
+        }
 }
 #endif
