@@ -59,7 +59,8 @@ public:
 	
 
 	/* actions that the spaceobject can do .*/
-	
+	void fire_laser();
+	void hit_by_laser();
 private:
 	/* misc data */
 	OBJECT_TYPE obj_type;

@@ -12,6 +12,8 @@ using namespace std;
 #include "spaceObject.hpp"
 #include "player.cpp"
 #include "player_getsets.cpp"
+#include "laser.cpp"
+
 using namespace std;
 int main(int argc, char** argv) {
     Player* usr = new Player();
@@ -30,6 +32,7 @@ int main(int argc, char** argv) {
     
     otr = new SpaceObject(UFO);
     otr->init(usr->getBulletWorld());
+    otr->getRigidBody()->translate(btVector3(0,0,-10));
     usr->addToEveryOne(1,otr);
     
 
@@ -87,7 +90,10 @@ int main(int argc, char** argv) {
             //-------------------CAMERA---------------------//
             //--------------------Accelerate --------------//
             //--------------------Physics files for max veclocity--------//
-
+            if ( event.type == sf::Event::MouseButtonPressed ) {
+                cout << "trying to shoot. \n";
+                usr->fire_laser();
+            }
         }
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

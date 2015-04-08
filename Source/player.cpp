@@ -4,7 +4,7 @@
 /*--------TODO: DECIDE ON THE SKY BOX DIMENSIONS---------------*/
 Player::Player() {
 	//network = new NetworkManager();
-	skybox_size = 64;
+	skybox_size = 512;
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
@@ -95,12 +95,19 @@ void Player::setup_game_screen(double winX, double winY) {
 	glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(settings->fov/2,winX/winY,1.0f,1000.0f);
+    gluPerspective(settings->fov/2,winX/winY,0.1f,1000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0,7.5,10, 0,0,0, 0,1.0,0);
+	// gluLookAt(0,7.5,10, 0,0,0, 0,1.0,0);
+	toggle_camera();
 	glViewport(0, 0, winX, winY);
     glFlush();
+}
+
+void Player::toggle_camera() {
+	gluLookAt(0,0.075,1.5, 
+		0,0.05,0, 
+		0,1.0,0);
 }
 bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 	if(!OBJ){

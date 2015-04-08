@@ -50,8 +50,5 @@ void Player::handle_event(sf::Event& event) {
 		fighter->roll_right();
 	}
 	
-
-	if ( sf::Mouse)
-
 }
 #endif

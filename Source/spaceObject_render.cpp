@@ -4,23 +4,33 @@
 #include "spaceObject.hpp"
 /** file with functions for rendering things. */
 void SpaceObject::render(bool dflag) {
-	btTransform trans_com;
+	
+    btTransform trans_com;
     body->getMotionState()->getWorldTransform(trans_com);
     float mat_gl[16];
     trans_com.getOpenGLMatrix(mat_gl);
+    
     glPushMatrix();
         glMultMatrixf(mat_gl);
+    
     if (dflag) {
 		render_physics(true);
 	}
 	render_geometry();
+    
     wasHit = false;
+    
     glPopMatrix();
 }
 
 void SpaceObject::render_geometry() {
     if ( wasHit ) {
         //Do something.
+    }
+    for(int i=0; i<weapons.size(); ++i) {
+        if ( weapons[i] != NULL) {
+            weapons[i]->update(); //also draws the laser if it was shot.
+        }
     }
     return;
 }

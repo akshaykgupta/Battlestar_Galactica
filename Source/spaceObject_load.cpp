@@ -11,6 +11,10 @@ SpaceObject::SpaceObject(OBJECT_TYPE _type) {
 	objpath = OBJ_RSC_DIR;
 	phypath = PHY_RSC_DIR;
 
+	//TODO
+	weapons.resize(1);
+	weapons[0] = new Weapon( STRONG_LASER , btVector3(200,200,0));
+
 }
 
 SpaceObject::~SpaceObject() {

@@ -37,7 +37,7 @@ private:
 	boost::bimap< int, SpaceObject* > EveryOne;
 	std::string SKYBOX_IMG;
 	SkyBox* skybox;
-	float skybox_size;	
+	float skybox_size;
 public:
 	Player();
 	~Player();
@@ -72,7 +72,8 @@ public:
 	
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
-	
+	void fire_laser();
+	void toggle_camera();
 	/** gets and sets */
 	UserSettings* 	getSettings();
 	BulletWorld* 	getBulletWorld();
