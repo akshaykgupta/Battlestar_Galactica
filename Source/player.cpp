@@ -11,6 +11,7 @@ Player::Player() {
 	SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
 	skybox = new SkyBox(SKYBOX_IMG);
 	skybox->setImage();
+	camera_idx = 0;
 }
 
 Player::~Player() {
@@ -98,18 +99,23 @@ void Player::setup_game_screen(double winX, double winY) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(settings->fov/2,winX/winY,0.1f,1000.0f);
+	toggle_camera(winX, winY);
+}
+
+void Player::toggle_camera(double x, double y) {
+	camera_idx = (camera_idx + 1)%fighter->cameras.size() ;
+	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	// gluLookAt(0,7.5,10, 0,0,0, 0,1.0,0);
-	toggle_camera();
-	glViewport(0, 0, winX, winY);
-    glFlush();
-}
-
-void Player::toggle_camera() {
-	gluLookAt(0,0.075,1.5, 
-		0,0.05,0, 
+	
+	gluLookAt( fighter->cameras[camera_idx].first.getX() , fighter->cameras[camera_idx].first.getY() , fighter->cameras[camera_idx].first.getZ() ,   
+		fighter->cameras[camera_idx].second.getX() , fighter->cameras[camera_idx].second.getY() , fighter->cameras[camera_idx].second.getZ() ,   
 		0,1.0,0);
+
+	glViewport(0, 0, x, y);
+    glFlush();
+
 }
 bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 	if(!OBJ){

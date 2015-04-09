@@ -13,6 +13,7 @@ public:
 	/* constructors */
 	SpaceObject(OBJECT_TYPE _type);
 	~SpaceObject();
+
 	/** functions for loading, etc. */
 	void 	init(BulletWorld* _world);
 	void 	physics_init();
@@ -32,7 +33,7 @@ public:
 	void 	render_geometry();
 	void 	render_physics(bool dflag = false);
 	void 	handleCollision(SpaceObject* other);
-
+	std::vector<pair<btVector3 , btVector3> > cameras; //TODO : Make it private.
 	OBJECT_TYPE getType();
 	void 	setType(OBJECT_TYPE _type);
 
@@ -61,6 +62,23 @@ public:
 	/* actions that the spaceobject can do .*/
 	void fire_laser();
 	void hit_by_laser();
+
+	/* physics things that we must implement using quaternions and the sort. */
+	void accelerate();
+	void decelerate();
+	void strafe_left();
+	void strafe_right();
+	void ascend();
+	void descend();
+	void pitch_up();
+	void pitch_down();
+	void yaw_left();
+	void yaw_right();
+	void roll_left();
+	void roll_right();
+	void toggle_weapon();
+
+	void rotate(double pitch, double yaw);
 private:
 	/* misc data */
 	OBJECT_TYPE obj_type;

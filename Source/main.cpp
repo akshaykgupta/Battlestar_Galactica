@@ -12,6 +12,7 @@ using namespace std;
 #include "spaceObject.hpp"
 #include "player.cpp"
 #include "player_getsets.cpp"
+#include "player_event.cpp"
 #include "laser.cpp"
 
 using namespace std;
@@ -37,6 +38,8 @@ int main(int argc, char** argv) {
     
 
     double dt = 1.0;
+
+    
     while (running)
     {
         // handle events
@@ -94,6 +97,7 @@ int main(int argc, char** argv) {
                 cout << "trying to shoot. \n";
                 usr->fire_laser();
             }
+            usr->handle_event(event,window);
         }
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

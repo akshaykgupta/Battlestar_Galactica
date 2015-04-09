@@ -40,6 +40,8 @@ private:
 	float skybox_size;
 	double halfWindowSizeX;
 	double halfWindowSizeY;
+
+	int camera_idx;
 public:
 	Player();
 	~Player();
@@ -75,7 +77,7 @@ public:
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	void fire_laser();
-	void toggle_camera();
+	void toggle_camera(double winX, double winY);
 	/** gets and sets */
 	UserSettings* 	getSettings();
 	BulletWorld* 	getBulletWorld();

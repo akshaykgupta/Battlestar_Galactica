@@ -10,7 +10,7 @@ SpaceObject::SpaceObject(OBJECT_TYPE _type) {
 	obj_type = _type;
 	objpath = OBJ_RSC_DIR;
 	phypath = PHY_RSC_DIR;
-
+    activeWeapon = 0;
 	//TODO
 	weapons.resize(1);
 	weapons[0] = new Weapon( STRONG_LASER , btVector3(200,200,0));
@@ -127,11 +127,13 @@ void SpaceObject::readPhysicsFile(){
 		count++;
 		vector<float> ans;
 		istringstream s(temp);
+		string line_type = "";
+		s >> line_type;
 		while(!s.eof()){
 			s>>temp2;
 			ans.push_back(temp2);
 		}
-		if(count==1){
+		if(line_type == "Misc"){
 			if(ans.size()!=3){
 				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
 				exit(1);
@@ -142,17 +144,27 @@ void SpaceObject::readPhysicsFile(){
 				scalingAcceleration = ans[2];
 				cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<"\n";
 			}
-		}else{
+		}else if ( line_type == "Box" ) {
 			if(ans.size()!= 6){
 				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
 				exit(1);
 			}
-			btCollisionShape* nbox = new btBoxShape(btVector3(ans[3],ans[4],ans[5]));
+			
+				btCollisionShape* nbox = new btBoxShape(btVector3(ans[3],ans[4],ans[5]));
 				btTransform t(btQuaternion(0,0,0,1) , btVector3(ans[0],ans[1],ans[2]));
 				children.push_back(nbox);
 				childTransform.push_back(t);
+		}else if ( line_type == "Cam" ) {
+			if(ans.size()!= 6){
+				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
+				exit(1);
+			}
+			cameras.push_back(make_pair( btVector3(ans[0] , ans[1] , ans[2]) , btVector3(ans[3], ans[4] , ans[5]) ));
+		} else if ( line_type == "Weapon" ) {
+
 		}
 	}
 	f.close();
 }
+	
 #endif
