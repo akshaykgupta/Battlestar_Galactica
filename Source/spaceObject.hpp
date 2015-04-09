@@ -68,7 +68,8 @@ private:
 	std::string phypath;
 	int health;
 	bool wasHit;
-
+	btScalar maxVelocity;
+	btScalar scalingAcceleration;
 	std::vector<Weapon*> weapons;
 	int activeWeapon;
 	/*physics*/

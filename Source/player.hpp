@@ -38,6 +38,8 @@ private:
 	std::string SKYBOX_IMG;
 	SkyBox* skybox;
 	float skybox_size;
+	double halfWindowSizeX;
+	double halfWindowSizeY;
 public:
 	Player();
 	~Player();
@@ -50,7 +52,9 @@ public:
 		const btCollisionObjectWrapper* obj2,int id2,int index2);
 
 
-	void handle_event(sf::Event& event);
+	void handle_event(sf::Event& event,sf::Window& window);
+	void 
+
 
 	void update_state(double dt);
 	void render_state(double dt);
@@ -82,6 +86,7 @@ public:
 	OBJECT_TYPE 	getFighterType();
 	SpaceObject*	getSpaceObject(int); 
 	int 			getID(SpaceObject*);
+	void getWindowSize(double & x, double & y);
 	/** debuggers */
 	void debug();
 

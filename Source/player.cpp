@@ -89,6 +89,8 @@ void Player::render_state(double dt) {
 	glPopMatrix();
 }
 void Player::setup_game_screen(double winX, double winY) {
+	halfWindowSizeX = winX/2;
+	halfWindowSizeY = winY/2;
 	glEnable(GL_DEPTH_TEST);
 	//glDepthMask(GL_TRUE);
 	glCullFace(GL_BACK);

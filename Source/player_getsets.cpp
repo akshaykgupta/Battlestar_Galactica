@@ -28,4 +28,8 @@ int Player::getID(SpaceObject* spaceObject){
 UserSettings* Player::getSettings() {
 	return settings;
 }
+void Player::getWindowSize(double &x,double &y){
+	x = halfWindowSizeX ;
+	y = halfWindowSizeY;
+}
 #endif

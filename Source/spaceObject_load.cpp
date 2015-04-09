@@ -118,11 +118,11 @@ void SpaceObject::readPhysicsFile(){
 	int count=0;
 	string temp;
 	float temp2;
-	getline(f,temp);
+	/*getline(f,temp);
 	stringstream mTemp(temp);
 	mTemp>>temp2;
 	mass = temp2;
-	count++;	
+	count++;	*/
 	while(getline(f,temp)){
 		count++;
 		vector<float> ans;
@@ -131,14 +131,27 @@ void SpaceObject::readPhysicsFile(){
 			s>>temp2;
 			ans.push_back(temp2);
 		}
-		if(ans.size()!= 6){
-			cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
-			exit(1);
+		if(count==1){
+			if(ans.size()!=3){
+				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
+				exit(1);
+			}
+			else{
+				mass = ans[0];
+				maxVelocity = ans[1];
+				scalingAcceleration = ans[2];
+				cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<"\n";
+			}
+		}else{
+			if(ans.size()!= 6){
+				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
+				exit(1);
+			}
+			btCollisionShape* nbox = new btBoxShape(btVector3(ans[3],ans[4],ans[5]));
+				btTransform t(btQuaternion(0,0,0,1) , btVector3(ans[0],ans[1],ans[2]));
+				children.push_back(nbox);
+				childTransform.push_back(t);
 		}
-		btCollisionShape* nbox = new btBoxShape(btVector3(ans[3],ans[4],ans[5]));
-			btTransform t(btQuaternion(0,0,0,1) , btVector3(ans[0],ans[1],ans[2]));
-			children.push_back(nbox);
-			childTransform.push_back(t);
 	}
 	f.close();
 }
