@@ -53,8 +53,6 @@ public:
 
 
 	void handle_event(sf::Event& event,sf::Window& window);
-	void 
-
 
 	void update_state(double dt);
 	void render_state(double dt);
