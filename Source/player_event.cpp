@@ -2,7 +2,9 @@
 #define PLAYER_EVENT_CPP
 
 #include "player.hpp"
-
+inline double absolute(double x) {
+	return (x*((x>=0)?(1):(-1)));
+}
 void Player::handle_event(sf::Event& event,sf::Window& window) {
 	sf::Keyboard::Key key;
 	bool collision, laser;
@@ -13,11 +15,18 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
 	double tx = sf::Mouse::getPosition(window).x;
     double ty = sf::Mouse::getPosition(window).y;
     //-----------------------------------MAX YAW AND PITCH ALLOWED OF 45 DEGREES. MIN PITCH AND YAW REQUIRED FOR MOVEMENT IS 2 DEGREES--//
-    double pitch = ((halfWindowSizeY-ty)*(5.0*settings->mouseSensitivity.getY()/halfWindowSizeY) > 0.2)?(halfWindowSizeY-ty)*(5.0*settings->mouseSensitivity.getY()/halfWindowSizeY) : 0.0 ;
-    double yaw  =  ((halfWindowSizeX-tx)*(5.0*settings->mouseSensitivity.getX()/halfWindowSizeX) > 0.2)?(halfWindowSizeX-tx)*(5.0*settings->mouseSensitivity.getX()/halfWindowSizeX) : 0.0 ;
+    double pitch = (halfWindowSizeY-ty)*(3.0*settings->mouseSensitivity.getY()/halfWindowSizeY) ; //(absolute() > 0.2)?(halfWindowSizeY-ty)*(5.0*settings->mouseSensitivity.getY()/halfWindowSizeY) : 0.0 ;
+    if ( !(absolute(pitch)>=0.9) ) {
+    	pitch = 0.0;
+    }
+    double yaw  =  (halfWindowSizeX-tx)*(3.0*settings->mouseSensitivity.getX()/halfWindowSizeX); //(absolute() > 0.2)?(halfWindowSizeX-tx)*(5.0*settings->mouseSensitivity.getX()/halfWindowSizeX) : 0.0 ;
+    if (!(absolute(yaw)>=0.9) ) {
+    	yaw = 0.0;
+    }
 
+    cout << "pyr=" << pitch << "," << yaw << "\n";
     if(pitch!=0.0 || yaw !=0.0){
-    	//fighter->rotate(pitch,yaw);
+    	fighter->rotate(pitch,yaw);
     }
     
 	//Translational.
@@ -85,9 +94,9 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
 	}
 	//WEAPONS
 	if ( event.type == sf::Event::MouseButtonPressed ) {
-                cout << "trying to shoot. \n";
-                fire_laser();
-            }
+        cout << "trying to shoot. \n";
+        fire_laser();
+    }
 	
 }
 #endif

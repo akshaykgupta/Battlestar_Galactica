@@ -14,7 +14,7 @@ $(EXEC):
 all:
 	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) -o $(EXEC)
 clean:
-	rm $(EXEC)
+	rm $(EXEC) *.tang
 endif
 
 ifeq ($(UNAME), Darwin)

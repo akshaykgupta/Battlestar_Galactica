@@ -13,7 +13,7 @@ void SpaceObject::toggle_weapon() {
 }
 
 void SpaceObject::rotate(double pitch, double yaw) {
-	btQuaternion localRotation(pitch*(3.14159/180),yaw*(3.14159/180),0.0);
+	btQuaternion localRotation(yaw*(3.14159/180),pitch*(3.14159/180),0.0);
 	btTransform trans(body->getCenterOfMassTransform());
 	trans.setRotation( localRotation*(body->getCenterOfMassTransform().getRotation() ));
 	body->setCenterOfMassTransform(trans);
