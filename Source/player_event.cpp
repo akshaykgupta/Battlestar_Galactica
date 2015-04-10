@@ -13,8 +13,8 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
 	double tx = sf::Mouse::getPosition(window).x;
     double ty = sf::Mouse::getPosition(window).y;
     //-----------------------------------MAX YAW AND PITCH ALLOWED OF 45 DEGREES. MIN PITCH AND YAW REQUIRED FOR MOVEMENT IS 2 DEGREES--//
-    double pitch = ((halfWindowSizeY-ty)*(45.0/halfWindowSizeY) > 2.0)?(halfWindowSizeY-ty)*(45.0/halfWindowSizeY) : 0.0 ;
-    double yaw  =  ((halfWindowSizeX-tx)*(45.0/halfWindowSizeX) > 2.0)?(halfWindowSizeX-tx)*(45.0/halfWindowSizeX) : 0.0 ;
+    double pitch = ((halfWindowSizeY-ty)*(45.0*settings->mouseSensitivity.getY()/halfWindowSizeY) > 2.0)?(halfWindowSizeY-ty)*(45.0*settings->mouseSensitivity.getY()/halfWindowSizeY) : 0.0 ;
+    double yaw  =  ((halfWindowSizeX-tx)*(45.0*settings->mouseSensitivity.getX()/halfWindowSizeX) > 2.0)?(halfWindowSizeX-tx)*(45.0*settings->mouseSensitivity.getX()/halfWindowSizeX) : 0.0 ;
 
     if(pitch!=0.0 || yaw !=0.0){
     	fighter->rotate(pitch,yaw);

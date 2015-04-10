@@ -95,7 +95,7 @@ void UserSettings::set_default() {
 	name = "rookieWookie";
 	mouseSensitivity.setX(1.0);
 	mouseSensitivity.setY(1.0);
-	mouseSensitivity.setZ(1.0);
+	mouseSensitivity.setZ(0.0);
 	//TODO : INSERT DEFAULT VALUES.
 	updateKeyMap(sf::Keyboard::W, ACCELERATE);
 	updateKeyMap(sf::Keyboard::S, DECELERATE);
