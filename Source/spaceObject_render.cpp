@@ -9,29 +9,28 @@ void SpaceObject::render(bool dflag) {
     body->getMotionState()->getWorldTransform(trans_com);
     float mat_gl[16];
     trans_com.getOpenGLMatrix(mat_gl);
-    
     glPushMatrix();
         glMultMatrixf(mat_gl);
-    
     if (dflag) {
 		render_physics(true);
 	}
 	render_geometry();
-    
     wasHit = false;
-    
     glPopMatrix();
+    /* rendering lasorz. */
+    for(int i=0; i<weapons.size(); ++i) {
+        if ( weapons[i] != NULL) {
+            weapons[i]->update(); //also draws the laser if it was shot.
+        }
+    }
+
 }
 
 void SpaceObject::render_geometry() {
     if ( wasHit ) {
         //Do something.
     }
-    for(int i=0; i<weapons.size(); ++i) {
-        if ( weapons[i] != NULL) {
-            weapons[i]->update(); //also draws the laser if it was shot.
-        }
-    }
+    
     return;
 }
 
