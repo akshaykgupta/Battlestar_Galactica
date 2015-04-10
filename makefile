@@ -28,5 +28,5 @@ $(EXEC):
 all:
 	$(Compiler) $(SRC)main.cpp $(LIBS) $(INCS) $(FRAMEWORKS) -o $(EXEC)
 clean:
-	rm $(EXEC)
+	rm $(EXEC) *.tang
 endif

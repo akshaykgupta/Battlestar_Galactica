@@ -55,12 +55,13 @@ int main(int argc, char** argv) {
                 usr->setup_game_screen( event.size.width , event.size.height );
                 
             }
-            //usr->handle_event(event);
+           
 
             
             if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 running = false;
             }
+            /*
             if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W)  ) {
                 cout << "front pressed \n";
                 usr->getFighter()->setVelocity(btVector3(0,0,-1.0));
@@ -96,7 +97,7 @@ int main(int argc, char** argv) {
             if ( event.type == sf::Event::MouseButtonPressed ) {
                 cout << "trying to shoot. \n";
                 usr->fire_laser();
-            }
+            }*/
             usr->handle_event(event,window);
         }
         // clear the buffers

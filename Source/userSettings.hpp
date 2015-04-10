@@ -99,8 +99,16 @@ void UserSettings::set_default() {
 	//TODO : INSERT DEFAULT VALUES.
 	updateKeyMap(sf::Keyboard::W, ACCELERATE);
 	updateKeyMap(sf::Keyboard::S, DECELERATE);
-	updateKeyMap(sf::Keyboard::A, YAW_LEFT);
-	updateKeyMap(sf::Keyboard::D, YAW_RIGHT);
+	updateKeyMap(sf::Keyboard::A, STRAFE_LEFT);
+	updateKeyMap(sf::Keyboard::D, STRAFE_RIGHT);
+	updateKeyMap(sf::Keyboard::Z, ASCEND);
+	updateKeyMap(sf::Keyboard::X, DESCEND);
+	updateKeyMap(sf::Keyboard::I, PITCH_UP);
+	updateKeyMap(sf::Keyboard::K, PITCH_DOWN);
+	updateKeyMap(sf::Keyboard::J, YAW_LEFT);
+	updateKeyMap(sf::Keyboard::L, YAW_RIGHT);
+	updateKeyMap(sf::Keyboard::U, ROLL_LEFT);
+	updateKeyMap(sf::Keyboard::O, ROLL_RIGHT);
 	updateKeyMap(sf::Keyboard::C, TOGGLE_CAM);
 	updateKeyMap(sf::Keyboard::G, TOGGLE_WEAPON);
 	updateKeyMap(sf::Keyboard::F, TOGGLE_FULLSCREEN);

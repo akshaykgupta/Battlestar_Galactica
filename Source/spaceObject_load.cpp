@@ -95,6 +95,8 @@ void SpaceObject::createCompoundShape() {
     body = new btRigidBody(bodyCI);
     body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
     body->setUserPointer(this);
+    body->setDamping(linearDamping,angularDamping);
+    body->setLinearFactor(btVector3(1,1,1));
     world->dynamicsWorld->addRigidBody(body);
 }
 void SpaceObject::render_init() {
@@ -134,7 +136,7 @@ void SpaceObject::readPhysicsFile(){
 			ans.push_back(temp2);
 		}
 		if(line_type == "Misc"){
-			if(ans.size()!=3){
+			if(ans.size()!=7){
 				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
 				exit(1);
 			}
@@ -142,7 +144,11 @@ void SpaceObject::readPhysicsFile(){
 				mass = ans[0];
 				maxVelocity = ans[1];
 				scalingAcceleration = ans[2];
-				cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<"\n";
+				linearDamping = ans[3];
+				angularDamping = ans[4];
+				maxOmega = ans[5];
+				scalingOmega = ans[6];
+				cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<" "<<linearDamping<<" "<<angularDamping<<"\n";
 			}
 		}else if ( line_type == "Box" ) {
 			if(ans.size()!= 6){

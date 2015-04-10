@@ -88,6 +88,10 @@ private:
 	bool wasHit;
 	btScalar maxVelocity;
 	btScalar scalingAcceleration;
+	btScalar scalingOmega;
+	btScalar maxOmega;
+	btScalar linearDamping;
+	btScalar angularDamping;
 	std::vector<Weapon*> weapons;
 	int activeWeapon;
 	/*physics*/
