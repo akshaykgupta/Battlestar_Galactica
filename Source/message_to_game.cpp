@@ -5,7 +5,7 @@
 #include "spaceObject.hpp"
 #include "helper.hpp"
 
-void Player::handleMessage(Message& msg) {
+void Player::handleMessage(Message& msg, int network_int) {
 	//I need, the spaceObject's int-index, the spaceObject's linear velocity, angular velocity, health, ammo and so on.
 	if (msg.msgType & CONNECTDATA) {
 		//might need to add to list of clients

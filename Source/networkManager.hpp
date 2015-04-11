@@ -13,7 +13,6 @@
 typedef boost::bimap<long long, boost::asio::ip::udp::endpoint> ClientList;
 typedef ClientList::value_type Client;
 typedef std::pair<std::string, long long> ClientMessage;
-typedef unsigned long long ull;
 
 using namespace std;
 using boost::asio::ip::udp;
@@ -34,7 +33,7 @@ class NetworkManager{
 		std::array<char, NETWORK_BUFFER_SIZE> recv_buffer;  // statically allocated container class used as a buffer for receiving data
 
 		// SERVER machinery
-		message_queue<std::string> messages;
+		message_queue< pair<std::string, long long> > messages;
 		unsigned long long nextClientID;
 		ClientList clients;
 
@@ -92,14 +91,15 @@ class NetworkManager{
 			sentBytes = 0;
 		}
 		
-		ull addClient(string IP, unsigned short server_port) {
+		unsigned long long addClient(string IP, unsigned short server_port) {
 			boost::asio::ip::udp::resolver resolver(io_service);
 			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
 			myIP = socket.local_endpoint().address().to_string();
 			myPort = socket.local_endpoint().port();
 			remote_endpoint = *iterator;
-			return get_client_id(remote_endpoint);
+			insert_client(remote_endpoint);
+			return nextClientID;
 		}
 		
 		~NetworkManager();
@@ -122,7 +122,7 @@ class NetworkManager{
 		    //LogMessage::Debug("NetworkManager network thread stopped");
 		};
 
-		void SendToClient(const std::string& message, unsigned long long clientID) 
+		void SendToClient(const std::string& message, long long clientID) 
 		{
 		    try {
 		        send(message, clients.left.at(clientID));
@@ -132,13 +132,16 @@ class NetworkManager{
 		    }
 		}
 
-		unsigned long long get_client_id(boost::asio::ip::udp::endpoint endpoint) {
+		void insert_client(boost::asio::ip::udp::endpoint endpoint) {
+			nextClientID++;
+		    clients.insert(Client(nextClientID, endpoint));
+		}
+
+		long long get_client_id(boost::asio::ip::udp::endpoint endpoint) {
 		    auto cit = clients.right.find(endpoint);
 		    if (cit != clients.right.end())
 		        return (*cit).second;
 
-		    nextClientID++;
-		    clients.insert(Client(nextClientID, endpoint));
 		    return nextClientID;
 		}
 
@@ -157,7 +160,7 @@ class NetworkManager{
 		}
 
 		
-		void SendToAllExcept(const std::string& message, unsigned long long clientID) {
+		void SendToAllExcept(const std::string& message, long long clientID) {
 			typedef ClientList::const_iterator it;
 			for (it iter = clients.begin(), iend = clients.end(); iter != iend; iter++){
 				if (iter->left != clientID)
@@ -176,8 +179,8 @@ class NetworkManager{
 	    string getMyIp() {
 			return myIP;
 		}
-		 
-		unsigned long long numberOfClients() {
+		
+		long long numberOfClients() {
 			return nextClientID;
 		}
 		// STAT QUERIES
