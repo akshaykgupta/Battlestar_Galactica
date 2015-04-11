@@ -121,7 +121,7 @@ void Player::toggle_camera(double x, double y) {
 }
 
 
-bol Player::add_object(SpaceObject* OBJ){
+bool Player::add_object(SpaceObject* OBJ){
 	addToEveryOne(nextSpaceObjId, OBJ);
 	nextSpaceObjId++;
 }
