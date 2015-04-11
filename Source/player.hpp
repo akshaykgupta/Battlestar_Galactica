@@ -59,14 +59,17 @@ public:
 	    {
 	    	int player_int = *cit;
 	    	// return spaceobject corresponding to this player_int
+	    	getSpaceObject(player_int);
 	    }
-
+	    
+	    return nullptr;
 	    /* Assert : no player corresponding to this network int means this spaceObject hasn't yet been added */
 	}
 
-	void 
-
+	bool addtoNtoP(int network_int, int player_int) {
+		//add the pair of network_int and player_int to the bimap.
 	}
+		
 	void init_bulletWorld();
 	void init_fighter();
 	/* collision */
@@ -76,7 +79,6 @@ public:
 
 
 	void handle_event(sf::Event& event,sf::Window& window);
-	bool Player::add_object(SpaceObject* OBJ);
 
 	void update_state(double dt);
 	void render_state(double dt);
@@ -100,6 +102,8 @@ public:
 	
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
+	bool add_object(SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
+	
 	void fire_laser();
 	void toggle_camera(double winX, double winY);
 	/** gets and sets */

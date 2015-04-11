@@ -4,6 +4,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
+#include <sstream>
 
 struct State {
 	int health;
@@ -16,6 +17,28 @@ struct State {
 		health = 0;
 		ammo = 0;
 		objType = ASTEROID;
+	}
+	
+	State(){}
+
+	State(State& other) {
+		health = other.health;
+		ammo = other.ammo;
+		transform = other.transform;
+		linearVelocity = other.linearVelocity;
+		angularVelocity = other.angularVelocity;
+		objType = other.objType;
+	}
+
+	State& operator= (State& other) {
+		health = other.health;
+		ammo = other.ammo;
+		transform = other.transform;
+		linearVelocity = other.linearVelocity;
+		angularVelocity = other.angularVelocity;
+		objType = other.objType;
+		
+		return *this;
 	}
 
 	State(int h,int am, btTransform& t, btVector3& lv , btVector3& av, OBJECT_TYPE _t) {
@@ -90,6 +113,7 @@ struct Message {
 	WEAPON_TYPE wpnType;
 	/* Connection data */
 	std::string newConnectorIP;
+	unsigned short newConnectorPort;
 	/*
 		IDEA : Forward this message to everyone, and respond to the sender with my details.
 	*/
@@ -117,6 +141,31 @@ struct Message {
 		
 	}
 	
+	Message() {}
+	
+	Message(Message& other) : ship(other.ship) {
+		msgType = other.msgType;
+		chatMessage = other.chatMessage;
+		laserFrom = other.laserFrom;
+		laserTo = other.laserTo;
+		wpnType = other.wpnType;
+		newConnectorIP = other.newConnectorIP;
+		newConnectorPort = other.newConnectorPort;
+	}
+
+	Message& operator= (Message& other) {
+		ship = other.ship;
+		msgType = other.msgType;
+		chatMessage = other.chatMessage;
+		laserFrom = other.laserFrom;
+		laserTo = other.laserTo;
+		wpnType = other.wpnType;
+		newConnectorIP = other.newConnectorIP;
+		newConnectorPort = other.newConnectorPort;
+
+		return *this;
+	}
+
 	void setData(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,

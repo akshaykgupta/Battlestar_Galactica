@@ -8,21 +8,6 @@ void SpaceObject::initCommunications(State* state, Message* msg) {
 	msg = new Message(); //default message.
 }
 
-void Message::setData( MESSAGE_PROTOCOL& prot , State* state , Weapon* wpn ) {
-	msgType = prot;
-	ship = state;
-	wpnType = wpn->type;
-	laserFrom.clear();
-	laserFrom.push_back(_laserFrom.getX());
-	laserFrom.push_back(_laserFrom.getY());
-	laserFrom.push_back(_laserFrom.getZ());
-	laserTo.clear();
-	laserTo.push_back(_laserTo.getX());
-	laserTo.push_back(_laserTo.getY());
-	laserTo.push_back(_laserTo.getZ());
-	return;
-}
-
 void SpaceObject::makeMessage(State* state,  Message* msg) {
 	btTransform myTransform;
 	body->getMotionState()->getWorldTransform(myTransform);

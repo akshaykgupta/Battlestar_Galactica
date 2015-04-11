@@ -7,11 +7,11 @@ void Player::setFighterType(OBJECT_TYPE _type) { fighterType = _type;}
 OBJECT_TYPE Player::getFighterType() { return fighterType; }
 SpaceObject* Player::getFighter() { return fighter; }
 SpaceObject* Player::getSpaceObject(int ID){
-	SpaceObject* temporary = NULL;
+	SpaceObject* temporary = nullptr;
 	try{
 		temporary = EveryOne.left.at(ID);
 	}catch(std::out_of_range & e ){
-		return NULL;
+		return nullptr;
 	}
 	return temporary;
 }

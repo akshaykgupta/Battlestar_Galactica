@@ -122,9 +122,12 @@ void Player::toggle_camera(double x, double y) {
 
 
 bool Player::add_object(SpaceObject* OBJ){
-	addToEveryOne(nextSpaceObjId, OBJ);
-	nextSpaceObjId++;
+	if( addToEveryOne(nextSpaceObjId, OBJ) )
+		nextSpaceObjId++;
+	else
+		return false;
 }
+
 bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 	if(!OBJ){
 		cout<<"NULL OBJECT PASSED \n";
@@ -136,6 +139,8 @@ bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 	}
 	return true;
 }
+
+
 
 bool Player::collisionCallback(btManifoldPoint& cp,
 	const btCollisionObjectWrapper* obj1,int id1,int index1,

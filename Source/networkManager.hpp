@@ -3,7 +3,7 @@
 #include <boost/asio.hpp>
 #include "boost/lexical_cast.hpp"
 #include <boost/thread.hpp>
-#include "mQ.h"
+#include "mQ.hpp"
 #include <memory>
 #include <array>
 
@@ -13,6 +13,7 @@
 typedef boost::bimap<long long, boost::asio::ip::udp::endpoint> ClientList;
 typedef ClientList::value_type Client;
 typedef std::pair<std::string, long long> ClientMessage;
+typedef unsigned long long ull;
 
 using namespace std;
 using boost::asio::ip::udp;
@@ -91,14 +92,14 @@ class NetworkManager{
 			sentBytes = 0;
 		}
 		
-		void addClient(string IP, unsigned short server_port) {
+		ull addClient(string IP, unsigned short server_port) {
 			boost::asio::ip::udp::resolver resolver(io_service);
 			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
 			myIP = socket.local_endpoint().address().to_string();
 			myPort = socket.local_endpoint().port();
 			remote_endpoint = *iterator;
-			get_client_id(remote_endpoint);
+			return get_client_id(remote_endpoint);
 		}
 		
 		~NetworkManager();
@@ -121,9 +122,6 @@ class NetworkManager{
 		    //LogMessage::Debug("NetworkManager network thread stopped");
 		};
 
-
-
-
 		void SendToClient(const std::string& message, unsigned long long clientID) 
 		{
 		    try {
@@ -134,10 +132,7 @@ class NetworkManager{
 		    }
 		}
 
-
-
-		unsigned long long get_client_id(boost::asio::ip::udp::endpoint endpoint)
-		{
+		unsigned long long get_client_id(boost::asio::ip::udp::endpoint endpoint) {
 		    auto cit = clients.right.find(endpoint);
 		    if (cit != clients.right.end())
 		        return (*cit).second;
@@ -147,8 +142,22 @@ class NetworkManager{
 		    return nextClientID;
 		}
 
+		bool findClient(string ip, unsigned short port) {
+			boost::asio::ip::udp::resolver resolver(io_service);
+			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
+			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			myIP = socket.local_endpoint().address().to_string();
+			myPort = socket.local_endpoint().port();
+			remote_endpoint = *iterator;
+			auto cit = clients.right.find(endpoint);
+		    if (cit != clients.right.end())
+		    	return true;
+		    else
+		    	return false;
+		}
+
 		
-		void SendToAllExcept(const std::string& message, unsigned long long clientID){
+		void SendToAllExcept(const std::string& message, unsigned long long clientID) {
 			typedef ClientList::const_iterator it;
 			for (it iter = clients.begin(), iend = clients.end(); iter != iend; iter++){
 				if (iter->left != clientID)
@@ -159,12 +168,18 @@ class NetworkManager{
 
 		void SendToAll(const std::string& message){
 			typedef ClientList::const_iterator it;
-			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ){
+			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ) {
 				SendToClient(message,iter->left);
 			}
-		 }
+		}
 
-
+	    string getMyIp() {
+			return myIP;
+		}
+		 
+		unsigned long long numberOfClients() {
+			return nextClientID;
+		}
 		// STAT QUERIES
 		unsigned long long GetStatReceivedMessages() {return receivedMessages;}
 		unsigned long long GetStatReceivedBytes()	   {return receivedBytes;}
