@@ -33,6 +33,7 @@ void Player::handleMessage(Message& msg, int network_int) {
 			obj->setState(msg.ship);
 		}
 	}
+	//TODO LASERDATA etc.
 }
 
 void SpaceObject::setState(State& shipdata) {
