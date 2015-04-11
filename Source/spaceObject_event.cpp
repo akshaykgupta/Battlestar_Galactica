@@ -13,10 +13,13 @@ void SpaceObject::toggle_weapon() {
 }
 
 void SpaceObject::rotate(double pitch, double yaw) {
-	btQuaternion localRotation(yaw*(3.14159/180),pitch*(3.14159/180),0.0);
-	btTransform trans(body->getCenterOfMassTransform());
-	trans.setRotation( localRotation*(body->getCenterOfMassTransform().getRotation() ));
-	body->setCenterOfMassTransform(trans);
+	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(1,0,0));
+	localXAxis*=mouseScalePitch*pitch;
+	body->applyTorque(localXAxis);
+
+	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,1,0));
+	localYAxis*=mouseScaleYaw*yaw;
+	body->applyTorque(localYAxis);
 	return;
 
 	/*

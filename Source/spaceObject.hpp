@@ -91,6 +91,8 @@ private:
 	btScalar scalingOmega;
 	btScalar maxOmega;
 	btScalar linearDamping;
+	btScalar mouseScalePitch;
+	btScalar mouseScaleYaw;
 	btScalar angularDamping;
 	std::vector<Weapon*> weapons;
 	int activeWeapon;

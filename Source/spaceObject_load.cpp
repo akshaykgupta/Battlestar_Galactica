@@ -136,7 +136,7 @@ void SpaceObject::readPhysicsFile(){
 			ans.push_back(temp2);
 		}
 		if(line_type == "Misc"){
-			if(ans.size()!=7){
+			if(ans.size()!=9){
 				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
 				exit(1);
 			}
@@ -148,6 +148,8 @@ void SpaceObject::readPhysicsFile(){
 				angularDamping = ans[4];
 				maxOmega = ans[5];
 				scalingOmega = ans[6];
+				mouseScalePitch = ans[7];
+				mouseScaleYaw = ans[8];
 				cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<" "<<linearDamping<<" "<<angularDamping<<"\n";
 			}
 		}else if ( line_type == "Box" ) {
