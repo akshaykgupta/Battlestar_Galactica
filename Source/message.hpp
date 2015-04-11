@@ -82,7 +82,7 @@ struct State {
 };
 
 struct Message {
-	MESSAGE_PROTOCOL msgType;
+	int msgType;
 	State ship; //general data - includes myShip details.
 	//collision data, is essentially health and new transform.
 	std::string chatMessage;	 //chat data.
@@ -95,7 +95,7 @@ struct Message {
 	*/
 	std::string worldData; //file name to load from.
 
-	Message(MESSAGE_PROTOCOL& prot , 
+	Message(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo , WEAPON_TYPE& _wpnType , 
 		std::string ip = "" , unsigned short myPort = 0, std::string chatmsg = "" , std::string worldfile = "") : 
@@ -117,7 +117,7 @@ struct Message {
 		
 	}
 	
-	void setData(MESSAGE_PROTOCOL prot , 
+	void setData(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
 		std::string ip = "" , unsigned short port = 0, std::string chatmsg = "" , std::string worldfile = "") {
@@ -143,13 +143,13 @@ struct Message {
 		laserTo.push_back(_laserTo.getZ());
 	}
 
-	void setData(MESSAGE_PROTOCOL prot, std::string ip = "", unsigned short port = 0) {		
+	void setData(int prot, std::string ip = "", unsigned short port = 0) {		
 		newConnectorIP = ip;
 		newConnectorPort = port;
 	}
 	
 
-	void setData( MESSAGE_PROTOCOL& prot , State* state , Weapon* wpn ) {
+	void setData( int prot , State* state , Weapon* wpn ) {
 		msgType = prot;
 		ship = state;
 		wpnType = wpn->type;
@@ -164,7 +164,7 @@ struct Message {
 		return;
 	}
 
-	void getData(MESSAGE_PROTOCOL& prot , 
+	void getData(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
 		std::string& ip, unsigned short port, std::string& chatmsg, std::string& worldfile) {
