@@ -56,7 +56,7 @@ public:
 
 	//functions to get the state and stuff.
 	void 	initCommunications(State* state , Message* msg);
-	void 	makeMessage(Message* msg); //generates default message, with health etc.
+	void 	makeMessage(State* , Message* msg); //generates default message, with health, weapons, positions and everything else. etc.
 	
 
 	/* actions that the spaceobject can do .*/

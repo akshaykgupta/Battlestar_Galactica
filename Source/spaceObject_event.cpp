@@ -2,6 +2,39 @@
 #define SPACE_OBJECT_EVENT_CPP
 #include "spaceObject.hpp"
 
+//TODO: Add a few functions to the spaceObject.hpp
+void SpaceObject::initCommunications(State* state, Message* msg) {
+	state = new State(); //default constructor.
+	msg = new Message(); //default message.
+}
+
+void Message::setData( MESSAGE_PROTOCOL& prot , State* state , Weapon* wpn ) {
+	msgType = prot;
+	ship = state;
+	wpnType = wpn->type;
+	laserFrom.clear();
+	laserFrom.push_back(_laserFrom.getX());
+	laserFrom.push_back(_laserFrom.getY());
+	laserFrom.push_back(_laserFrom.getZ());
+	laserTo.clear();
+	laserTo.push_back(_laserTo.getX());
+	laserTo.push_back(_laserTo.getY());
+	laserTo.push_back(_laserTo.getZ());
+	return;
+}
+
+void SpaceObject::makeMessage(State* state,  Message* msg) {
+	btTransform myTransform;
+	body->getMotionState()->getWorldTransform(myTransform);
+	state->setData( health, ammo , myTransform , body->getLinearVelocity() ,  body->getAngularVelocity() , obj_type);
+
+	msg->setData(
+		GENDATA , 
+		state ,
+		weapons[activeWeapon]
+		);
+}
+
 void SpaceObject::handleCollision(SpaceObject* other) {
 	wasHit = true;
 	health -= 10; //TODO : Make it proper, correct for each spaceship.
@@ -21,21 +54,12 @@ void SpaceObject::rotate(double pitch, double yaw) {
 	localYAxis*=mouseScaleYaw*yaw;
 	body->applyTorque(localYAxis);
 	return;
-
-	/*
-	btVector3 localXAxis = quatRotate(body->getOrientation(),btVector3(1,0,0));
-	btVector3 localYAxis = quatRotate(body->getOrientation(),btVector3(0,1,0));
-	btQuaternion qy = btQuaternion( localXAxis , yaw);
-	btQuaternion qp = btQuaternion( localYAxis , pitch);
-	btQuaternion apply = qp*qy;
-	body->rotate(apply);*/
-
 }
 
+//--------LIMIT ALL TO MAX VELOCITY----------//
 
 //KEYBOARD FUNCTIONS AHEAD!
 void SpaceObject::accelerate() {
-	//--------LIMIT ALL TO MAX VELOCITY----------//
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,-1));
 	localZAxis*=scalingAcceleration;
 	cout<<localZAxis.getX()<<" "<<localZAxis.getY()<<" "<<localZAxis.getZ()<<"\n";
@@ -57,50 +81,44 @@ void SpaceObject::strafe_right() {
 	body->applyCentralImpulse(localXAxis);
 }
 void SpaceObject::ascend() {
-	//-------TODO------------Scale It Down---------------------------//
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,1,0));
 	localYAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localYAxis);
 }
 void SpaceObject::descend() {
-	//------TODO-------------Scale It Down---------------------------//
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,-1,0));
 	localYAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localYAxis);
 }
+
+
 void SpaceObject::pitch_up() {
-	//TODO
 	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(1,0,0));
 	localXAxis*=scalingOmega;
 	body->applyTorque(localXAxis);
 
 }
 void SpaceObject::pitch_down() {
-	//TODO
 	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(-1,0,0));
 	localXAxis*=scalingOmega;
 	body->applyTorque(localXAxis);
 }
 void SpaceObject::yaw_left() {
-	//TODO
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,1,0));
 	localYAxis*=scalingOmega;
 	body->applyTorque(localYAxis);
 }
 void SpaceObject::yaw_right() {
-	//TODO
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,-1,0));
 	localYAxis*=scalingOmega;
 	body->applyTorque(localYAxis);
 }
 void SpaceObject::roll_left() {
-	//TODO
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,1));
 	localZAxis*=scalingOmega;
 	body->applyTorque(localZAxis);
 }
 void SpaceObject::roll_right() {
-	//TODO
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,-1));
 	localZAxis*=scalingOmega;
 	body->applyTorque(localZAxis);
