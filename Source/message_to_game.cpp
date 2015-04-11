@@ -26,13 +26,27 @@ void Player::handleMessage(Message& msg, int network_int) {
 			}
 		}
 	} else if (msg.msgType & GENDATA) {
-
+		//get the spaceObject and set its state?
+		SpaceObject* obj = which_spaceObject(network_int);
+		if(obj != nullptr)
+		{
+			obj->setState(msg.ship);
+		}
 	}
 }
 
 void SpaceObject::setState(State& shipdata) {
 	btTransform myNewTransform;
-	//TODO: Make state the new ship state.
+	btVector3 myNewLinearVelocity;
+	btVector3 myNewAngularVelocity;
+	int myNewHealth;
+	int myNewAmmo;
+	OBJECT_TYPE otype;
+	shipdata.getData(myNewHealth, myNewAmmo, myNewTransform, myNewLinearVelocity, myNewAngularVelocity, otype);
+	body->setWorldTransform(myNewTransform);
+	body->setLinearVelocity(myNewLinearVelocity);
+	body->setAngularVelocity(myNewAngularVelocity);
+	//set health, ammo 
 }
 
 #endif

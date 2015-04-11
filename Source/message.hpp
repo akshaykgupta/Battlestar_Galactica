@@ -37,7 +37,7 @@ struct State {
 		linearVelocity = other.linearVelocity;
 		angularVelocity = other.angularVelocity;
 		objType = other.objType;
-		
+
 		return *this;
 	}
 

@@ -34,7 +34,7 @@ class NetworkManager{
 
 		// SERVER machinery
 		message_queue< pair<std::string, long long> > messages;
-		unsigned long long nextClientID;
+		long long nextClientID;
 		ClientList clients;
 
 		// DATA
@@ -176,10 +176,16 @@ class NetworkManager{
 			}
 		}
 
+		ClientMessage popMessage() {
+			if(!messages.empty())
+				return messages.pop();
+			else return make_pair("", -1);
+		}
+
 	    string getMyIp() {
 			return myIP;
 		}
-		
+
 		long long numberOfClients() {
 			return nextClientID;
 		}
