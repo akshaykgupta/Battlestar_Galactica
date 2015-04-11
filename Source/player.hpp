@@ -26,6 +26,8 @@ private:
 	UserSettings* settings;
 	HUD hud;
 	SpaceObject* fighter;
+
+	/* network integration */
 	State* myState;
 	NetworkManager* network;
 	Message* myMessage;

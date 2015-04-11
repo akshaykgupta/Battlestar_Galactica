@@ -25,6 +25,7 @@ class NetworkManager{
 		boost::asio::ip::udp::socket socket;
 		boost::asio::ip::udp::endpoint server_endpoint;
 		boost::asio::ip::udp::endpoint remote_endpoint;
+		string myIP;
 		boost::thread service_thread;
 
 

@@ -12,6 +12,12 @@ struct State {
 	vector<float> linearVelocity, angularVelocity;
 	OBJECT_TYPE objType;
 	
+	State() {
+		health = 0;
+		ammo = 0;
+		objType = ASTEROID;
+	}
+
 	State(int h,int am, btTransform& t, btVector3& lv , btVector3& av, OBJECT_TYPE _t) {
 		health = h;
 		ammo = am;
@@ -134,6 +140,11 @@ struct Message {
 		laserTo.push_back(_laserTo.getX());
 		laserTo.push_back(_laserTo.getY());
 		laserTo.push_back(_laserTo.getZ());
+	}
+
+	void setData(MESSAGE_PROTOCOL prot,
+		std::string ip = "") {		
+		newConnectorIP = ip;
 	}
 
 
