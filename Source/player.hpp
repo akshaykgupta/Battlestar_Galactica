@@ -22,6 +22,9 @@ struct HUD{
 class Player {
 private:
 	/* misc data. */
+
+
+	int nextSpaceObjId;
 	OBJECT_TYPE fighterType;
 	UserSettings* settings;
 	HUD hud;
@@ -29,6 +32,7 @@ private:
 
 	/* network integration */
 	State* myState;
+	boost::bimap<int,int> NtoP;  // for every network int,there must be a player int
 	NetworkManager* network;
 	Message* myMessage;
 	/* Rendering geometry */
@@ -37,6 +41,7 @@ private:
 	BulletWorld* bulletWorld;
 	sf::Music* music;
 	boost::bimap< int, SpaceObject* > EveryOne;
+
 	std::string SKYBOX_IMG;
 	SkyBox* skybox;
 	float skybox_size;
@@ -47,7 +52,21 @@ private:
 public:
 	Player();
 	~Player();
+	SpaceObject* which_spaceObject(int network_int){
+		// if present,return
+		auto cit = NtoP.right.find(network_int);
+		if (cit != NtoP.right.end())
+	    {
+	    	int player_int = *cit;
+	    	// return spaceobject corresponding to this player_int
+	    }
 
+	    /* Assert : no player corresponding to this network int means this spaceObject hasn't yet been added */
+	}
+
+	void 
+
+	}
 	void init_bulletWorld();
 	void init_fighter();
 	/* collision */
@@ -57,6 +76,7 @@ public:
 
 
 	void handle_event(sf::Event& event,sf::Window& window);
+	bool Player::add_object(SpaceObject* OBJ);
 
 	void update_state(double dt);
 	void render_state(double dt);
@@ -66,10 +86,12 @@ public:
 	void playMusic(bool dflag = false);
 	void handleEvent();
 	/* game loop functions. */
-	void game_loop();
+	void game_loop(); 
+
+
 	void select_ship_screen();
 	void startjoin_screen();
-	void start_game(); 
+	void start_game();
 	void connect_game();
 	void waiting_screen();
 	void race_begin();

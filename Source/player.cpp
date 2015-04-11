@@ -4,6 +4,8 @@
 /*--------TODO: DECIDE ON THE SKY BOX DIMENSIONS---------------*/
 Player::Player() {
 	//network = new NetworkManager();
+
+	nextSpaceObjId = 0;
 	skybox_size = 512;
 	init_bulletWorld();
 	settings =  new UserSettings();
@@ -116,6 +118,12 @@ void Player::toggle_camera(double x, double y) {
 	glViewport(0, 0, x, y);
     glFlush();
 
+}
+
+
+bol Player::add_object(SpaceObject* OBJ){
+	addToEveryOne(nextSpaceObjId, OBJ);
+	nextSpaceObjId++;
 }
 bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
 	if(!OBJ){
