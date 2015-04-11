@@ -79,7 +79,6 @@ struct State {
 		ar & angularVelocity;
 		ar & objType;
 	}
-
 };
 
 struct Message {
@@ -99,12 +98,13 @@ struct Message {
 	Message(MESSAGE_PROTOCOL& prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo , WEAPON_TYPE& _wpnType , 
-		std::string ip = "" , std::string chatmsg = "" , std::string worldfile = "") : 
+		std::string ip = "" , unsigned short myPort = 0, std::string chatmsg = "" , std::string worldfile = "") : 
 	    ship(h, am, t, velo, avelo , _t) {
 		
 		msgType = prot;
 		wpnType = _wpnType;
 		newConnectorIP = ip;
+		newConnectorPort = port;
 		chatMessage = chatmsg;
 
 		laserFrom.push_back(_laserFrom.getX());
@@ -120,7 +120,7 @@ struct Message {
 	void setData(MESSAGE_PROTOCOL prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
-		std::string ip = "" , std::string chatmsg = "" , std::string worldfile = "") {
+		std::string ip = "" , unsigned short port = 0, std::string chatmsg = "" , std::string worldfile = "") {
 		
 		ship.setData(h, am, t, velo, avelo , _t);
 		
@@ -128,6 +128,7 @@ struct Message {
 		wpnType = _wpnType;
 		
 		newConnectorIP = ip;
+		newConnectorPort = port;
 		chatMessage = chatmsg;
 		worldData = worldfile;
 
@@ -142,21 +143,38 @@ struct Message {
 		laserTo.push_back(_laserTo.getZ());
 	}
 
-	void setData(MESSAGE_PROTOCOL prot,
-		std::string ip = "") {		
+	void setData(MESSAGE_PROTOCOL prot, std::string ip = "", unsigned short port = 0) {		
 		newConnectorIP = ip;
+		newConnectorPort = port;
 	}
+	
 
+	void setData( MESSAGE_PROTOCOL& prot , State* state , Weapon* wpn ) {
+		msgType = prot;
+		ship = state;
+		wpnType = wpn->type;
+		laserFrom.clear();
+		laserFrom.push_back(_laserFrom.getX());
+		laserFrom.push_back(_laserFrom.getY());
+		laserFrom.push_back(_laserFrom.getZ());
+		laserTo.clear();
+		laserTo.push_back(_laserTo.getX());
+		laserTo.push_back(_laserTo.getY());
+		laserTo.push_back(_laserTo.getZ());
+		return;
+	}
 
 	void getData(MESSAGE_PROTOCOL& prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
-		std::string& ip, std::string& chatmsg, std::string& worldfile) {
+		std::string& ip, unsigned short port, std::string& chatmsg, std::string& worldfile) {
 		
 		prot = msgType;
 		_wpnType = wpnType;
 		
 		ip = newConnectorIP;
+		port = newConnectorPort;
+		
 		worldfile = worldData;
 		chatmsg = chatMessage;
 		
@@ -179,6 +197,7 @@ struct Message {
 		ar & laserFrom;
 		ar & laserTo;
 		ar & newConnectorIP;
+		ar & newConnectorPort;
 		ar & worldData;
 	}
 };

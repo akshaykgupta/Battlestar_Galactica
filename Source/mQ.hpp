@@ -17,15 +17,14 @@ public:
 
 	T pop() {
 		boost::mutex::scoped_lock lock(mutex);
-		T value;
-		std::swap(value, queue.front());
+		T value = queue.front();
 		queue.pop();
-		return value;	
+		return value;
 	}
 
 	bool empty() {
 		boost::mutex::scoped_lock lock(mutex);
 		return queue.empty();
 	}
-
+	
 };

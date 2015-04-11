@@ -26,6 +26,7 @@ class NetworkManager{
 		boost::asio::ip::udp::endpoint server_endpoint;
 		boost::asio::ip::udp::endpoint remote_endpoint;
 		string myIP;
+		unsigned short myPort;
 		boost::thread service_thread;
 
 
@@ -70,6 +71,8 @@ class NetworkManager{
 			boost::asio::ip::udp::resolver resolver(io_service);
 			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			myIP = socket.local_endpoint().address().to_string();
+			myPort = socket.local_endpoint().port();
 			nextClientID = 0;
 			receivedMessages = 0;
 			receivedBytes = 0;
@@ -78,6 +81,26 @@ class NetworkManager{
 			remote_endpoint = *iterator;
 			get_client_id(remote_endpoint);
 		}
+		
+		NetworkManager(unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
+		{
+			nextClientID = 0;
+			receivedMessages = 0;
+			receivedBytes = 0;
+			sentMessages = 0;
+			sentBytes = 0;
+		}
+		
+		void addClient(string IP, unsigned short server_port) {
+			boost::asio::ip::udp::resolver resolver(io_service);
+			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
+			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
+			myIP = socket.local_endpoint().address().to_string();
+			myPort = socket.local_endpoint().port();
+			remote_endpoint = *iterator;
+			get_client_id(remote_endpoint);
+		}
+		
 		~NetworkManager();
 
 		
