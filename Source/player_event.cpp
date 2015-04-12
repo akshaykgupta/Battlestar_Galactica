@@ -24,14 +24,13 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
     	yaw = 0.0;
     }
 
-    cout << "pyr=" << pitch << "," << yaw << "\n";
+    // cout << "pyr=" << pitch << "," << yaw << "\n";
     if(pitch!=0.0 || yaw !=0.0){
     	fighter->rotate(pitch,yaw);
     }
     
 	//Translational.
 	if( ((key = settings->getKey( ACCELERATE )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		cout<<"Hey\n";
 		fighter->accelerate();
 	}
 	if( ((key = settings->getKey( DECELERATE )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {

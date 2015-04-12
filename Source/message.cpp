@@ -11,7 +11,7 @@ using namespace std;
 State::State() {
 	health = 0;
 	ammo = 0;
-	objType = ASTEROID;
+	objType = UFO;
 }
 
 State::~State(){}
@@ -121,7 +121,9 @@ Message::Message(int prot ,
 	
 }
 
-Message::Message() {}
+Message::Message() {
+	msgType = 0;
+}
 
 Message::Message(Message& other) : ship(other.ship) {
 	msgType = other.msgType;
@@ -172,9 +174,10 @@ void Message::setData(int prot ,
 	laserTo.push_back(_laserTo.getZ());
 }
 
-void Message::setData(int prot, std::string ip/* = ""*/, unsigned short port /*= 0*/) {		
+void Message::setData(int prot, std::string ip/* = ""*/, unsigned short port /*= 0*/) {
 	newConnectorIP = ip;
 	newConnectorPort = port;
+	msgType = prot;
 }
 
 

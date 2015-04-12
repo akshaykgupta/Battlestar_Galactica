@@ -3,12 +3,12 @@
 #include "spaceObject.hpp"
 
 //TODO: Add a few functions to the spaceObject.hpp
-void SpaceObject::initCommunications(State* state, Message* msg) {
+void SpaceObject::initCommunications(State*& state, Message*& msg) {
 	state = new State(); //default constructor.
 	msg = new Message(); //default message.
 }
 
-void SpaceObject::makeMessage(State* state,  Message* msg) {
+void SpaceObject::makeMessage(State*& state,  Message*& msg) {
 	btTransform myTransform;
 	body->getMotionState()->getWorldTransform(myTransform);
 	btVector3 lv = body->getLinearVelocity();

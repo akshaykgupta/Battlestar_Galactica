@@ -49,15 +49,15 @@ void Player::playMusic(bool dflag){
     std::string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;
 	//sf::Music music;
     music = new sf::Music;
-    cout<<path.c_str()<<"\n";
-    cout<<isSoundThere<<"\n";
+    // cout<<path.c_str()<<"\n";
+    // cout<<isSoundThere<<"\n";
     if(music->openFromFile(path.c_str())){
         isSoundThere=true;
     }
     if(isSoundThere){
-    cout<<isSoundThere<<"\n";
+    // cout<<isSoundThere<<"\n";
     music->play();
-    cout<<isSoundThere<<"\n";
+    // cout<<isSoundThere<<"\n";
     }
     
 }
@@ -173,7 +173,7 @@ void Player::handleMessage(Message& msg, int network_int) {
 					addtoNtoP(nextClientId, nextPlayerId);
 				}
 				//send this message to everyone else
-				myMessage->setData(CONNECTDATA, network->getMyIP(), network->getMyPort());
+				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
 				sendMessage();
 				myMessage = &msg;
 				sendMessage();

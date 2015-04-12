@@ -47,8 +47,8 @@ public:
 	void 	drawBox(btVector3&);
 
 	//functions to get the state and stuff.
-	void 	initCommunications(State*, Message*);
-	void 	makeMessage(State* , Message*); //generates default message, with health, weapons, positions and everything else. etc.
+	void 	initCommunications(State*&, Message*&);
+	void 	makeMessage(State*& , Message*&); //generates default message, with health, weapons, positions and everything else. etc.
 	void 	setState(State&);
 
 	/* actions that the spaceobject can do .*/

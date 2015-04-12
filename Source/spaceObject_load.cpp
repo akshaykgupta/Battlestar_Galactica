@@ -150,7 +150,7 @@ void SpaceObject::readPhysicsFile(){
 				scalingOmega = ans[6];
 				mouseScalePitch = ans[7];
 				mouseScaleYaw = ans[8];
-				cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<" "<<linearDamping<<" "<<angularDamping<<"\n";
+				// cout<<mass<<" "<<maxVelocity<<" "<<scalingAcceleration<<" "<<linearDamping<<" "<<angularDamping<<"\n";
 			}
 		}else if ( line_type == "Box" ) {
 			if(ans.size()!= 6){

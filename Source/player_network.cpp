@@ -16,7 +16,7 @@ void Player::startNetwork(unsigned short local_port) {
 
 void Player::connectToNetwork(string IP, unsigned short server_port, unsigned short local_port) {
 	network = new NetworkManager(IP, server_port, local_port);
-	myMessage->setData(CONNECTDATA, network->getMyIP(), network->getMyPort());
+	myMessage->setData((int)CONNECTDATA, network->getMyIP(), network->getMyPort());
 	sendMessage();
 }
 

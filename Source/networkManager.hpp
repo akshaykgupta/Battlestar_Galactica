@@ -92,6 +92,9 @@ class NetworkManager{
 			receivedBytes = 0;
 			sentMessages = 0;
 			sentBytes = 0;
+			myIP = socket.local_endpoint().address().to_string();
+			myPort = socket.local_endpoint().port();
+
 		}
 		
 		unsigned long long addClient(string IP, unsigned short server_port) {

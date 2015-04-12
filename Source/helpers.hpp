@@ -116,12 +116,12 @@ enum OBJECT_TYPE {
 
 
 /** Message_type is the protocol within the network manager. */
-enum MESSAGE_PROTOCOL { GENDATA=0 , //use these messages as an internal protocol.
-					LASERDATA=1,
-					COLLISIONDATA=2,
-					CHATDATA=3,
-					CONNECTDATA=4,
-					PINGDATA=5
+enum MESSAGE_PROTOCOL { GENDATA=1 , //use these messages as an internal protocol.
+					LASERDATA=2,
+					COLLISIONDATA=4,
+					CHATDATA=8,
+					CONNECTDATA=16,
+					PINGDATA=32
 };
 /** enum Event Type is the protocol between NetworkManager and Player */
 enum PLAYER_PROTOCOL { //push these messages into the player's queue.
