@@ -92,7 +92,7 @@ execute: $(EXE)$(EXEC)
 	./$<
 
 $(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)main.o
-	$(Compiler) $^ $(LIBS) -o $@ 
+	$(Compiler) $^ $(LIBS) $(FRAMEWORKS) -o $@ 
 
 all:
 	make $(EXE)$(EXEC)
