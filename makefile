@@ -8,7 +8,7 @@ EXEC=spaceRash.out
 
 #FOR LINUX
 ifeq ($(UNAME), Linux)
-LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
+LIBS= -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
 INCS=-I/usr/include/bullet
 
 
