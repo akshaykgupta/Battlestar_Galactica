@@ -1,6 +1,6 @@
 #ifndef PLAYER_EVENT_CPP
 #define PLAYER_EVENT_CPP
-
+#include "spaceObject.hpp"
 #include "player.hpp"
 inline double absolute(double x) {
 	return (x*((x>=0)?(1):(-1)));
@@ -98,5 +98,9 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
         fire_laser();
     }
 	
+}
+
+void Player::fire_laser() {
+	fighter->fire_laser();
 }
 #endif

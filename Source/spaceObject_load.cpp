@@ -174,5 +174,22 @@ void SpaceObject::readPhysicsFile(){
 	}
 	f.close();
 }
+
+
+
+void SpaceObject::setState(State& shipdata) {
+	btTransform myNewTransform;
+	btVector3 myNewLinearVelocity;
+	btVector3 myNewAngularVelocity;
+	int myNewHealth;
+	int myNewAmmo;
+	OBJECT_TYPE otype;
+	shipdata.getData(myNewHealth, myNewAmmo, myNewTransform, myNewLinearVelocity, myNewAngularVelocity, otype);
+	body->setWorldTransform(myNewTransform);
+	body->setLinearVelocity(myNewLinearVelocity);
+	body->setAngularVelocity(myNewAngularVelocity);
+	//set health, ammo 
+}
+
 	
 #endif

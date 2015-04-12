@@ -5,6 +5,11 @@
 #include "helpers.hpp"
 #include "player.hpp"
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/vector.hpp>
+#include <sstream>
+
 void Player::connectToNetwork(string IP, unsigned short server_port, unsigned short local_port) {
 	network = new NetworkManager(IP, server_port, local_port);
 	myMessage->setData(CONNECTDATA, network->getMyIP(), network->getMyPort());

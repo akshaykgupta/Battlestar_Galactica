@@ -3,10 +3,11 @@ using namespace std;
 /*LIBS=
 -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lsfml-graphics -lsfml-window -lsfml-system -lGL
 */
-//Assume that everything turns up magically from outside :P
+
+
 #include "spaceObject.hpp"
 #include "player.hpp"
-#include "laser.cpp"
+#include "helpers.hpp"
 
 using namespace std;
 int main(int argc, char** argv) {
@@ -54,43 +55,6 @@ int main(int argc, char** argv) {
             if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 running = false;
             }
-            /*
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W)  ) {
-                cout << "front pressed \n";
-                usr->getFighter()->setVelocity(btVector3(0,0,-1.0));
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-                otr->setVelocity(btVector3(0,0,-1.0));
-            }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) ) {
-                cout << "front pressed \n";
-                usr->getFighter()->setVelocity(btVector3(0,0,+1.0));
-            }
-            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ){
-                otr->setVelocity(btVector3(0,0,+1.0));
-            }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) ) {
-                cout << "front pressed \n";
-                usr->getFighter()->setVelocity(btVector3(1.0,0,0.0));
-            }
-            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-                otr->setVelocity(btVector3(1.0,0,0.0));
-            }
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) ) {
-                cout << "front pressed \n";
-                usr->getFighter()->setVelocity(btVector3(-1.0,0,0.0));
-            }
-            if( sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-                otr->setVelocity(btVector3(-1.0,0,0.0));
-            }
-            //--------------------TODO----------------------//
-            //-------------------CAMERA---------------------//
-            //--------------------Accelerate --------------//
-            //--------------------Physics files for max veclocity--------//
-            if ( event.type == sf::Event::MouseButtonPressed ) {
-                cout << "trying to shoot. \n";
-                usr->fire_laser();
-            }*/
             usr->handle_event(event,window);
         }
         // clear the buffers

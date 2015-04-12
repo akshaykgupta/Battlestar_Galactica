@@ -37,14 +37,6 @@ public:
 	OBJECT_TYPE getType();
 	void 	setType(OBJECT_TYPE _type);
 
-	void 	setVelocity(const btVector3&);
-	void 	getVelocity(btVector3&);
-	void 	setAcceleration(const btVector3&);
-	void 	getAcceleration(btVector3&);
-	void 	setRotation(const btVector3&);
-	void 	getRotation(btVector3&);
-	void 	setAngularVelocity(const btVector3&);
-	void 	getAngularVelocity(btVector3&);
 	int 	getHealth();
 	void 	setHealth(int h);
 	void 	getTrans(float* mat);

@@ -6,25 +6,17 @@
 #include <boost/config.hpp>
 #include <string>
 #include <boost/bimap.hpp>
+#include <btBulletDynamicsCommon.h>
+#include <sys/stat.h>
+#include "helpers.hpp"
+inline bool doesFileExist(std::string fname) {
+	struct stat buffer;
+	return (stat( fname.c_str() , &buffer ) == 0 );
+}
 
+using namespace std;
 /* This file contains parsers for user settings. */
 const std::string SETTINGS_FILE = "thereisaspoon.tang";
-
-
-enum KeyboardInput {
-	NONE = -1 ,
-	ACCELERATE, DECELERATE, STRAFE_LEFT, STRAFE_RIGHT, ASCEND, DESCEND, /* Translational Movement */
-	PITCH_UP, PITCH_DOWN, YAW_LEFT, YAW_RIGHT, ROLL_LEFT, ROLL_RIGHT, /* Rotational Movement */
-	TOGGLE_FULLSCREEN, TOGGLE_CAM, /* camera type things. */
-	FIRE_WEAPON , TOGGLE_WEAPON, USE_ABILITY, /* weaponry */
-	ESCAPE, /**/
-	START_CHAT, ESCAPE_CHAT, SEND_CHAT
-
-};
-
-typedef boost::bimap< sf::Keyboard::Key , KeyboardInput > KeyboardMapping;
-typedef KeyboardMapping::value_type keymap_type;
-
 
 //class user settings. 
 /**
@@ -35,24 +27,6 @@ typedef KeyboardMapping::value_type keymap_type;
 		DefaultFullScreen, DefaultScreenSizeX, DefaultScreenSizeY
 		fov HUDCross_r HUDCross_g HUDCross_b
 */
-class UserSettings {
-public:
-	/* Sensitivity and stuff. */
-	std::string name;
-	btVector3 mouseSensitivity;	   //Along x,y,z.
-	KeyboardMapping keyboardMapping;
-	float fov;
-	float HUDCross_r,HUDCross_g,HUDCross_b;
-	int defaultScreenSizeX,defaultScreenSizeY;
-	void set_default();
-	void read_settings(); //Read from setting files.
-	void save_settings(); //Save to setting files
-
-	/* wrappers for the bimap. */
-	void 				updateKeyMap(sf::Keyboard::Key _key , KeyboardInput _action);
-	KeyboardInput 		getAction(sf::Keyboard::Key _key); // -1 returns NONE.
-	sf::Keyboard::Key 	getKey(KeyboardInput _action); //returns -1 if nothing is mapped.
-};
 
 //unbinds value bound to _key, and sets it.
 

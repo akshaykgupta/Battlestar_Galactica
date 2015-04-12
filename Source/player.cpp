@@ -154,4 +154,37 @@ bool Player::collisionCallback(btManifoldPoint& cp,
 	#undef obj2
 	return false;
 }
+
+
+void Player::handleMessage(Message& msg, int network_int) {
+	//I need, the spaceObject's int-index, the spaceObject's linear velocity, angular velocity, health, ammo and so on.
+	if (msg.msgType & CONNECTDATA) {
+		//might need to add to list of clients
+		if(network->getMyIP() != msg.newConnectorIP) { 
+			//check if this client corresponding to this IP and port already exists
+			if(!network->findClient(msg.newConnectorIP, msg.newConnectorPort)) {
+				//if not found then add to list of clients
+				int nextClientId = network->addClient(msg.newConnectorIP, msg.newConnectorPort);
+				//add this spaceObject to list of objects
+				SpaceObject *newObject = new SpaceObject(msg.ship.objType);
+				if( add_object(newObject) ) {
+					int nextPlayerId = getID(newObject);
+					addtoNtoP(nextClientId, nextPlayerId);
+				}
+				//send this message to everyone else
+				myMessage = &msg;
+				sendMessage();
+			}
+		}
+	} else if (msg.msgType & GENDATA) {
+		//get the spaceObject and set its state?
+		SpaceObject* obj = which_spaceObject(network_int);
+		if(obj != nullptr)
+		{
+			obj->setState(msg.ship);
+		}
+	}
+	//TODO LASERDATA etc.
+}
+
 #endif
