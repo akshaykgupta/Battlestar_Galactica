@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
         myport = (unsigned short)atoi(argv[1]);
         connect_to_ip = argv[2];
         connect_to_port = (unsigned short)atoi(argv[3]);
-        usr->getFighter()->getRigidBody()->setPosition(btVector3(0,0,10));
+        usr->getFighter()->getRigidBody()->translate(btVector3(0,0,10));
         usr->connectToNetwork(connect_to_ip , connect_to_port , myport);
     } else {
         cout << "invalid connection type. EXIT\n";
