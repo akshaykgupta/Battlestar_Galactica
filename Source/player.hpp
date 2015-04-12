@@ -103,8 +103,8 @@ public:
 	void race_end();
 	void game_over();
 
-	void startNetwork(unsigned short);
-	void connectToNetwork(string, unsigned short, unsigned short);
+	void startNetwork(string, unsigned short);
+	void connectToNetwork(string, unsigned short, string, unsigned short);
 	void sendMessage();
 	void translateMessage(ClientMessage);
 	void receiveMessage();

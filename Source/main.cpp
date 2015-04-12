@@ -31,20 +31,22 @@ int main(int argc, char** argv) {
     // usr->addToEveryOne(1,otr);
     
     unsigned short myport, connect_to_port;
-    string connect_to_ip;
+    string myip, connect_to_ip;
 
     double dt = 1.0;
-    if (argc==2) {
+    if (argc==3) {
         //listener.
         myport = (unsigned short)atoi(argv[1]);
-        usr->startNetwork(myport);
-    } else if ( argc == 4 ) {
+        myip = argv[2];
+        usr->startNetwork(myip, myport);
+    } else if ( argc == 5 ) {
         //connector.
         myport = (unsigned short)atoi(argv[1]);
-        connect_to_ip = argv[2];
-        connect_to_port = (unsigned short)atoi(argv[3]);
+        myip = argv[2];
+        connect_to_ip = argv[3];
+        connect_to_port = (unsigned short)atoi(argv[4]);
         usr->getFighter()->getRigidBody()->translate(btVector3(0,0,10));
-        usr->connectToNetwork(connect_to_ip , connect_to_port , myport);
+        usr->connectToNetwork(connect_to_ip , connect_to_port , myip , myport);
     } else {
         cout << "invalid connection type. EXIT\n";
         exit(1);

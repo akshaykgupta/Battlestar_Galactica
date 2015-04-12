@@ -10,12 +10,12 @@
 #include <boost/serialization/vector.hpp>
 #include <sstream>
 
-void Player::startNetwork(unsigned short local_port) {
-	network = new NetworkManager(local_port);
+void Player::startNetwork(string local_ip, unsigned short local_port) {
+	network = new NetworkManager(local_ip, local_port);
 }
 
-void Player::connectToNetwork(string IP, unsigned short server_port, unsigned short local_port) {
-	network = new NetworkManager(IP, server_port, local_port);
+void Player::connectToNetwork(string IP, unsigned short server_port, string local_ip, unsigned short local_port) {
+	network = new NetworkManager(IP, server_port, local_ip, local_port);
 	myMessage->setData((int)CONNECTDATA, network->getMyIP(), network->getMyPort());
 	sendMessage();
 }
