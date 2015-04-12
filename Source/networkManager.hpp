@@ -82,7 +82,7 @@ class NetworkManager{
 			sentMessages = 0;
 			sentBytes = 0;
 			remote_endpoint = *iterator;
-			get_client_id(remote_endpoint);
+			insert_client(remote_endpoint);
 		}
 		
 		NetworkManager(unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
