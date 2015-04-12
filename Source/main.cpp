@@ -25,14 +25,30 @@ int main(int argc, char** argv) {
     Player* usr2 = new Player();
     SpaceObject* otr;
     
-    otr = new SpaceObject(UFO);
-    otr->init(usr->getBulletWorld());
-    otr->getRigidBody()->translate(btVector3(0,0,-10));
-    usr->addToEveryOne(1,otr);
+    // otr = new SpaceObject(UFO);
+    // otr->init(usr->getBulletWorld());
+    // otr->getRigidBody()->translate(btVector3(0,0,-10));
+    // usr->addToEveryOne(1,otr);
     
+    unsigned short myport, connect_to_port;
+    string connect_to_ip;
 
     double dt = 1.0;
-
+    if (argc==2) {
+        //listener.
+        myport = (unsigned short)atoi(argv[1]);
+        usr->startNetwork(myport);
+    } else if ( argc == 4 ) {
+        //connector.
+        myport = (unsigned short)atoi(argv[1]);
+        connect_to_ip = argv[2];
+        connect_to_port = (unsigned short)atoi(argv[3]);
+        usr->getFighter()->getRigidBody()->setPosition(btVector3(0,0,10));
+        usr->connectToNetwork(connect_to_ip , connect_to_port , myport);
+    } else {
+        cout << "invalid connection type. EXIT\n";
+        exit(1);
+    }
     
     while (running)
     {
@@ -49,9 +65,6 @@ int main(int argc, char** argv) {
                 usr->setup_game_screen( event.size.width , event.size.height );
                 
             }
-           
-
-            
             if( sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 running = false;
             }

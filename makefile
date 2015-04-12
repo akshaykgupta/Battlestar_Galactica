@@ -11,9 +11,6 @@ ifeq ($(UNAME), Linux)
 LIBS= -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
 INCS=-I/usr/include/bullet
 
-execute: $(EXE)$(EXEC)
-	./$<
-
 $(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)main.o
 	$(Compiler) $^ $(LIBS) -o $@ 
 
@@ -77,6 +74,9 @@ $(OBJ)message.o: $(SRC)message.cpp
 	$(Compiler) -c $^ $(INCS)
 	mv message.o $@
 
+execute: $(EXE)$(EXEC)
+	./$< $1 $2 $3
+
 clean:
 	rm $(EXE)$(EXEC) *.tang $(OBJ)*
 
@@ -87,9 +87,6 @@ ifeq ($(UNAME), Darwin)
 LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread-mt -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 INCS=-I /usr/local/Cellar/bullet/2.82/include/bullet/
 FRAMEWORKS=-framework OpenGL -framework GLUT
-
-execute: $(EXE)$(EXEC)
-	./$<
 
 $(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)main.o
 	$(Compiler) $^ $(LIBS) $(FRAMEWORKS) -o $@ 
@@ -153,6 +150,9 @@ $(OBJ)weapon.o: $(SRC)weapon.cpp
 $(OBJ)message.o: $(SRC)message.cpp
 	$(Compiler) -c $^ $(INCS)
 	mv message.o $@
+
+execute: $(EXE)$(EXEC)
+	./$< $1 $2 $3
 
 clean:
 	rm $(EXE)$(EXEC) *.tang $(OBJ)*

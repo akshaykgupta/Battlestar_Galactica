@@ -32,6 +32,7 @@ void Player::init_fighter() {
 //	fighter->initCommunications(myState , myMessage); //TODO
 	fighter->init(bulletWorld);
 	//fighter->setVelocity(btVector3(0,0,-5.0));
+	fighter->initCommunications(myState , myMessage);
 }
 
 
@@ -172,6 +173,8 @@ void Player::handleMessage(Message& msg, int network_int) {
 					addtoNtoP(nextClientId, nextPlayerId);
 				}
 				//send this message to everyone else
+				myMessage->setData(CONNECTDATA, network->getMyIP(), network->getMyPort());
+				sendMessage();
 				myMessage = &msg;
 				sendMessage();
 			}

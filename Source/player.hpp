@@ -103,6 +103,7 @@ public:
 	void race_end();
 	void game_over();
 
+	void startNetwork(unsigned short);
 	void connectToNetwork(string, unsigned short, unsigned short);
 	void sendMessage();
 	void translateMessage(ClientMessage);
@@ -114,7 +115,7 @@ public:
 	bool add_object(SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	
 	void fire_laser();
-	void toggle_camera(double winX, double winY);
+	void toggle_camera(double, double);
 	/** gets and sets */
 	UserSettings* 	getSettings();
 	BulletWorld* 	getBulletWorld();
