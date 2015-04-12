@@ -1,4 +1,4 @@
-#include "networkManager.h"
+#include "networkManager.hpp"
 
 NetworkManager::~NetworkManager(){
 	io_service.stop();

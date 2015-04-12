@@ -19,7 +19,7 @@ struct State {
 		objType = ASTEROID;
 	}
 	
-	State(){}
+	~State(){}
 
 	State(State& other) {
 		health = other.health;
@@ -58,7 +58,7 @@ struct State {
 		objType = _t;
 	}
 
-	void setData(int h,int am, btTransform& t, btVector3& lv , btVector3& av, OBJECT_TYPE _t) {
+	void setData(int h,int am, btTransform& t, btVector3& lv , btVector3& av, OBJECT_TYPE& _t) {
 		health = h;
 		ammo = am;
 		float temp[16];
@@ -200,16 +200,16 @@ struct Message {
 
 	void setData( int prot , State* state , Weapon* wpn ) {
 		msgType = prot;
-		ship = state;
+		ship = *state;
 		wpnType = wpn->type;
 		laserFrom.clear();
-		laserFrom.push_back(_laserFrom.getX());
-		laserFrom.push_back(_laserFrom.getY());
-		laserFrom.push_back(_laserFrom.getZ());
+		laserFrom.push_back(wpn->last_from.getX());
+		laserFrom.push_back(wpn->last_from.getY());
+		laserFrom.push_back(wpn->last_from.getZ());
 		laserTo.clear();
-		laserTo.push_back(_laserTo.getX());
-		laserTo.push_back(_laserTo.getY());
-		laserTo.push_back(_laserTo.getZ());
+		laserTo.push_back(wpn->last_to.getX());
+		laserTo.push_back(wpn->last_to.getY());
+		laserTo.push_back(wpn->last_to.getZ());
 		return;
 	}
 
