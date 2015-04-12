@@ -15,7 +15,7 @@ void Player::sendMessage() {
 	std::ostringstream archive_stream;
 	boost::archive::text_oarchive archive(archive_stream);
 	archive << (*myMessage);
-	string message = archive_stream.str();
+	std::string message = archive_stream.str();
 	network.SendToAll(message);
 }
 
@@ -27,7 +27,7 @@ void Player::translateMessage(ClientMessage inMessage) {
 	handleMessage(message, inMessage.second);
 }
 
-void receiveMessage() {
+void Player::receiveMessage() {
 	ClientMessage inMessage = network->popMessage();
 	if(inMessage.first != "")
 		translateMessage(inMessage);

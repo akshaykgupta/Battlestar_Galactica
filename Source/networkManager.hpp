@@ -1,3 +1,6 @@
+#ifndef NETWORK_MANAGER_HPP
+#define NETWORK_MANAGER_HPP
+
 #include <boost/array.hpp>
 #include <boost/bimap.hpp>
 #include <boost/asio.hpp>
@@ -25,7 +28,7 @@ class NetworkManager{
 		boost::asio::ip::udp::socket socket;
 		boost::asio::ip::udp::endpoint server_endpoint;
 		boost::asio::ip::udp::endpoint remote_endpoint;
-		string myIP;
+		std::string myIP;
 		unsigned short myPort;
 		boost::thread service_thread;
 
@@ -69,7 +72,7 @@ class NetworkManager{
 		NetworkManager(string IP, unsigned short server_port, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
 		{
 			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
+			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< std::string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
 			myIP = socket.local_endpoint().address().to_string();
 			myPort = socket.local_endpoint().port();
@@ -93,7 +96,7 @@ class NetworkManager{
 		
 		unsigned long long addClient(string IP, unsigned short server_port) {
 			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
+			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< std::string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
 			myIP = socket.local_endpoint().address().to_string();
 			myPort = socket.local_endpoint().port();
@@ -147,12 +150,12 @@ class NetworkManager{
 
 		bool findClient(string ip, unsigned short port) {
 			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< string >(server_port));
+			boost::asio::ip::udp::resolver::query query(udp::v4(), ip, boost::lexical_cast< std::string >(port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
 			myIP = socket.local_endpoint().address().to_string();
 			myPort = socket.local_endpoint().port();
 			remote_endpoint = *iterator;
-			auto cit = clients.right.find(endpoint);
+			auto cit = clients.right.find(remote_endpoint);
 		    if (cit != clients.right.end())
 		    	return true;
 		    else
@@ -182,7 +185,7 @@ class NetworkManager{
 			else return make_pair("", -1);
 		}
 
-	    string getMyIp() {
+	    std::string getMyIp() {
 			return myIP;
 		}
 
@@ -196,3 +199,5 @@ class NetworkManager{
 		unsigned long long GetStatSentBytes()        {return sentBytes;}
 
 };
+
+#endif

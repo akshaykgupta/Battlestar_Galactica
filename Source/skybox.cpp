@@ -1,7 +1,7 @@
 #ifndef skybox_cpp
 #define skybox_cpp
 #include "skybox.hpp"
-SkyBox::SkyBox(const string &path){
+SkyBox::SkyBox(const std::string &path){
 	imgPath = path;
 }
 

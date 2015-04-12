@@ -82,7 +82,7 @@ void SpaceObject::physics_init() {
 
 
 void SpaceObject::createCompoundShape() {
-	//Child transforms are all in the vectors.
+	//Child transforms are all in the std::vectors.
 	shape = new btCompoundShape();
 	for(int i=0; i< children.size(); ++i) {
 		shape->addChildShape(childTransform[i] , children[i]);
@@ -118,18 +118,18 @@ void SpaceObject::readPhysicsFile(){
 		return;
 	}
 	int count=0;
-	string temp;
+	std::string temp;
 	float temp2;
 	/*getline(f,temp);
-	stringstream mTemp(temp);
+	std::stringstream mTemp(temp);
 	mTemp>>temp2;
 	mass = temp2;
 	count++;	*/
 	while(getline(f,temp)){
 		count++;
-		vector<float> ans;
+		std::vector<float> ans;
 		istringstream s(temp);
-		string line_type = "";
+		std::string line_type = "";
 		s >> line_type;
 		while(!s.eof()){
 			s>>temp2;

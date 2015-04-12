@@ -1,4 +1,5 @@
-
+#ifndef TIMERS_CPP
+#define TIMERS_CPP
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/steady_timer.hpp>
 #include <chrono>
@@ -45,3 +46,4 @@ using namespace boost::asio;
     thread1.join();
     thread2.join();
   }
+#endif

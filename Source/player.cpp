@@ -45,7 +45,7 @@ void Player::playMusic(bool dflag){
 		return;
 	}
 	bool isSoundThere = false;
-    string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;
+    std::string path = MUSIC_RSC_DIR+SW_MUSIC+MUSIC_EXTENSION;
 	//sf::Music music;
     music = new sf::Music;
     cout<<path.c_str()<<"\n";

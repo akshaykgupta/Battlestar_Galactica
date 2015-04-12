@@ -1,5 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
 #include "helpers.hpp"
 #include "spaceObject.hpp"
@@ -14,6 +14,11 @@ typedef boost::bimap< int, SpaceObject* > spaceObjWeed;
 typedef spaceObjWeed::value_type spaceObjWeedNormal;
 typedef spaceObjWeed::left_value_type spaceObjWeedLeft; 
 typedef spaceObjWeed::right_value_type spaceObjWeedRight;
+
+typedef boost::bimap<int,int> NtoPType;
+typedef NtoPType::value_type NtoPTypeNormal;
+typedef NtoPType::left_value_type NtoPTypeLeft;
+typedef NtoPType::right_value_type NtoPTypeRight;
 struct HUD{
 //Elements to show on the screen.
 
@@ -32,7 +37,7 @@ private:
 
 	/* network integration */
 	State* myState;
-	boost::bimap<int,int> NtoP;  // for every network int,there must be a player int
+	NtoPType NtoP;  // for every network int,there must be a player int
 	NetworkManager* network;
 	Message* myMessage;
 	/* Rendering geometry */
@@ -54,10 +59,10 @@ public:
 	~Player();
 	SpaceObject* which_spaceObject(int network_int){
 		// if present,return
-		auto cit = NtoP.right.find(network_int);
-		if (cit != NtoP.right.end())
+		auto cit = NtoP.left.find(network_int);
+		if (cit != NtoP.left.end())
 	    {
-	    	int player_int = *cit;
+	    	int player_int = cit->second;
 	    	// return spaceobject corresponding to this player_int
 	    	getSpaceObject(player_int);
 	    }
@@ -67,7 +72,9 @@ public:
 	}
 
 	bool addtoNtoP(int network_int, int player_int) {
-		//add the pair of network_int and player_int to the bimap.
+		//TODO: add the pair of network_int and player_int to the bimap.
+		NtoP.insert(NtoPTypeNormal(network_int,player_int));
+		return true;
 	}
 		
 	void init_bulletWorld();

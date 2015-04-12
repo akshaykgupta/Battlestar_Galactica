@@ -1,5 +1,6 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
+using namespace std;
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -9,8 +10,8 @@
 struct State {
 	int health;
 	int ammo;
-	vector<float> transform; //position, rotation.
-	vector<float> linearVelocity, angularVelocity;
+	std::vector<float> transform; //position, rotation.
+	std::vector<float> linearVelocity, angularVelocity;
 	OBJECT_TYPE objType;
 	
 	State() {
@@ -109,7 +110,7 @@ struct Message {
 	State ship; //general data - includes myShip details.
 	//collision data, is essentially health and new transform.
 	std::string chatMessage;	 //chat data.
-	vector<float> laserFrom,laserTo; //laser data. LINE SEGMENT.
+	std::vector<float> laserFrom,laserTo; //laser data. LINE SEGMENT.
 	WEAPON_TYPE wpnType;
 	/* Connection data */
 	std::string newConnectorIP;
@@ -122,7 +123,7 @@ struct Message {
 	Message(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
 		btVector3& _laserFrom , btVector3& _laserTo , WEAPON_TYPE& _wpnType , 
-		std::string ip = "" , unsigned short myPort = 0, std::string chatmsg = "" , std::string worldfile = "") : 
+		std::string ip = "" , unsigned short port = 0, std::string chatmsg = "" , std::string worldfile = "") : 
 	    ship(h, am, t, velo, avelo , _t) {
 		
 		msgType = prot;

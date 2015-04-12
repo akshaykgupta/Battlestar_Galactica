@@ -1,3 +1,5 @@
+#ifndef NETWORK_MANAGER_CPP
+#define NETWORK_MANAGER_CPP
 #include "networkManager.hpp"
 
 NetworkManager::~NetworkManager(){
@@ -28,3 +30,4 @@ void NetworkManager::handle_receive(const boost::system::error_code& error, std:
 
 	start_receive();
 }
+#endif

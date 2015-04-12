@@ -1,5 +1,6 @@
 #ifndef LASER_CPP
 #define LASER_CPP
+using namespace std;
 
 #include "player.hpp"
 #include "spaceObject.hpp"

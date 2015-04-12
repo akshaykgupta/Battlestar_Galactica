@@ -1,6 +1,7 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 /** c++ includes */
+using namespace std;
 
 #include <sys/stat.h>
 
@@ -11,6 +12,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 /** physics includes */
 #include <btBulletDynamicsCommon.h>
 
@@ -124,8 +127,8 @@ struct PlayerInfo {
 class SpaceObject; //forward declaration.
 struct WorldState {
 	//needs to contain a lot of stuff.
-	vector<PlayerInfo> playerInfo;
-	vector<SpaceObject> objectsInSpace;
+	std::vector<PlayerInfo> playerInfo;
+	std::vector<SpaceObject> objectsInSpace;
 };
 
 /** event */

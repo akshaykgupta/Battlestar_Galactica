@@ -11,7 +11,9 @@ void SpaceObject::initCommunications(State* state, Message* msg) {
 void SpaceObject::makeMessage(State* state,  Message* msg) {
 	btTransform myTransform;
 	body->getMotionState()->getWorldTransform(myTransform);
-	state->setData( health, weapons[activeWeapon]->ammo , myTransform , body->getLinearVelocity() ,  body->getAngularVelocity() , obj_type);
+	btVector3 lv = body->getLinearVelocity();
+	btVector3 av = body->getAngularVelocity();
+	state->setData( health, weapons[activeWeapon]->ammo , myTransform , lv ,  av , obj_type);
 
 	msg->setData(
 		GENDATA , 

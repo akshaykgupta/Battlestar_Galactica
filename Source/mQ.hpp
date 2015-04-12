@@ -1,6 +1,7 @@
 #include <boost/thread/mutex.hpp>
 #include <queue>
 #include <list>
+using namespace std;
 
 template <typename T>
 class message_queue{
