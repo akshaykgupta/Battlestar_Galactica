@@ -122,14 +122,17 @@ void Player::toggle_camera(double x, double y) {
 }
 
 
-bool Player::add_object(SpaceObject* OBJ){
+bool Player::add_object(SpaceObject*& OBJ){
 	if( addToEveryOne(nextSpaceObjId, OBJ) )
+	{
 		nextSpaceObjId++;
+		return true;
+	}
 	else
 		return false;
 }
 
-bool Player::addToEveryOne(int ID,SpaceObject* OBJ){
+bool Player::addToEveryOne(int ID,SpaceObject*& OBJ){
 	if(!OBJ){
 		cout<<"NULL OBJECT PASSED \n";
 		return false;
@@ -168,6 +171,7 @@ void Player::handleMessage(Message& msg, int network_int) {
 				int nextClientId = network->addClient(msg.newConnectorIP, msg.newConnectorPort);
 				//add this spaceObject to list of objects
 				SpaceObject *newObject = new SpaceObject(msg.ship.objType);
+				newObject->init(bulletWorld);
 				if( add_object(newObject) ) {
 					int nextPlayerId = getID(newObject);
 					addtoNtoP(nextClientId, nextPlayerId);

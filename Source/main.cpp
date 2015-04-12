@@ -80,6 +80,7 @@ int main(int argc, char** argv) {
         //usr->getFighter()->render(true);
         // end the current frame (internally swaps the front and back buffers)
         window.display();
+        usr->receiveMessage();
     }
     delete usr;
 	return 1;

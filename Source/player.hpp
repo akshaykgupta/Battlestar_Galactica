@@ -111,8 +111,8 @@ public:
 	void handleMessage(Message&, int);
 
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
-	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
-	bool add_object(SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
+	bool addToEveryOne(int,SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
+	bool add_object(SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	
 	void fire_laser();
 	void toggle_camera(double, double);

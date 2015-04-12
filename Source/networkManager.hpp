@@ -177,6 +177,7 @@ class NetworkManager{
 
 		void SendToAll(const std::string& message){
 			typedef ClientList::const_iterator it;
+			cout << (int) clients.size() << "\n";
 			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ) {
 				SendToClient(message,iter->left);
 			}
