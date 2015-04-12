@@ -1,6 +1,7 @@
 #ifndef skybox_cpp
 #define skybox_cpp
 #include "skybox.hpp"
+#include <iostream>
 SkyBox::SkyBox(const std::string &path){
 	imgPath = path;
 }
@@ -12,12 +13,12 @@ SkyBox::~SkyBox(){
 void SkyBox::setImage(){
 	box = new sf::Image;
 	if(!box->loadFromFile(imgPath)){
-		cout<<"ERROR: IMAGE DID NOT LOAD \n";
+		std::cout<<"ERROR: IMAGE DID NOT LOAD \n";
 		return;
 	}
 	texture = new sf::Texture;
 	if(!texture->loadFromImage(*box)){
-		cout<<"ERROR: TEXTURE CANNOT BE LOADED \n";
+		std::cout<<"ERROR: TEXTURE CANNOT BE LOADED \n";
 		return;
 	}
 }

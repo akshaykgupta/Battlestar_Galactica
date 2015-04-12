@@ -3,7 +3,7 @@
 
 #include "player.hpp"
 #include "spaceObject.hpp"
-#include "helper.hpp"
+#include "helpers.hpp"
 
 void Player::handleMessage(Message& msg, int network_int) {
 	//I need, the spaceObject's int-index, the spaceObject's linear velocity, angular velocity, health, ammo and so on.
@@ -11,17 +11,17 @@ void Player::handleMessage(Message& msg, int network_int) {
 		//might need to add to list of clients
 		if(network->getMyIP() != msg.newConnectorIP) { 
 			//check if this client corresponding to this IP and port already exists
-			if(!findClient(msg.newConnectorIP, msg.newConnectorPort)) {
+			if(!network->findClient(msg.newConnectorIP, msg.newConnectorPort)) {
 				//if not found then add to list of clients
-				int nextClientId = addClient(msg.newConnectorIP, msg.newConnectorPort);
+				int nextClientId = network->addClient(msg.newConnectorIP, msg.newConnectorPort);
 				//add this spaceObject to list of objects
-				spaceObject *newObject = new spaceobject(msg.ship.objType);
+				SpaceObject *newObject = new SpaceObject(msg.ship.objType);
 				if( add_object(newObject) ) {
 					int nextPlayerId = getID(newObject);
 					addtoNtoP(nextClientId, nextPlayerId);
 				}
 				//send this message to everyone else
-				myMessage = msg;
+				myMessage = &msg;
 				sendMessage();
 			}
 		}

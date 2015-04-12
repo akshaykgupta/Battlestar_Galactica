@@ -3,12 +3,8 @@
 
 #include "helpers.hpp"
 #include "spaceObject.hpp"
-#include "spaceObject_load.cpp"
-#include "spaceObject_render.cpp"
-#include "spaceObject_event.cpp"
-#include "spaceObject_getsets.cpp"
-#include "networkManager.cpp"
-#include "skybox.cpp"
+#include "networkManager.hpp"
+#include "skybox.hpp"
 
 typedef boost::bimap< int, SpaceObject* > spaceObjWeed;
 typedef spaceObjWeed::value_type spaceObjWeedNormal;
@@ -106,7 +102,13 @@ public:
 	void race_begin();
 	void race_end();
 	void game_over();
-	
+
+	void connectToNetwork(string, unsigned short, unsigned short);
+	void sendMessage();
+	void translateMessage(ClientMessage);
+	void receiveMessage();
+	void handleMessage(Message&, int);
+
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	bool add_object(SpaceObject*); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//

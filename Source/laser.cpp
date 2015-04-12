@@ -7,9 +7,7 @@ using namespace std;
 /* it renders a laser on the screen. It is shot from the Location to the front. */
 void Player::fire_laser() {
 	fighter->fire_laser();
-
 }
-
 
 void SpaceObject::fire_laser() {
 	btTransform trans;
@@ -30,6 +28,7 @@ void SpaceObject::fire_laser() {
 	} //else, do nothing.
 	weapons[activeWeapon] -> fireProjectile(from,to);
 }
+
 void SpaceObject::hit_by_laser() {
 	std::cout << "i was hit by a laser. ";
 }

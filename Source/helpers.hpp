@@ -142,4 +142,5 @@ struct GameEvent {
 #include "userSettings.hpp"
 #include "weapon.hpp"
 #include "message.hpp"
+
 #endif

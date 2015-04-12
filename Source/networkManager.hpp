@@ -183,10 +183,14 @@ class NetworkManager{
 			if(!messages.empty())
 				return messages.pop();
 			else return make_pair("", -1);
+		
+}
+	    std::string getMyIP() {
+			return myIP;
 		}
 
-	    std::string getMyIp() {
-			return myIP;
+		unsigned short getMyPort() {
+			return myPort;
 		}
 
 		long long numberOfClients() {

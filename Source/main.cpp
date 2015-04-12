@@ -4,15 +4,8 @@ using namespace std;
 -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lsfml-graphics -lsfml-window -lsfml-system -lGL
 */
 //Assume that everything turns up magically from outside :P
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/OpenGL.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
 #include "spaceObject.hpp"
-#include "player.cpp"
-#include "player_getsets.cpp"
-#include "player_event.cpp"
+#include "player.hpp"
 #include "laser.cpp"
 
 using namespace std;

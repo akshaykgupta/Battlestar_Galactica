@@ -1,13 +1,13 @@
 #ifndef NETWORK_INTEGRATION_CPP
 #define NETWORK_INTEGRATION_CPP
 
-#include "networkManager.cpp"
+#include "networkManager.hpp"
 #include "helpers.hpp"
-#include "player.cpp"
+#include "player.hpp"
 
-void Player::connectToNetwork(string IP, unsigned short server_port, unsigned int local_port) {
+void Player::connectToNetwork(string IP, unsigned short server_port, unsigned short local_port) {
 	network = new NetworkManager(IP, server_port, local_port);
-	myMessage->setData(CONNECTDATA, myIP, myPort);
+	myMessage->setData(CONNECTDATA, network->getMyIP(), network->getMyPort());
 	std::ostringstream archive_stream;
 }
 
@@ -16,7 +16,7 @@ void Player::sendMessage() {
 	boost::archive::text_oarchive archive(archive_stream);
 	archive << (*myMessage);
 	std::string message = archive_stream.str();
-	network.SendToAll(message);
+	network->SendToAll(message);
 }
 
 void Player::translateMessage(ClientMessage inMessage) {
