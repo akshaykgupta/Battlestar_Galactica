@@ -121,7 +121,7 @@ enum MESSAGE_PROTOCOL { GENDATA=1 , //use these messages as an internal protocol
 					COLLISIONDATA=4,
 					CHATDATA=8,
 					CONNECTDATA=16,
-					PINGDATA=32
+					SETCONNECTDATA=32
 };
 /** enum Event Type is the protocol between NetworkManager and Player */
 enum PLAYER_PROTOCOL { //push these messages into the player's queue.

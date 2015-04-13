@@ -39,6 +39,8 @@ int main(int argc, char** argv) {
         myport = (unsigned short)atoi(argv[1]);
         myip = argv[2];
         usr->startNetwork(myip, myport);
+        usr->started(true);
+        
     } else if ( argc == 5 ) {
         //connector.
         myport = (unsigned short)atoi(argv[1]);

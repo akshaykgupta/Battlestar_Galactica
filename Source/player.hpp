@@ -24,6 +24,8 @@ class Player {
 private:
 	/* misc data. */
 	bool didStart;
+	bool hasSetInitialPosition;
+
 	bool rotatePressed;
 	int nextSpaceObjId;
 	OBJECT_TYPE fighterType;
@@ -55,6 +57,8 @@ public:
 	~Player();
 
 	bool started() { return didStart; }
+	void started(bool _didStart) { didStart = _didStart; }
+
 	SpaceObject* which_spaceObject(int network_int);
 
 	bool addtoNtoP(int network_int, int player_int);
@@ -99,7 +103,8 @@ public:
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	bool add_object(SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
-	
+	void getNextValidPosition(btVector3&); //------The player who starts the game requires this function----//
+
 	void fire_laser();
 	void toggle_camera(double, double);
 	/** gets and sets */

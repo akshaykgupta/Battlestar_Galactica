@@ -6,7 +6,7 @@ Player::Player() {
 	//network = new NetworkManager();
 
 	nextSpaceObjId = 0;
-	skybox_size = 512;
+	skybox_size = 1024;
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
@@ -15,6 +15,8 @@ Player::Player() {
 	skybox = new SkyBox(SKYBOX_IMG);
 	skybox->setImage();
 	camera_idx = 0;
+	didStart = false;
+	hasSetInitialPosition = false;
 }
 
 Player::~Player() {
@@ -179,10 +181,22 @@ bool Player::collisionCallback(btManifoldPoint& cp,
 	return false;
 }
 
+void Player::getNextValidPosition(btVector3& lv) {
+	if(didStart)
+	{
+		int nextPlayer = (int) NtoP.size() + 1;
+		lv.setY(0);
+		lv.setZ(0);
+		if(nextPlayer & 1)
+			lv.setX(((nextPlayer + 1) / 2) * 10);
+		else
+			lv.setX((nextPlayer / 2) * -10);
+	}
+}
 
 void Player::handleMessage(Message msg, int network_int) {
 	//I need, the spaceObject's int-index, the spaceObject's linear velocity, angular velocity, health, ammo and so on.
-	if (msg.msgType & CONNECTDATA) {
+	if ((msg.msgType & CONNECTDATA) && didStart) {
 		//might need to add to list of clients
 		if(network->getMyIP() != msg.newConnectorIP) { 
 			//check if this client corresponding to this IP and port already exists
@@ -198,7 +212,51 @@ void Player::handleMessage(Message msg, int network_int) {
 					addtoNtoP(nextClientId, nextPlayerId);
 				}
 				//send this message to everyone else
-				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
+				myMessage->setData((int) SETCONNECTDATA, network->getMyIP(), network->getMyPort());
+				btVector3 mylv = fighter->getRigidBody()->getCenterOfMassPosition();
+				(myMessage->ship).linearVelocity.clear();
+				(myMessage->ship).linearVelocity.push_back(mylv.getX());
+				(myMessage->ship).linearVelocity.push_back(mylv.getY());
+				(myMessage->ship).linearVelocity.push_back(mylv.getZ());
+				sendMessage();
+				*(myMessage) = msg;
+				btVector3 lv(0, 0, 0);
+				getNextValidPosition(lv);
+				(myMessage->ship).linearVelocity.clear();
+				(myMessage->ship).linearVelocity.push_back(lv.getX());
+				(myMessage->ship).linearVelocity.push_back(lv.getY());
+				(myMessage->ship).linearVelocity.push_back(lv.getZ());
+				sendMessage();
+			}
+		}
+	}
+	else if ((msg.msgType & SETCONNECTDATA) && !didStart) {
+		if(network->getMyIP() != msg.newConnectorIP) { 
+			//check if this client corresponding to this IP and port already exists
+			long long client_id = network->get_client_id(msg.newConnectorIP, msg.newConnectorPort);
+			if(client_id == -1) {
+				//if not found then add to list of clients
+				int nextClientId = network->addClient(msg.newConnectorIP, msg.newConnectorPort);
+				//add this spaceObject to list of objects
+				SpaceObject *newObject = new SpaceObject(msg.ship.objType);
+				newObject->init(bulletWorld);
+				btVector3 newPos;
+				newPos.setX(msg.ship.linearVelocity[0]);
+				newPos.setY(msg.ship.linearVelocity[1]);
+				newPos.setZ(msg.ship.linearVelocity[2]);
+				newObject->getRigidBody()->translate(newPos);
+
+				if( add_object(newObject) ) {
+					int nextPlayerId = getID(newObject);
+					addtoNtoP(nextClientId, nextPlayerId);
+				}
+				//send this message to everyone else
+				myMessage->setData((int) SETCONNECTDATA, network->getMyIP(), network->getMyPort());
+				btVector3 mylv = fighter->getRigidBody()->getCenterOfMassPosition();
+				(myMessage->ship).linearVelocity.clear();
+				(myMessage->ship).linearVelocity.push_back(mylv.getX());
+				(myMessage->ship).linearVelocity.push_back(mylv.getY());
+				(myMessage->ship).linearVelocity.push_back(mylv.getZ());
 				sendMessage();
 				*(myMessage) = msg;
 				sendMessage();
@@ -206,17 +264,38 @@ void Player::handleMessage(Message msg, int network_int) {
 			else if(which_spaceObject(client_id) == nullptr) {
 				SpaceObject *newObject = new SpaceObject(msg.ship.objType);
 				newObject->init(bulletWorld);
+				btVector3 newPos;
+				newPos.setX(msg.ship.linearVelocity[0]);
+				newPos.setY(msg.ship.linearVelocity[1]);
+				newPos.setZ(msg.ship.linearVelocity[2]);
+				newObject->getRigidBody()->translate(newPos);
+
 				if( add_object(newObject) ) {
 					int nextPlayerId = getID(newObject);
 					addtoNtoP(client_id, nextPlayerId);
 				}
-				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
+				myMessage->setData((int) SETCONNECTDATA, network->getMyIP(), network->getMyPort());
+				btVector3 mylv = fighter->getRigidBody()->getCenterOfMassPosition();
+				(myMessage->ship).linearVelocity.clear();
+				(myMessage->ship).linearVelocity.push_back(mylv.getX());
+				(myMessage->ship).linearVelocity.push_back(mylv.getY());
+				(myMessage->ship).linearVelocity.push_back(mylv.getZ());
 				sendMessage();
 				myMessage = &msg;
 				sendMessage();
 			}
 		}
-	} else if (msg.msgType & GENDATA) {
+		else if(!hasSetInitialPosition)
+		{
+			btVector3 newPos;
+			newPos.setX(msg.ship.linearVelocity[0]);
+			newPos.setY(msg.ship.linearVelocity[1]);
+			newPos.setZ(msg.ship.linearVelocity[2]);
+			fighter->getRigidBody()->translate(newPos);
+			hasSetInitialPosition = true;
+		}
+	}
+	else if (msg.msgType & GENDATA) {
 		//get the spaceObject and set its state?
 		SpaceObject* obj = which_spaceObject(network_int);
 		if(obj != nullptr)

@@ -180,7 +180,6 @@ void Message::setData(int prot, std::string ip/* = ""*/, unsigned short port /*=
 	msgType = prot;
 }
 
-
 void Message::setData( int prot , State* state , Weapon* wpn ) {
 	msgType = prot;
 	ship = *state;
