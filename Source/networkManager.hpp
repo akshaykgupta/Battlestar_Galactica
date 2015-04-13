@@ -101,8 +101,6 @@ class NetworkManager{
 			boost::asio::ip::udp::resolver resolver(io_service);
 			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< std::string >(server_port));
 			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
-			myIP = socket.local_endpoint().address().to_string();
-			myPort = socket.local_endpoint().port();
 			remote_endpoint = *iterator;
 			insert_client(remote_endpoint);
 			return nextClientID;
