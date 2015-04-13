@@ -23,7 +23,7 @@ struct HUD{
 class Player {
 private:
 	/* misc data. */
-
+	bool didStart;
 	bool rotatePressed;
 	int nextSpaceObjId;
 	OBJECT_TYPE fighterType;
@@ -53,6 +53,8 @@ private:
 public:
 	Player();
 	~Player();
+
+	bool started() { return didStart; }
 	SpaceObject* which_spaceObject(int network_int);
 
 	bool addtoNtoP(int network_int, int player_int);
