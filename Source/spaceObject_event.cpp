@@ -47,32 +47,50 @@ void SpaceObject::rotate(double pitch, double yaw) {
 
 //KEYBOARD FUNCTIONS AHEAD!
 void SpaceObject::accelerate() {
+	cout<<body->getLinearVelocity().length2()<<" "<<maxVelocity<<"\n";
+	if(body->getLinearVelocity().length2()>maxVelocity){
+		return;
+	}
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,-1));
 	localZAxis*=scalingAcceleration;
-	cout<<localZAxis.getX()<<" "<<localZAxis.getY()<<" "<<localZAxis.getZ()<<"\n";
 	body->applyCentralImpulse(localZAxis);
 }
 void SpaceObject::decelerate() {
+	if(body->getLinearVelocity().length2()>maxVelocity){
+		return;
+	}
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,1));
 	localZAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localZAxis);
 }
 void SpaceObject::strafe_left() {
+	if(body->getLinearVelocity().length2()>maxVelocity){
+		return;
+	}
 	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(-1,0,0));
 	localXAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localXAxis);
 }
 void SpaceObject::strafe_right() {
+	if(body->getLinearVelocity().length2()>maxVelocity){
+		return;
+	}
 	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(1,0,0));
 	localXAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localXAxis);
 }
 void SpaceObject::ascend() {
+	if(body->getLinearVelocity().length2()>maxVelocity){
+		return;
+	}
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,1,0));
 	localYAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localYAxis);
 }
 void SpaceObject::descend() {
+	if(body->getLinearVelocity().length2()>maxVelocity){
+		return;
+	}
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,-1,0));
 	localYAxis*=scalingAcceleration;
 	body->applyCentralImpulse(localYAxis);
@@ -80,34 +98,52 @@ void SpaceObject::descend() {
 
 
 void SpaceObject::pitch_up() {
+	if(body->getAngularVelocity().length2()>maxOmega){
+		return;
+	}
 	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(1,0,0));
 	localXAxis*=scalingOmega;
 	body->applyTorque(localXAxis);
 
 }
 void SpaceObject::pitch_down() {
+	if(body->getAngularVelocity().length2()>maxOmega){
+		return;
+	}
 	btVector3 localXAxis  = quatRotate(body->getOrientation(),btVector3(-1,0,0));
 	localXAxis*=scalingOmega;
 	body->applyTorque(localXAxis);
 }
 void SpaceObject::yaw_left() {
+	if(body->getAngularVelocity().length2()>maxOmega){
+		return;
+	}
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,1,0));
 	localYAxis*=scalingOmega;
 	body->applyTorque(localYAxis);
 }
 void SpaceObject::yaw_right() {
+	if(body->getAngularVelocity().length2()>maxOmega){
+		return;
+	}
 	btVector3 localYAxis  = quatRotate(body->getOrientation(),btVector3(0,-1,0));
 	localYAxis*=scalingOmega;
 	body->applyTorque(localYAxis);
 }
 void SpaceObject::roll_left() {
+	if((body->getAngularVelocity().length2())>(maxOmega*100.0)){
+		return;
+	}
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,1));
-	localZAxis*=scalingOmega;
+	localZAxis*=30.0*scalingOmega;
 	body->applyTorque(localZAxis);
 }
 void SpaceObject::roll_right() {
+	if((body->getAngularVelocity().length2())>(maxOmega*100.0)){
+		return;
+	}
 	btVector3 localZAxis  = quatRotate(body->getOrientation(),btVector3(0,0,-1));
-	localZAxis*=scalingOmega;
+	localZAxis*=30.0*scalingOmega;
 	body->applyTorque(localZAxis);
 }
 
