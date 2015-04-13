@@ -7,6 +7,43 @@ NetworkManager::~NetworkManager(){
 	service_thread.join();
 }
 
+
+void NetworkManager::detectDeath(){
+	
+	boost::mutex::scoped_lock lock(mutex);
+	for (int i = 0; i < timeLeft.size(); i++){
+		if (clock() - timeLeft[i] >= time_out) 
+		 	{
+		 		has_dropped[i] = true;
+
+		 	}
+	}
+
+}
+
+
+long long NetworkManager::dropped_id(){
+	
+	boost::mutex::scoped_lock lock(mutex);
+	typedef unordered_map<long long, bool>::iterator _itr;
+	_itr _end = has_dropped.end();
+	for (_itr it = has_dropped.begin(); it != _end; it++)
+	{
+		if (it->second)
+			return it->first;
+	}
+
+	return -1;
+
+}
+
+void NetworkManager::handleDrops(){
+	for (int i = 0; i < has_dropped.size(); i++)
+		if (has_dropped[i] == true)
+			//
+}
+
+
 NetworkManager::NetworkManager(string IP, unsigned short server_port, string local_ip, unsigned short local_port) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
 {
 	boost::asio::ip::udp::resolver resolver(io_service);
@@ -63,7 +100,12 @@ void NetworkManager::handle_receive(const boost::system::error_code& error, std:
 	   	ClientMessage message = ClientMessage(std::string(recv_buffer.data(), recv_buffer.data() + bytes_transferred),  get_client_id(remote_endpoint));
 		if (!message.first.empty())
 		{
+			boost::mutex::scoped_lock lock(mutex);
 			messages.push(message);
+			if(messae.second != -1)
+				timeLeft[message.second] = (int) clock();
+			else
+				timeLeft[nextClientID + 1] = (int) clock();
 			cout << message.first <<"\n";
 		}
 		else

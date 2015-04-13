@@ -12,6 +12,7 @@
 
 
 #define NETWORK_BUFFER_SIZE 4096
+#define time_out
 
 typedef boost::bimap<long long, boost::asio::ip::udp::endpoint> ClientList;
 typedef ClientList::value_type Client;
@@ -23,6 +24,8 @@ using boost::asio::ip::udp;
 class NetworkManager{
 	private:
 
+		boost::mutex mutex;
+
 		// NETWORK MEMBER FUNCTIONS
 		boost::asio::io_service io_service;
 		boost::asio::ip::udp::socket socket;
@@ -31,8 +34,11 @@ class NetworkManager{
 		std::string myIP;
 		unsigned short myPort;
 		boost::thread service_thread;
+		boost::thread death_thread;	//TODO
 
 
+		unordered_map<long long,int> timeLeft; //
+		unordered_map<long long, bool> has_dropped;   
 		std::array<char, NETWORK_BUFFER_SIZE> recv_buffer;  // statically allocated container class used as a buffer for receiving data
 
 		// SERVER machinery
@@ -82,7 +88,7 @@ class NetworkManager{
 		long long get_client_id(string, unsigned short);
 
 		bool findClient(string ip, unsigned short port);
-
+		void detectDeath();
 		
 		void SendToAllExcept(const std::string& message, long long clientID);
 
