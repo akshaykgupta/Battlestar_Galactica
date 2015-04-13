@@ -11,7 +11,7 @@ ifeq ($(UNAME), Linux)
 LIBS= -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
 INCS=-I/usr/include/bullet
 
-$(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)main.o
+$(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)player_handle.o $(OBJ)main.o
 	$(Compiler) $^ $(LIBS) -o $@ 
 
 all:
@@ -49,6 +49,9 @@ $(OBJ)player_network.o: $(SRC)player_network.cpp
 	$(Compiler) -c $^ $(INCS)
 	mv player_network.o $@
 
+$(OBJ)player_handle.o: $(SRC)player_handle.cpp
+	$(Compiler) -c $^ $(INCS)
+	mv player_handle.o $@
 
 $(OBJ)main.o: $(SRC)main.cpp
 	$(Compiler) -c $< $(INCS)
@@ -89,7 +92,7 @@ LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_sy
 INCS=-I /usr/local/Cellar/bullet/2.82/include/bullet/
 FRAMEWORKS=-framework OpenGL -framework GLUT
 
-$(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)main.o
+$(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)player_handle.o $(OBJ)main.o
 	$(Compiler) $^ $(LIBS) $(FRAMEWORKS) -o $@ 
 
 all:
@@ -127,6 +130,9 @@ $(OBJ)player_network.o: $(SRC)player_network.cpp
 	$(Compiler) -c $^ $(INCS)
 	mv player_network.o $@
 
+$(OBJ)player_handle.o: $(SRC)player_handle.cpp
+	$(Compiler) -c $^ $(INCS)
+	mv player_handle.o $@
 
 $(OBJ)main.o: $(SRC)main.cpp
 	$(Compiler) -c $< $(INCS)
