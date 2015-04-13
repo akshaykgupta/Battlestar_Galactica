@@ -53,26 +53,10 @@ private:
 public:
 	Player();
 	~Player();
-	SpaceObject* which_spaceObject(int network_int){
-		// if present,return
-		auto cit = NtoP.left.find(network_int);
-		if (cit != NtoP.left.end())
-	    {
-	    	int player_int = cit->second;
-	    	// return spaceobject corresponding to this player_int
-	    	getSpaceObject(player_int);
-	    }
-	    
-	    return nullptr;
-	    /* Assert : no player corresponding to this network int means this spaceObject hasn't yet been added */
-	}
+	SpaceObject* which_spaceObject(int network_int);
 
-	bool addtoNtoP(int network_int, int player_int) {
-		//TODO: add the pair of network_int and player_int to the bimap.
-		NtoP.insert(NtoPTypeNormal(network_int,player_int));
-		return true;
-	}
-		
+	bool addtoNtoP(int network_int, int player_int);
+	
 	void init_bulletWorld();
 	void init_fighter();
 	/* collision */

@@ -132,6 +132,26 @@ bool Player::add_object(SpaceObject*& OBJ){
 		return false;
 }
 
+SpaceObject* Player::which_spaceObject(int network_int){
+	// if present,return
+	auto cit = NtoP.left.find(network_int);
+	if (cit != NtoP.left.end())
+    {
+    	int player_int = cit->second;
+    	// return spaceobject corresponding to this player_int
+    	getSpaceObject(player_int);
+    }
+    
+    return nullptr;
+    /* Assert : no player corresponding to this network int means this spaceObject hasn't yet been added */
+}
+
+bool Player::addtoNtoP(int network_int, int player_int) {
+	//TODO: add the pair of network_int and player_int to the bimap.
+	NtoP.insert(NtoPTypeNormal(network_int,player_int));
+	return true;
+}
+
 bool Player::addToEveryOne(int ID,SpaceObject*& OBJ){
 	if(!OBJ){
 		cout<<"NULL OBJECT PASSED \n";
@@ -166,7 +186,8 @@ void Player::handleMessage(Message& msg, int network_int) {
 		//might need to add to list of clients
 		if(network->getMyIP() != msg.newConnectorIP) { 
 			//check if this client corresponding to this IP and port already exists
-			if(!network->findClient(msg.newConnectorIP, msg.newConnectorPort)) {
+			long long client_id = network->get_client_id(msg.newConnectorIP, msg.newConnectorPort);
+			if(client_id == -1) {
 				//if not found then add to list of clients
 				int nextClientId = network->addClient(msg.newConnectorIP, msg.newConnectorPort);
 				//add this spaceObject to list of objects
@@ -177,6 +198,18 @@ void Player::handleMessage(Message& msg, int network_int) {
 					addtoNtoP(nextClientId, nextPlayerId);
 				}
 				//send this message to everyone else
+				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
+				sendMessage();
+				myMessage = &msg;
+				sendMessage();
+			}
+			else if(which_spaceObject(client_id) == nullptr) {
+				SpaceObject *newObject = new SpaceObject(msg.ship.objType);
+				newObject->init(bulletWorld);
+				if( add_object(newObject) ) {
+					int nextPlayerId = getID(newObject);
+					addtoNtoP(client_id, nextPlayerId);
+				}
 				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
 				sendMessage();
 				myMessage = &msg;

@@ -49,153 +49,53 @@ class NetworkManager{
 
 
 
-		void send(const std::string& message, boost::asio::ip::udp::endpoint target_endpoint)
-		{
-		    socket.send_to(boost::asio::buffer(message), target_endpoint);
-		    sentBytes += message.size();
-		    sentMessages++;
-		}
+		void send(const std::string& message, boost::asio::ip::udp::endpoint target_endpoint);
 		
 		void handle_receive(const boost::system::error_code&, std::size_t);
 
 
-		void start_receive()
-		{
-		    socket.async_receive_from(boost::asio::buffer(recv_buffer), remote_endpoint,
-		        boost::bind(&NetworkManager::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-		}
+		void start_receive();
 
 
 	public:
 
 		// CTOR and DTOR
-		NetworkManager(string IP, unsigned short server_port, string local_ip, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
-		{
-			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< std::string >(server_port));
-			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
-			myIP = local_ip;
-			myPort = socket.local_endpoint().port();
-			nextClientID = 0;
-			receivedMessages = 0;
-			receivedBytes = 0;
-			sentMessages = 0;
-			sentBytes = 0;
-			remote_endpoint = *iterator;
-			insert_client(remote_endpoint);
-		}
-		
-		NetworkManager(string local_ip, unsigned short local_port = 2000) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
-		{
-			nextClientID = 0;
-			receivedMessages = 0;
-			receivedBytes = 0;
-			sentMessages = 0;
-			sentBytes = 0;
-			myIP = local_ip;
-			myPort = socket.local_endpoint().port();
+		NetworkManager(string IP, unsigned short server_port, string local_ip, unsigned short local_port = 2000);
 
-		}
 		
-		unsigned long long addClient(string IP, unsigned short server_port) {
-			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(udp::v4(), IP, boost::lexical_cast< std::string >(server_port));
-			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
-			remote_endpoint = *iterator;
-			insert_client(remote_endpoint);
-			return nextClientID;
-		}
+		NetworkManager(string local_ip, unsigned short local_port = 2000);
+
+		
+		unsigned long long addClient(string IP, unsigned short server_port);
 		
 		~NetworkManager();
 
 		
 
-		void run_service()
-		{
-		    start_receive();
-		    while (!io_service.stopped()){
-		        try {
-		            io_service.run();
-		        } catch( const std::exception& e ) {
-		            //LogMessage::error("NetworkManager network exception: ",e.what());
-		        }
-		        catch(...) {
-		            //LogMessage::error("Unknown exception in server network thread");
-		        }
-		    }
-		    //LogMessage::Debug("NetworkManager network thread stopped");
-		};
+		void run_service();
 
-		void SendToClient(const std::string& message, long long clientID) 
-		{
-		    try {
-		        send(message, clients.left.at(clientID));
-		    }
-		    catch (std::out_of_range) {
-		        //LogMessage::error("Unknown client ID");
-		    }
-		}
+		void SendToClient(const std::string& message, long long clientID);
 
-		void insert_client(boost::asio::ip::udp::endpoint endpoint) {
-			nextClientID++;
-		    clients.insert(Client(nextClientID, endpoint));
-		}
+		void insert_client(boost::asio::ip::udp::endpoint endpoint);
 
-		long long get_client_id(boost::asio::ip::udp::endpoint endpoint) {
-		    auto cit = clients.right.find(endpoint);
-		    if (cit != clients.right.end())
-		        return (*cit).second;
+		long long get_client_id(boost::asio::ip::udp::endpoint endpoint);
+		long long get_client_id(string, unsigned short);
 
-		    return nextClientID;
-		}
-
-		bool findClient(string ip, unsigned short port) {
-			boost::asio::ip::udp::resolver resolver(io_service);
-			boost::asio::ip::udp::resolver::query query(udp::v4(), ip, boost::lexical_cast< std::string >(port));
-			boost::asio::ip::udp::resolver::iterator iterator = resolver.resolve(query);
-			remote_endpoint = *iterator;
-			auto cit = clients.right.find(remote_endpoint);
-		    if (cit != clients.right.end())
-		    	return true;
-		    else
-		    	return false;
-		}
+		bool findClient(string ip, unsigned short port);
 
 		
-		void SendToAllExcept(const std::string& message, long long clientID) {
-			typedef ClientList::const_iterator it;
-			for (it iter = clients.begin(), iend = clients.end(); iter != iend; iter++){
-				if (iter->left != clientID)
-					SendToClient(message,  iter->left);
-			}
-		}
+		void SendToAllExcept(const std::string& message, long long clientID);
 
 
-		void SendToAll(const std::string& message){
-			typedef ClientList::const_iterator it;
-			cout << (int) clients.size() << "\n";
-			for(it iter = clients.begin(), iend = clients.end();  iter != iend; ++iter ) {
-				SendToClient(message,iter->left);
-			}
-		}
+		void SendToAll(const std::string& message);
 
-		ClientMessage popMessage() {
-			if(!messages.empty())
-				return messages.pop();
-			else return make_pair("", -1);
-		
-}
-	    std::string getMyIP() {
-			return myIP;
-		}
+		ClientMessage popMessage();
 
-		unsigned short getMyPort() {
-			return myPort;
-		}
+	    std::string getMyIP();
 
-		long long numberOfClients() {
-			return nextClientID;
-		}
+		unsigned short getMyPort();
+
+		long long numberOfClients();
 		// STAT QUERIES
 		unsigned long long GetStatReceivedMessages() {return receivedMessages;}
 		unsigned long long GetStatReceivedBytes()	   {return receivedBytes;}
