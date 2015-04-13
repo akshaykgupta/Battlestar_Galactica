@@ -8,6 +8,7 @@ inline double absolute(double x) {
 void Player::handle_event(sf::Event& event,sf::Window& window) {
 	sf::Keyboard::Key key;
 	bool collision, laser;
+	rotatePressed = false;
 	/*
 		Follows the model of : keyboard, mouse.
 	*/
@@ -50,32 +51,27 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
 	}
 	//rotational.
 	if( ((key = settings->getKey( PITCH_UP )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
-		sf::Mouse::setPosition(temp,window);
+		rotatePressed=true;
 		fighter->pitch_up();
 	}
 	if( ((key = settings->getKey( PITCH_DOWN )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
-		sf::Mouse::setPosition(temp,window);
+		rotatePressed=true;		
 		fighter->pitch_down();
 	}
 	if( ((key = settings->getKey( YAW_LEFT )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
-		sf::Mouse::setPosition(temp,window);
+		rotatePressed=true;
 		fighter->yaw_left();
 	}
 	if( ((key = settings->getKey( YAW_RIGHT )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
-		sf::Mouse::setPosition(temp,window);
+		rotatePressed=true;
 		fighter->yaw_right();
 	}
 	if( ((key = settings->getKey( ROLL_LEFT )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
+		rotatePressed=true;
 		fighter->roll_left();
 	}
 	if( ((key = settings->getKey( ROLL_RIGHT )) != sf::Keyboard::Unknown) && sf::Keyboard::isKeyPressed(key) ) {
-		sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
-		sf::Mouse::setPosition(temp,window);
+		rotatePressed=true;		
 		fighter->roll_right();
 	}
 
@@ -107,9 +103,17 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
         cout << "trying to shoot. \n";
         fire_laser();
     }
+    cout<<"Half window sizes: "<<halfWindowSizeX<<" "<<halfWindowSizeY<<"\n";
 	
 }
 
+void Player::resetMouse(sf::Window& wnd) {
+     if(rotatePressed){
+     	sf::Vector2i temp(halfWindowSizeX,halfWindowSizeY);
+	    sf::Mouse::setPosition(temp,wnd);
+     }
+
+}
 void Player::fire_laser() {
 	fighter->fire_laser();
 }

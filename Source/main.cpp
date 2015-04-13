@@ -72,6 +72,7 @@ int main(int argc, char** argv) {
             }
             usr->handle_event(event,window);
         }
+        usr->resetMouse(window);
         // clear the buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         usr->update_state(dt);

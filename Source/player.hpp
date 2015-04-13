@@ -24,7 +24,7 @@ class Player {
 private:
 	/* misc data. */
 
-
+	bool rotatePressed;
 	int nextSpaceObjId;
 	OBJECT_TYPE fighterType;
 	UserSettings* settings;
@@ -93,7 +93,7 @@ public:
 	void translateMessage(ClientMessage);
 	void receiveMessage();
 	void handleMessage(Message, int);
-
+	void resetMouse(sf::Window&);
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
 	bool add_object(SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//
