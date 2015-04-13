@@ -44,9 +44,14 @@ const std::string ASTEROID_FNAME  = "asteroid";
 const std::string XWING_FNAME  = "xwing";
 const std::string MF_FNAME  = "mf";
 const std::string UFO_FNAME  = "ufo";
+const std::string DEBRIS_FNAME  = "debris";
+const std::string ENDPOINT_FNAME  = "endpoint";
+const std::string SKYRISE_TALL_FNAME  = "skyrise_tall";
+const std::string SKYRISE_FAT_FNAME  = "skyrise_fat";
 const std::string OBJ_EXTENSION = ".obj";
 const std::string PHY_EXTENSION = ".lhc";
 const std::string MUSIC_EXTENSION = ".ogg";
+const std::string WORLD_PHY_FNAME = "Resource/myWorld.avril";
 class SpaceObject;
 class Player;
 class NetworkManager;
@@ -111,6 +116,10 @@ enum OBJECT_TYPE {
 	XWING = 3,
 	TIE = 4,
 	MF = 5,
+	ENDPOINT = 6,
+	SKYRISE_TALL = 7,
+	SKYRISE_FAT = 8,
+	DEBRIS = 9,
 	UFO = 10000
 };
 

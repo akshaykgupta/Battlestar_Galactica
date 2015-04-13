@@ -7,7 +7,7 @@ NetworkManager::~NetworkManager(){
 	service_thread.join();
 }
 
-
+/*
 void NetworkManager::detectDeath(){
 	
 	boost::mutex::scoped_lock lock(mutex);
@@ -42,7 +42,7 @@ void NetworkManager::handleDrops(){
 		if (has_dropped[i] == true)
 			//
 }
-
+*/
 
 NetworkManager::NetworkManager(string IP, unsigned short server_port, string local_ip, unsigned short local_port) : socket(io_service, udp::endpoint(udp::v4(), local_port)), service_thread(boost::bind(&NetworkManager::run_service, this))
 {
@@ -102,7 +102,7 @@ void NetworkManager::handle_receive(const boost::system::error_code& error, std:
 		{
 			boost::mutex::scoped_lock lock(mutex);
 			messages.push(message);
-			if(messae.second != -1)
+			if(message.second != -1)
 				timeLeft[message.second] = (int) clock();
 			else
 				timeLeft[nextClientID + 1] = (int) clock();

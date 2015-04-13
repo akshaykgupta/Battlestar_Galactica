@@ -64,7 +64,7 @@ void Weapon::fireProjectile(btVector3& from, btVector3& to) {
 }
 
 void Weapon::drawProjectile(btVector3& from, btVector3& to) {
-	if ( time_left == 0 ) {
+	if ( time_left == 0 || (type == FORCE)) {
 		return;
 	} 
 	time_left--;

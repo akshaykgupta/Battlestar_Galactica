@@ -22,7 +22,6 @@ public:
 	void 	render_init();
 
 	void 	loadRenderGeometry(/*objpath*/);
-	void 	loadPhysicsGeometry(/*phypath*/);
 		//void render_geometry(); declared in the rendering section.
 
 	/* for debugging, if done. */

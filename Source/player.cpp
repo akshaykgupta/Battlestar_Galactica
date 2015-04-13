@@ -12,6 +12,9 @@ Player::Player() {
 	settings->read_settings();
 	//SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
 	SKYBOX_IMG = "Resource/SkyBox/stormyday.jpg";
+	cout << "hi?\n";
+	readWorld(WORLD_PHY_FNAME);
+	cout << "hi??\n";
 	skybox = new SkyBox(SKYBOX_IMG);
 	skybox->setImage();
 	camera_idx = 0;

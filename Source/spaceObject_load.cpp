@@ -12,8 +12,6 @@ SpaceObject::SpaceObject(OBJECT_TYPE _type) {
 	phypath = PHY_RSC_DIR;
     activeWeapon = 0;
 	//TODO
-	weapons.resize(1);
-	weapons[0] = new Weapon( STRONG_LASER , btVector3(200,200,0));
 
 }
 
@@ -38,26 +36,62 @@ void SpaceObject::init(BulletWorld* _world) {
 		case ASTEROID : {
 			objpath += ASTEROID_FNAME + OBJ_EXTENSION;
 			phypath += ASTEROID_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
 			break;
 		} case HEALTH : {
 			objpath += HEALTH_FNAME + OBJ_EXTENSION;
 			phypath += HEALTH_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
 			break;
 		} case TIE : {
 			objpath += AMMO_FNAME + OBJ_EXTENSION;
 			phypath += AMMO_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( MEDIUM_LASER , btVector3(200,200,0));
 			break;
 		} case XWING : {
 			objpath += XWING_FNAME + OBJ_EXTENSION;
 			phypath += XWING_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( MEDIUM_LASER , btVector3(200,200,0));
 			break;
 		} case MF : {
 			objpath += MF_FNAME + OBJ_EXTENSION;
 			phypath += MF_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
 			break;
 		} case UFO : {
 			objpath += UFO_FNAME + OBJ_EXTENSION;
 			phypath += UFO_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( MEDIUM_LASER , btVector3(200,200,0));
+			break;
+		} case DEBRIS : {
+			objpath += DEBRIS_FNAME + OBJ_EXTENSION;
+			phypath += DEBRIS_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
+			break;
+		} case ENDPOINT : {
+			objpath += ENDPOINT_FNAME + OBJ_EXTENSION;
+			phypath += ENDPOINT_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
+			break;
+		} case SKYRISE_TALL : {
+			objpath += SKYRISE_TALL_FNAME + OBJ_EXTENSION;
+			phypath += SKYRISE_TALL_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
+			break;
+		} case SKYRISE_FAT : {
+			objpath += SKYRISE_FAT_FNAME + OBJ_EXTENSION;
+			phypath += SKYRISE_FAT_FNAME + PHY_EXTENSION;
+			weapons.resize(1);
+			weapons[0] = new Weapon( FORCE , btVector3(200,200,0));
 			break;
 		} default : {
 			std::cout << " Unknown object type. Please ensure that OBJ_Type=" << obj_type << " is defined appropriately. \n";
@@ -72,10 +106,13 @@ void SpaceObject::init(BulletWorld* _world) {
 void SpaceObject::physics_init() {
 	//read the file format.
 	readPhysicsFile(); //reads into children and childTransform
-	// std::cout << "read phy file\n";
 	//create the objects.
 	createCompoundShape();
-	// cout << "#brk2\n";
+	if ( obj_type == ASTEROID || obj_type==DEBRIS || obj_type==ENDPOINT || obj_type==SKYRISE_FAT || obj_type==SKYRISE_TALL ) {
+		body->setLinearFactor(btVector3(0,0,0));
+		body->setAngularFactor(btVector3(0,0,0));
+		body->setMassProps(0, btVector3(0,0,0)); //should make it static.
+	}
 	body->setActivationState(DISABLE_DEACTIVATION);
 	return;
 }
@@ -107,9 +144,6 @@ void SpaceObject::loadRenderGeometry() {
 	return;//TODO
 }
 
-void SpaceObject::loadPhysicsGeometry() {
-	return;//TODO
-}
 void SpaceObject::readPhysicsFile(){
 	fstream f;
 	f.open(phypath);
@@ -162,7 +196,17 @@ void SpaceObject::readPhysicsFile(){
 				btTransform t(btQuaternion(0,0,0,1) , btVector3(ans[0],ans[1],ans[2]));
 				children.push_back(nbox);
 				childTransform.push_back(t);
-		}else if ( line_type == "Cam" ) {
+		} else if ( line_type == "Sphere" ) {
+			if(ans.size()!= 4){
+				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
+				exit(1);
+			}
+				//nbox should ideally be a nsphere.
+				btCollisionShape* nbox = new btSphereShape(ans[3]);
+				btTransform t(btQuaternion(0,0,0,1) , btVector3(ans[0],ans[1],ans[2]));
+				children.push_back(nbox);
+				childTransform.push_back(t);
+		} else if ( line_type == "Cam" ) {
 			if(ans.size()!= 6){
 				cout<<"ERROR in file "<<phypath<<" line number "<<count<<"\n";
 				exit(1);
