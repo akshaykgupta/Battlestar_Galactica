@@ -221,6 +221,9 @@ struct Message {
 		ar & newConnectorPort;
 		ar & worldData;
 	}
+	void print(){
+		cout<<newConnectorIP<<" "<<newConnectorPort<<"\n";
+	}
 };
 struct Weapon {
 

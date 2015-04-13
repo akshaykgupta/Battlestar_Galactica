@@ -92,7 +92,7 @@ public:
 	void sendMessage();
 	void translateMessage(ClientMessage);
 	void receiveMessage();
-	void handleMessage(Message&, int);
+	void handleMessage(Message, int);
 
 	//TODO : addSpaceObjectToWorld( cool-network-struct )
 	bool addToEveryOne(int,SpaceObject*&); //------------PASS THE SPACE OBJ AFTER INSTANTIATING IT----------//

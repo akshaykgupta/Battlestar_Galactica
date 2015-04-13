@@ -10,7 +10,8 @@ Player::Player() {
 	init_bulletWorld();
 	settings =  new UserSettings();
 	settings->read_settings();
-	SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
+	//SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
+	SKYBOX_IMG = "Resource/SkyBox/stormyday.jpg";
 	skybox = new SkyBox(SKYBOX_IMG);
 	skybox->setImage();
 	camera_idx = 0;
@@ -179,7 +180,7 @@ bool Player::collisionCallback(btManifoldPoint& cp,
 }
 
 
-void Player::handleMessage(Message& msg, int network_int) {
+void Player::handleMessage(Message msg, int network_int) {
 	//I need, the spaceObject's int-index, the spaceObject's linear velocity, angular velocity, health, ammo and so on.
 	if (msg.msgType & CONNECTDATA) {
 		//might need to add to list of clients
@@ -199,7 +200,7 @@ void Player::handleMessage(Message& msg, int network_int) {
 				//send this message to everyone else
 				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
 				sendMessage();
-				myMessage = &msg;
+				*(myMessage) = msg;
 				sendMessage();
 			}
 			else if(which_spaceObject(client_id) == nullptr) {
@@ -207,7 +208,6 @@ void Player::handleMessage(Message& msg, int network_int) {
 				newObject->init(bulletWorld);
 				if( add_object(newObject) ) {
 					int nextPlayerId = getID(newObject);
-					cout << client_id << " " << nextPlayerId << "\n";
 					addtoNtoP(client_id, nextPlayerId);
 				}
 				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
