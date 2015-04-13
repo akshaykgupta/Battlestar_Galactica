@@ -5,7 +5,7 @@ OBJ=Objects/
 EXE=Executable/
 RSC=Resource/ 
 EXEC=spaceRash.out
-
+Files=*.o
 #FOR LINUX
 ifeq ($(UNAME), Linux)
 LIBS= -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
@@ -79,7 +79,8 @@ execute: $(EXE)$(EXEC)
 
 clean:
 	rm $(EXE)$(EXEC) *.tang $(OBJ)*
-
+cleanFiles:
+	rm $(Files) 
 endif
 
 #FOR MAC
@@ -156,5 +157,6 @@ execute: $(EXE)$(EXEC)
 
 clean:
 	rm $(EXE)$(EXEC) *.tang $(OBJ)*
-
+cleanFiles:
+	rm $(Files) 
 endif
