@@ -139,7 +139,7 @@ SpaceObject* Player::which_spaceObject(int network_int){
     {
     	int player_int = cit->second;
     	// return spaceobject corresponding to this player_int
-    	getSpaceObject(player_int);
+    	return getSpaceObject(player_int);
     }
     
     return nullptr;
@@ -148,8 +148,7 @@ SpaceObject* Player::which_spaceObject(int network_int){
 
 bool Player::addtoNtoP(int network_int, int player_int) {
 	//TODO: add the pair of network_int and player_int to the bimap.
-	NtoP.insert(NtoPTypeNormal(network_int,player_int));
-	return true;
+	return NtoP.insert(NtoPTypeNormal(network_int,player_int)).second;
 }
 
 bool Player::addToEveryOne(int ID,SpaceObject*& OBJ){
@@ -208,6 +207,7 @@ void Player::handleMessage(Message& msg, int network_int) {
 				newObject->init(bulletWorld);
 				if( add_object(newObject) ) {
 					int nextPlayerId = getID(newObject);
+					cout << client_id << " " << nextPlayerId << "\n";
 					addtoNtoP(client_id, nextPlayerId);
 				}
 				myMessage->setData((int) CONNECTDATA, network->getMyIP(), network->getMyPort());
