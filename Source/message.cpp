@@ -101,7 +101,7 @@ void State::getData(int& h, int& am, btTransform& t, btVector3& velo, btVector3&
 
 Message::Message(int prot , 
 	int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-	btVector3& _laserFrom , btVector3& _laserTo , WEAPON_TYPE& _wpnType , 
+	btVector3& _laserFrom , btVector3& _laserTo , int& _wpnType , 
 	std::string ip /*= ""*/ , unsigned short port /*= 0*/, std::string chatmsg /*= ""*/ , std::string worldfile /*= ""*/) : 
     ship(h, am, t, velo, avelo , _t) {
 	
@@ -150,7 +150,7 @@ Message& Message::operator= (Message& other) {
 
 void Message::setData(int prot , 
 	int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-	btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
+	btVector3& _laserFrom , btVector3& _laserTo ,int& _wpnType,
 	std::string ip /*= ""*/ , unsigned short port /*= 0,*/ , std::string chatmsg /*= ""*/ , std::string worldfile /*= ""*/) {
 	
 	ship.setData(h, am, t, velo, avelo , _t);
@@ -183,7 +183,7 @@ void Message::setData(int prot, std::string ip/* = ""*/, unsigned short port /*=
 void Message::setData( int prot , State* state , Weapon* wpn ) {
 	msgType = prot;
 	ship = *state;
-	wpnType = wpn->type;
+	//TODO
 	laserFrom.clear();
 	laserFrom.push_back(wpn->last_from.getX());
 	laserFrom.push_back(wpn->last_from.getY());
@@ -195,9 +195,18 @@ void Message::setData( int prot , State* state , Weapon* wpn ) {
 	return;
 }
 
+void Message::getData(btVector3& _laserFrom, btVector3& _laserTo) {
+	_laserFrom.setX(laserFrom[0]);
+	_laserTo.setX(laserTo[0]);
+	_laserFrom.setY(laserFrom[1]);
+	_laserTo.setY(laserTo[1]);
+	_laserFrom.setZ(laserFrom[2]);
+	_laserTo.setZ(laserTo[2]);
+}
+
 void Message::getData(int prot , 
 	int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-	btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
+	btVector3& _laserFrom , btVector3& _laserTo ,int& _wpnType,
 	std::string& ip, unsigned short port, std::string& chatmsg, std::string& worldfile) {
 	
 	prot = msgType;

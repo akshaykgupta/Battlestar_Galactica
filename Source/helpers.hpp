@@ -183,7 +183,7 @@ struct Message {
 	//collision data, is essentially health and new transform.
 	std::string chatMessage;	 //chat data.
 	std::vector<float> laserFrom,laserTo; //laser data. LINE SEGMENT.
-	WEAPON_TYPE wpnType;
+	int wpnType;
 	/* Connection data */
 	std::string newConnectorIP;
 	unsigned short newConnectorPort;
@@ -194,21 +194,22 @@ struct Message {
 
 	Message(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-		btVector3& _laserFrom , btVector3& _laserTo , WEAPON_TYPE& _wpnType , 
+		btVector3& _laserFrom , btVector3& _laserTo , int& _wpnType , 
 		std::string ip = "" , unsigned short port = 0, std::string chatmsg = "" , std::string worldfile = "");
 	Message();
 	Message(Message& other);
 	Message& operator= (Message& other);
 	void setData(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
+		btVector3& _laserFrom , btVector3& _laserTo ,int& _wpnType,
 		std::string ip = "" , unsigned short port = 0, std::string chatmsg = "" , std::string worldfile = "");
 	void setData(int prot, std::string ip = "", unsigned short port = 0);
 	void setData( int prot , State* state , Weapon* wpn );
 	void getData(int prot , 
 		int& h, int& am, btTransform& t, btVector3& velo, btVector3& avelo , OBJECT_TYPE& _t, //For state
-		btVector3& _laserFrom , btVector3& _laserTo ,WEAPON_TYPE& _wpnType,
+		btVector3& _laserFrom , btVector3& _laserTo ,int& _wpnType,
 		std::string& ip, unsigned short port, std::string& chatmsg, std::string& worldfile);
+	void getData(btVector3&, btVector3&);
 	
 	template<typename Archive>
 	void serialize(Archive& ar, const unsigned int version) {

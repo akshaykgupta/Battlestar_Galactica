@@ -38,7 +38,8 @@ void Player::handleMessage(Message msg, int network_int) {
 			}
 		}
 	}
-	else if ((msg.msgType & SETCONNECTDATA) && !didStart) {
+	
+	if ((msg.msgType & SETCONNECTDATA) && !didStart) {
 		if(network->getMyIP() != msg.newConnectorIP) { 
 			//check if this client corresponding to this IP and port already exists
 			long long client_id = network->get_client_id(msg.newConnectorIP, msg.newConnectorPort);
@@ -103,15 +104,26 @@ void Player::handleMessage(Message msg, int network_int) {
 			hasSetInitialPosition = true;
 		}
 	}
-	else if (msg.msgType & GENDATA) {
+	
+	if (msg.msgType & GENDATA) {
 		//get the spaceObject and set its state?
 		SpaceObject* obj = which_spaceObject(network_int);
 		if(obj != nullptr)
 		{
-			obj->setState(msg.ship);
+			obj->setState(msg.ship);			
 		}
 	}
-	//TODO LASERDATA etc.
+
+	if (msg.msgType & LASERDATA) {
+		SpaceObject* obj = which_spaceObject(network_int);
+		if(obj != nullptr)
+		{
+			obj->setActiveWeapon(msg.wpnType);
+			btVector3 laserFrom, laserTo;
+			msg.getData(laserFrom, laserTo);
+			obj->getActiveWeapon()->fireProjectile(laserFrom, laserTo);
+		}
+	}
 }
 
 #endif

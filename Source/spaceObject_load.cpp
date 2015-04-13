@@ -188,7 +188,8 @@ void SpaceObject::setState(State& shipdata) {
 	body->setWorldTransform(myNewTransform);
 	body->setLinearVelocity(myNewLinearVelocity);
 	body->setAngularVelocity(myNewAngularVelocity);
-	//set health, ammo 
+	health = myNewHealth;
+	weapons[activeWeapon]->ammo=myNewAmmo;
 }
 
 	
