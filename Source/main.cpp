@@ -14,7 +14,6 @@ int main(int argc, char** argv) {
     Player* usr = new Player();
     usr->setFighterType(UFO);
     usr->init_fighter();
-
     sf::Window window(sf::VideoMode(usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY), "spaceRash" , sf::Style::Default, sf::ContextSettings(32));
     usr->setup_game_screen( usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY );
     gContactAddedCallback=(Player::collisionCallback);

@@ -70,6 +70,8 @@ public:
 	void toggle_weapon();
 
 	void rotate(double pitch, double yaw);
+	void setPosition(btVector3 vec);
+	void setStatic(); //sets a bodies' mass to 0 IF it is of a certain type.
 private:
 	/* misc data */
 	OBJECT_TYPE obj_type;

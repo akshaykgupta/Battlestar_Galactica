@@ -103,8 +103,6 @@ void Player::handle_event(sf::Event& event,sf::Window& window) {
         cout << "trying to shoot. \n";
         fire_laser();
     }
-    cout<<"Half window sizes: "<<halfWindowSizeX<<" "<<halfWindowSizeY<<"\n";
-	
 }
 
 void Player::resetMouse(sf::Window& wnd) {

@@ -37,4 +37,13 @@ void SpaceObject::getTrans(float* mat) {
 	body->getMotionState()->getWorldTransform(trans_com);
 	trans_com.getOpenGLMatrix(mat);
 }
+
+void SpaceObject::setPosition(btVector3 vec) {
+	bool actstate = body->isActive();
+	body->activate(true);
+	btTransform trans = body->getCenterOfMassTransform();
+	trans.setOrigin(vec);
+	body->setCenterOfMassTransform(trans);
+	body->activate(actstate);
+}
 #endif

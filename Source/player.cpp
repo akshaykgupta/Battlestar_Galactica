@@ -12,9 +12,7 @@ Player::Player() {
 	settings->read_settings();
 	//SKYBOX_IMG = "Resource/SkyBox/galaxy.png";
 	SKYBOX_IMG = "Resource/SkyBox/stormyday.jpg";
-	cout << "hi?\n";
 	readWorld(WORLD_PHY_FNAME);
-	cout << "hi??\n";
 	skybox = new SkyBox(SKYBOX_IMG);
 	skybox->setImage();
 	camera_idx = 0;
@@ -107,7 +105,7 @@ void Player::setup_game_screen(double winX, double winY) {
 	glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(settings->fov/2,winX/winY,0.1f,1000.0f);
+    gluPerspective(settings->fov/2,winX/winY,0.1f,3000.0f);
 	toggle_camera(winX, winY);
 }
 

@@ -15,7 +15,6 @@
 
 //TODO: Add types to helpers.
 void Player::readWorld(std::string worldfilepath /*=WORLD_PHY_FNAME*/) {
-	std::cout << "#brk1\n";
 	std::fstream f(worldfilepath , ios::in);
 	if ( !f.is_open() ) {
 		std::cout << "i gotcha. invalid file bruh.\n";
@@ -40,7 +39,6 @@ void Player::readWorld(std::string worldfilepath /*=WORLD_PHY_FNAME*/) {
 		}
 		//ASSERT : Done reading vector.
 		OBJECT_TYPE world_obj_type = UFO;
-		std::cout << "#brk3\n";
 		if ( line_type == "Endpoint" ) {
 			world_obj_type = ENDPOINT;
 		} else if ( line_type == "SkyriseTall" ) {
@@ -54,8 +52,12 @@ void Player::readWorld(std::string worldfilepath /*=WORLD_PHY_FNAME*/) {
 		}
 		SpaceObject* worldObject = new SpaceObject(world_obj_type);
 		worldObject->init(bulletWorld);
-		add_object(worldObject);
-		worldObject->getRigidBody()->translate( btVector3(parts[0] , parts[1] , parts[2] ) );
+		worldObject->setPosition( btVector3(parts[0] , parts[1] , parts[2]) );
+		bulletWorld->dynamicsWorld->stepSimulation(1/60.0);
+		if (world_obj_type==ENDPOINT || world_obj_type==SKYRISE_FAT || world_obj_type==SKYRISE_TALL) { //TODO
+			worldObject->setStatic();
+		}
+		add_object(worldObject); //pushes back a copy of the space object. i wonder if that matters.
 		++nline;
 	}
 	f.close();

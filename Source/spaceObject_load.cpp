@@ -108,16 +108,18 @@ void SpaceObject::physics_init() {
 	readPhysicsFile(); //reads into children and childTransform
 	//create the objects.
 	createCompoundShape();
+	
+	body->setActivationState(DISABLE_DEACTIVATION);
+	return;
+}
+
+void SpaceObject::setStatic() {
 	if ( obj_type == ASTEROID || obj_type==DEBRIS || obj_type==ENDPOINT || obj_type==SKYRISE_FAT || obj_type==SKYRISE_TALL ) {
 		body->setLinearFactor(btVector3(0,0,0));
 		body->setAngularFactor(btVector3(0,0,0));
 		body->setMassProps(0, btVector3(0,0,0)); //should make it static.
 	}
-	body->setActivationState(DISABLE_DEACTIVATION);
-	return;
 }
-
-
 void SpaceObject::createCompoundShape() {
 	//Child transforms are all in the std::vectors.
 	shape = new btCompoundShape();
