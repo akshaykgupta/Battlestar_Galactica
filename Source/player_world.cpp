@@ -53,7 +53,7 @@ void Player::readWorld(std::string worldfilepath /*=WORLD_PHY_FNAME*/) {
 		SpaceObject* worldObject = new SpaceObject(world_obj_type);
 		worldObject->init(bulletWorld);
 		worldObject->setPosition( btVector3(parts[0] , parts[1] , parts[2]) );
-		bulletWorld->dynamicsWorld->stepSimulation(1/60.0);
+		bulletWorld->dynamicsWorld->stepSimulation(1/60000.0);
 		if (world_obj_type==ENDPOINT || world_obj_type==SKYRISE_FAT || world_obj_type==SKYRISE_TALL) { //TODO
 			worldObject->setStatic();
 		}

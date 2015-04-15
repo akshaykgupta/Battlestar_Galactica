@@ -29,7 +29,7 @@ void SpaceObject::handleCollision(SpaceObject* other) {
 	if(otherMass==0){
 		health/=3;
 	}else{
-		int damage = other->getRigidBody()->getLinearVelocity()->length2()* body->getLinearVelocity()->length2() * body->getInvMass() / otherMass;
+		int damage = other->getRigidBody()->getLinearVelocity().length2()* body->getLinearVelocity().length2() * body->getInvMass() / otherMass;
 		health-=damage;
 	}
 	return;
