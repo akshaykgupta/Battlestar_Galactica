@@ -32,6 +32,7 @@ void SpaceObject::handleCollision(SpaceObject* other) {
 		int damage = other->getRigidBody()->getLinearVelocity().length2()* body->getLinearVelocity().length2() * body->getInvMass() / otherMass;
 		health-=damage;
 	}
+	//cout << "I'm at health=" << health << "\n";
 	return;
 }
 
@@ -54,7 +55,6 @@ void SpaceObject::rotate(double pitch, double yaw) {
 
 //KEYBOARD FUNCTIONS AHEAD!
 void SpaceObject::accelerate() {
-	cout<<body->getLinearVelocity().length2()<<" "<<maxVelocity<<"\n";
 	if(body->getLinearVelocity().length2()>maxVelocity){
 		return;
 	}
