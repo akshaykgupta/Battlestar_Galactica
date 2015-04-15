@@ -8,7 +8,7 @@ EXEC=spaceRash.out
 Files=*.o
 #FOR LINUX
 ifeq ($(UNAME), Linux)
-LIBS= -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
+LIBS= -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread -lboost_serialization -lsfgui -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lGL -lGLU
 INCS=-I/usr/include/bullet
 
 $(EXE)$(EXEC):  $(OBJ)message.o $(OBJ)userSettings.o  $(OBJ)skybox.o  $(OBJ)networkManager.o $(OBJ)weapon.o  $(OBJ)spaceObject_load.o $(OBJ)spaceObject_render.o $(OBJ)spaceObject_event.o $(OBJ)spaceObject_getsets.o $(OBJ)player.o $(OBJ)player_world.o $(OBJ)player_event.o $(OBJ)player_getsets.o $(OBJ)player_network.o $(OBJ)player_handle.o $(OBJ)main.o
@@ -92,7 +92,7 @@ endif
 
 #FOR MAC
 ifeq ($(UNAME), Darwin)
-LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread-mt -lboost_serialization -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+LIBS=-lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath -lboost_system -lboost_thread-mt -lboost_serialization -lsfgui -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 INCS=-I /usr/local/Cellar/bullet/2.82/include/bullet/
 FRAMEWORKS=-framework OpenGL -framework GLUT
 
