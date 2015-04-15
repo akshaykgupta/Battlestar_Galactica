@@ -20,6 +20,11 @@ void Player::connectToNetwork(string IP, unsigned short server_port, string loca
 	sendMessage();
 }
 
+void Player::setGeneralData() {
+	fighter->getState(myMessage->ship);
+	sendMessage();
+}
+
 void Player::sendMessage() {
 	std::ostringstream archive_stream;
 	boost::archive::text_oarchive archive(archive_stream);
