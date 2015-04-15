@@ -24,7 +24,14 @@ void SpaceObject::makeMessage(State*& state,  Message*& msg) {
 
 void SpaceObject::handleCollision(SpaceObject* other) {
 	wasHit = true;
-	health -= 10; //TODO : Make it proper, correct for each spaceship.
+	//---------TODO Need to scale damage down---------//
+	btScalar otherMass = other->getRigidBody()->getInvMass();
+	if(otherMass==0){
+		health/=3;
+	}else{
+		int damage = other->getRigidBody()->getLinearVelocity()->length2()* body->getLinearVelocity()->length2() * body->getInvMass() / otherMass;
+		health-=damage;
+	}
 	return;
 }
 
