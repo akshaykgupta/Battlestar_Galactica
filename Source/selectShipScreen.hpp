@@ -9,18 +9,35 @@ private:
 	Player* usrptr;
 	
 	//All the buttons on this window
-	sfg::Button::Ptr leftShiftButton;
-	sfg::Button::Ptr rightShiftButton;
+	sfg::Button::Ptr leftShift;
+	sfg::Button::Ptr rightShift;
 	sfg::Button::Ptr startJoin;
 	sfg::Scale::Ptr XMouseSense;
 	sfg::Scale::Ptr YMouseSense;
 	sfg::Scale::Ptr ColourMeter;
-	
-	
+	std::vector< std::pair<sfg::Label::Ptr, sfg::Entry::Ptr> > userSettings; //map characters to sf::Keyboard::Key , very very painful :(
+	sfg::Label::Ptr playerName;
+	sfg::Entry::Ptr enterName;
+	sfg::Label::Ptr shipName;
 	//List of ships
 	std::vector<SpaceObject*> shipDisplayList;
 
+	int currentShip;
+
 public:
+
+	SelectShipScreen();
+
+	~SelectShipScreen();
+
+	void onRightShiftButtonClick();
+
+	void onLeftShiftButtonClick();
+
+	void onStartJoinButtonClick();
+
+	void setMouseSensitivity();
+
 
 };
 #endif
