@@ -49,6 +49,7 @@ public:
 	void 	initCommunications(State*&, Message*&);
 	void 	makeMessage(State*& , Message*&); //generates default message, with health, weapons, positions and everything else. etc.
 	void 	setState(State&);
+	void 	getState(State&);
 
 	/* actions that the spaceobject can do .*/
 	void fire_laser();

@@ -95,6 +95,7 @@ public:
 
 	void startNetwork(string, unsigned short);
 	void connectToNetwork(string, unsigned short, string, unsigned short);
+	void setGeneralData();
 	void sendMessage();
 	void translateMessage(ClientMessage);
 	void receiveMessage();
