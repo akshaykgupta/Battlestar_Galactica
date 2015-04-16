@@ -69,7 +69,7 @@ void SelectShipScreen::onSaveSettingsButtonClick() {
 }
 
 void SelectShipScreen::setUserSettings() {
-
+	
 }
 
 void SelectShipScreen::Run() {

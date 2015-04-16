@@ -16,10 +16,16 @@ private:
 	sfg::Scale::Ptr XMouseSense;
 	sfg::Scale::Ptr YMouseSense;
 	sfg::Scale::Ptr ColourMeter;
-	std::vector< std::pair<sfg::Label::Ptr, sfg::Entry::Ptr> > userSettings; //map characters to sf::Keyboard::Key , very very painful :(
+	
+	/* pain incoming. 
+	map characters to sf::Keyboard::Key , very very painful :(
+	->made to string functions.
+	*/
+	std::vector< std::pair<sfg::Label::Ptr, sfg::Entry::Ptr> > userSettings;
+	
 	sfg::Button::Ptr resetSettings;
 	sfg::Button::Ptr saveSettings;
-	
+
 	sfg::Label::Ptr playerName;
 	sfg::Entry::Ptr enterName;
 	sfg::Label::Ptr shipName;
