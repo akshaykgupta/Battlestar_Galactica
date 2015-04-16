@@ -44,6 +44,11 @@ void SelectShipScreen::onRightShiftButtonClick() {
 	if(currentShip == (int) shipDisplayList.size()) {
 		currentShip = 0;
 	}
+
+	gluLookAt(0,0,0
+		shipDisplayList[currentShip]->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getCentreOfMassPosition().getZ()
+		0.0,1.0,0.0
+		);		
 }
 
 void SelectShipScreen::onLeftShiftButtonClick() {
@@ -51,10 +56,16 @@ void SelectShipScreen::onLeftShiftButtonClick() {
 	if(currentShip < 0) {
 		currentShip = ((int) shipDisplayList.size()) - 1;
 	}
+
+	gluLookAt(0,0,0
+		shipDisplayList[currentShip]->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getCentreOfMassPosition().getZ()
+		0.0,1.0,0.0
+		);	
 }
 
 void SelectShipScreen::onStartJoinButtonClick() {
 	//go to next window
+	startjoin = true;
 }
 
 void SelectShipScreen::setMouseSensitivity() {
@@ -106,5 +117,22 @@ void SelectShipScreen::setUserSettings() {
 }
 
 void SelectShipScreen::Run() {
+	//prepare desktop.
+	//align boxes.
+	sfg::Desktop desktop;
+	//add stuff here.
 
+	while( !startjoin ) {
+		sf::Event event;
+		while( window.pollEvent(event) ) {
+			desktop.HandleEvent(event);
+			if ( event.type == sf::Event::Closed ) {
+				//TODO: Left the app. what now?
+			}
+		}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		//render the selected ship.
+		shipDisplayList[currentShip]->render(true);//TODO
+		sfgui.Display(/*TODO*/);
+	}
 }

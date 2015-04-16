@@ -33,7 +33,9 @@ private:
 	std::vector<SpaceObject*> shipDisplayList;
 
 	int currentShip;
+	bool startjoin;
 
+	sfg::SFGUI sfgui;
 public:
 
 	SelectShipScreen();
