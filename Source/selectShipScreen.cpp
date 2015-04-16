@@ -18,6 +18,15 @@ void SelectShipScreen::SelectShipScreen() {
 	ColourMeter = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	playerName = sfg::Label::Create("Your Name : ");
 	//shipName = sfg::Label::Create(shipDisplayList->getName()); // default ship name goes here
+
+	RedButton = sfg::RadioButton::Create();
+	GreenButton = sfg::RadioButton::Create();
+	BlueButton = sfg::RadioButton::Create();
+	rgbGroup = sfg::RadioButton::RadioButtonGroup::Create();
+
+	RedButton->SetGroup(rgbGroup);
+	GreenButton->SetGroup(rgbGroup);
+	BlueButton->SetGroup(rgbGroup);
 	enterName = sfg::Entry::Create();
 	leftShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onLeftShiftButtonClick, this ) );
 	rightShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onRightShiftButtonClick, this ) );
@@ -54,7 +63,18 @@ void SelectShipScreen::setMouseSensitivity() {
 }
 
 void SelectShipScreen::setCrosshairColor() {
-
+	if(RedButton->IsActive())
+	{
+		usrptr->getSettings()->HUDCross_r = RedButton->GetValue();
+	}
+	else if(GreenButton->IsActive())
+	{
+		usrptr->getSettings()->HUDCross_g = GreenButton->GetValue();
+	}
+	else if(BlueButton->IsActive())
+	{
+		usrptr->getSettings()->HUDCross_b = BlueButton->GetValue();
+	}
 }
 
 void SelectShipScreen::setUserName() {
