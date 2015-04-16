@@ -1,7 +1,7 @@
 #ifndef SELECT_SHIP_SCREEN
 #define SELECT_SHIP_SCREEN
 
-#include "helpers.h"
+#include "helpers.hpp"
 
 class SelectShipScreen {
 private:
