@@ -19,7 +19,7 @@ private:
 	
 	/* pain incoming. 
 	map characters to sf::Keyboard::Key , very very painful :(
-	->made to string functions.
+	->made to string functions, to make life less painful.
 	*/
 	std::vector< std::pair<sfg::Label::Ptr, sfg::Entry::Ptr> > userSettings;
 	

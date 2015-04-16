@@ -29,7 +29,6 @@ private:
 	bool rotatePressed;
 	int nextSpaceObjId;
 	OBJECT_TYPE fighterType;
-	UserSettings* settings;
 	HUD hud;
 	SpaceObject* fighter;
 
@@ -51,6 +50,7 @@ private:
 	double halfWindowSizeX;
 	double halfWindowSizeY;
 
+	UserSettings* settings;
 	int camera_idx;
 public:
 	Player();

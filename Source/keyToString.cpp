@@ -140,7 +140,7 @@ std::string toString(KeyboardInput key) {
 	}
 	return ans;	
 }
-sf::Keyboard::Key fromString(std::string str) {
+sf::Keyboard::Key keyFromString(std::string str) {
 	sf::Keyboard::Key ans=Unknown;
 	switch(str) {
 		case("A") : { ans=A; break; }

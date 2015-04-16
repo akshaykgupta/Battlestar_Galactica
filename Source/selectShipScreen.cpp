@@ -48,17 +48,23 @@ void SelectShipScreen::onStartJoinButtonClick() {
 	//go to next window
 }
 
-void setMouseSensitivity() {
-	usrptr->settings->mouseSensitivity.setX(XMouseSense->GetValue());
-	usrptr->settings->mouseSensitivity.setY(YMouseSense->GetValue());	
+void SelectShipScreen::setMouseSensitivity() {
+	usrptr->getSettings()->mouseSensitivity.setX(XMouseSense->GetValue());
+	usrptr->getSettings()->mouseSensitivity.setY(YMouseSense->GetValue());	
 }
 
-void setCrosshairColor() {
+void SelectShipScreen::setCrosshairColor() {
 
 }
 
-void setUserName() {
-	usrptr->settings->name = enterName->GetText();
+void SelectShipScreen::setUserName() {
+	usrptr->getSettings()->name = enterName->GetText();
+}
+
+void SelectShipScreen::onResetSettingsButtonClick() {
+	XMouseSense->SetValue( usrptr->getSettings()->mouseSensitivity.getX());
+	YMouseSense->SetValue( usrptr->getSettings()->mouseSensitivity.getY());
+	
 }
 
 void SelectShipScreen::onSaveSettingsButtonClick() {
@@ -69,7 +75,14 @@ void SelectShipScreen::onSaveSettingsButtonClick() {
 }
 
 void SelectShipScreen::setUserSettings() {
-	
+	//ASSERT: userSettings.size() <= #(keyboard inputs)
+	for(int i=0; i<userSettings.size(); ++i) {
+		//KeyboardInput(i)
+		std::string entryText = userSettings[i].second.GetText();
+		sf::Keyboard::Key key = keyFromString(entryText);
+		usrptr->getSettings()->updateKeyMap(key , (KeyboardInput)i );
+	}
+	usrptr->getSettings()->saveSettingss();
 }
 
 void SelectShipScreen::Run() {
