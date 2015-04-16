@@ -12,10 +12,14 @@ private:
 	sfg::Button::Ptr leftShift;
 	sfg::Button::Ptr rightShift;
 	sfg::Button::Ptr startJoin;
+
 	sfg::Scale::Ptr XMouseSense;
 	sfg::Scale::Ptr YMouseSense;
 	sfg::Scale::Ptr ColourMeter;
 	std::vector< std::pair<sfg::Label::Ptr, sfg::Entry::Ptr> > userSettings; //map characters to sf::Keyboard::Key , very very painful :(
+	sfg::Button::Ptr resetSettings;
+	sfg::Button::Ptr saveSettings;
+	
 	sfg::Label::Ptr playerName;
 	sfg::Entry::Ptr enterName;
 	sfg::Label::Ptr shipName;

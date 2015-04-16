@@ -75,8 +75,8 @@ void UserSettings::set_default() {
 	updateKeyMap(sf::Keyboard::S, DECELERATE);
 	updateKeyMap(sf::Keyboard::A, STRAFE_LEFT);
 	updateKeyMap(sf::Keyboard::D, STRAFE_RIGHT);
-	updateKeyMap(sf::Keyboard::Z, ASCEND);
-	updateKeyMap(sf::Keyboard::X, DESCEND);
+	updateKeyMap(sf::Keyboard::Q, ASCEND);
+	updateKeyMap(sf::Keyboard::E, DESCEND);
 	updateKeyMap(sf::Keyboard::I, PITCH_UP);
 	updateKeyMap(sf::Keyboard::K, PITCH_DOWN);
 	updateKeyMap(sf::Keyboard::J, YAW_LEFT);

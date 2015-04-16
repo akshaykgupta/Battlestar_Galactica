@@ -12,6 +12,7 @@ void SelectShipScreen::SelectShipScreen() {
 	// sfg::Image::Ptr rightsfgImage = sfg::Image::Create(rightsfImage);
 	// rightShift->setImage(rightsfgImage);
 	startJoin = sfg::Button::Create();
+	resetSettings = sfg::Button::Create();
 	XMouseSense = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	YMouseSense = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	ColourMeter = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
@@ -21,7 +22,8 @@ void SelectShipScreen::SelectShipScreen() {
 	leftShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onLeftShiftButtonClick, this ) );
 	rightShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onRightShiftButtonClick, this ) );
 	startJoin->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onStartJoinButtonClick, this ) );
-
+	resetSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onResetSettingsButtonClick , this) );
+	saveSettingss->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onSaveSettingsButtonClick , this) );
 }
 
 void SelectShipScreen::~SelectShipScreen() {
@@ -30,23 +32,40 @@ void SelectShipScreen::~SelectShipScreen() {
 
 void SelectShipScreen::onRightShiftButtonClick() {
 	currentShip++;
-	if(currentShip == (int) shipDisplayList.size())
+	if(currentShip == (int) shipDisplayList.size()) {
 		currentShip = 0;
+	}
 }
 
 void SelectShipScreen::onLeftShiftButtonClick() {
 	currentShip --;
-	if(currentShip < 0)
+	if(currentShip < 0) {
 		currentShip = ((int) shipDisplayList.size()) - 1;
+	}
 }
 
 void SelectShipScreen::onStartJoinButtonClick() {
 	//go to next window
 }
 
-void SelectShipScreen::setMouseSensitivity() {
+void setMouseSensitivity() {
 	usrptr->settings->mouseSensitivity.setX(XMouseSense->GetValue());
-	usrptr->settings->mouseSensitivity.setY(YMouseSense->GetValue());
+	usrptr->settings->mouseSensitivity.setY(YMouseSense->GetValue());	
+}
+
+void setCrosshairColor() {
+
+}
+
+void setUserName() {
+	usrptr->settings->name = enterName->GetText();
+}
+
+void SelectShipScreen::onSaveSettingsButtonClick() {
+	setUserName();
+	setMouseSensitivity();
+	setCrosshairColor();
+	setUserSettings();
 }
 
 void SelectShipScreen::setUserSettings() {
