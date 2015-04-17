@@ -15,6 +15,8 @@ using namespace std;
 #include <SFML/Audio.hpp>
 /** physics includes */
 #include <btBulletDynamicsCommon.h>
+/** sfgui includes */
+#include <SFGUI/SFGUI.hpp>
 
 #include <boost/config.hpp>
 #include <boost/bimap.hpp>

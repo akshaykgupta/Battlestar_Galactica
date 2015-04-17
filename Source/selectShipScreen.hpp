@@ -2,6 +2,7 @@
 #define SELECT_SHIP_SCREEN
 
 #include "helpers.hpp"
+#include "player.hpp"
 
 class SelectShipScreen {
 private:
@@ -21,7 +22,8 @@ private:
 	map characters to sf::Keyboard::Key , very very painful :(
 	->made to string functions, to make life less painful.
 	*/
-	std::vector< std::pair<sfg::Label::Ptr, sfg::Entry::Ptr> > userSettings;
+	std::vector< sfg::Label::Ptr > userSettingsLabels;
+	std::vector<sfg::Entry::Ptr> userSettingsEntries;
 	
 	sfg::Button::Ptr resetSettings;
 	sfg::Button::Ptr saveSettings;
@@ -29,8 +31,20 @@ private:
 	sfg::Label::Ptr playerName;
 	sfg::Entry::Ptr enterName;
 	sfg::Label::Ptr shipName;
+	sfg::Label::Ptr redName;
+	sfg::Label::Ptr greenName;
+	sfg::Label::Ptr blueName;
+	sfg::Label::Ptr xSenseName;
+	sfg::Label::Ptr ySenseName;
+	sfg::Label::Ptr crossName;
 	//List of ships
 	std::vector<SpaceObject*> shipDisplayList;
+
+	sfg::Box::Ptr scaleBox;
+	sfg::Box::Ptr displayBox;
+	sfg::Box::Ptr mapBox;
+	sfg::Box::Ptr hugeBox;
+
 
 	int currentShip;
 	bool startjoin;
@@ -38,7 +52,7 @@ private:
 	sfg::SFGUI sfgui;
 public:
 
-	SelectShipScreen();
+	SelectShipScreen(Player*);
 
 	~SelectShipScreen();
 
@@ -47,6 +61,8 @@ public:
 	void onLeftShiftButtonClick();
 
 	void onStartJoinButtonClick();
+
+	void setupAlignment(std::vector<sfg::Alignment::Ptr>&);
 
 	void setMouseSensitivity();
 
