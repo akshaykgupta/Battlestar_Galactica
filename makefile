@@ -18,7 +18,7 @@ all:
 	make $(EXE)$(EXEC)
 
 $(OBJ)selectShipScreen.o: $(SRC)selectShipScreen.hpp $(SRC)selectShipScreen.cpp
-	$(Compile) -c $^ $(INCS)
+	$(Compiler) -c $(SRC)selectShipScreen.cpp $(INCS)
 	mv selectShipScreen.o $@
 
 $(OBJ)spaceObject_load.o: $(SRC)spaceObject_load.cpp
@@ -110,7 +110,7 @@ all:
 $(OBJ)selectShipScreen.o: $(SRC)selectShipScreen.hpp $(SRC)selectShipScreen.cpp
 	$(Compile) -c $^ $(INCS)
 	mv selectShipScreen.o $@
-	
+
 $(OBJ)spaceObject_load.o: $(SRC)spaceObject_load.cpp
 	$(Compiler) -c $^ $(INCS)
 	mv spaceObject_load.o $@

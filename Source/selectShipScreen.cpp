@@ -1,6 +1,6 @@
 #include "selectShipScreen.hpp"
 
-void SelectShipScreen::SelectShipScreen(Player* _usrptr) {
+SelectShipScreen::SelectShipScreen(Player* _usrptr) {
 	usrptr = _usrptr;
 	currentShip = 0;
 	leftShift = sfg::Button::Create();
@@ -19,11 +19,10 @@ void SelectShipScreen::SelectShipScreen(Player* _usrptr) {
 	ColourMeter = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	playerName = sfg::Label::Create("Your Name : ");
 	//shipName = sfg::Label::Create(shipDisplayList->getName()); // default ship name goes here
-
-	RedButton = sfg::RadioButton::Create();
-	GreenButton = sfg::RadioButton::Create();
-	BlueButton = sfg::RadioButton::Create();
 	rgbGroup = sfg::RadioButton::RadioButtonGroup::Create();
+	RedButton = sfg::RadioButton::Create("Red", rgbGroup);
+	GreenButton = sfg::RadioButton::Create("Blue", rgbGroup);
+	BlueButton = sfg::RadioButton::Create("Green", rgbGroup);
 
 	RedButton->SetGroup(rgbGroup);
 	GreenButton->SetGroup(rgbGroup);
@@ -33,7 +32,7 @@ void SelectShipScreen::SelectShipScreen(Player* _usrptr) {
 	rightShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onRightShiftButtonClick, this ) );
 	startJoin->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onStartJoinButtonClick, this ) );
 	resetSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onResetSettingsButtonClick , this) );
-	saveSettingss->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onSaveSettingsButtonClick , this) );
+	saveSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onSaveSettingsButtonClick , this) );
 
 	scaleBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 	displayBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
@@ -56,7 +55,7 @@ void SelectShipScreen::SelectShipScreen(Player* _usrptr) {
 	ySenseName = sfg::Label::Create("Mouse Y");
 }
 
-void SelectShipScreen::~SelectShipScreen() {
+SelectShipScreen::~SelectShipScreen() {
 
 }
 
@@ -67,7 +66,7 @@ void SelectShipScreen::onRightShiftButtonClick() {
 	}
 
 	gluLookAt(0,0,0
-		shipDisplayList[currentShip]->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getCentreOfMassPosition().getZ()
+		shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getZ()
 		0.0,1.0,0.0
 		);		
 }
@@ -79,7 +78,7 @@ void SelectShipScreen::onLeftShiftButtonClick() {
 	}
 
 	gluLookAt(0,0,0
-		shipDisplayList[currentShip]->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getCentreOfMassPosition().getZ()
+		shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getZ()
 		0.0,1.0,0.0
 		);	
 }
@@ -97,15 +96,15 @@ void SelectShipScreen::setMouseSensitivity() {
 void SelectShipScreen::setCrosshairColor() {
 	if(RedButton->IsActive())
 	{
-		usrptr->getSettings()->HUDCross_r = RedButton->GetValue();
+		usrptr->getSettings()->HUDCross_r = ColourMeter->GetValue();
 	}
 	else if(GreenButton->IsActive())
 	{
-		usrptr->getSettings()->HUDCross_g = GreenButton->GetValue();
+		usrptr->getSettings()->HUDCross_g = ColourMeter->GetValue();
 	}
 	else if(BlueButton->IsActive())
 	{
-		usrptr->getSettings()->HUDCross_b = BlueButton->GetValue();
+		usrptr->getSettings()->HUDCross_b = ColourMeter->GetValue();
 	}
 }
 
@@ -128,13 +127,13 @@ void SelectShipScreen::onSaveSettingsButtonClick() {
 
 void SelectShipScreen::setUserSettings() {
 	//ASSERT: userSettings.size() <= #(keyboard inputs)
-	for(int i=0; i<userSettings.size(); ++i) {
+	for(int i=0; i<userSettingsLabels.size(); ++i) {
 		//KeyboardInput(i)
-		std::string entryText = userSettings[i].second.GetText();
+		std::string entryText = userSettingsEntries[i].GetText();
 		sf::Keyboard::Key key = keyFromString(entryText);
 		usrptr->getSettings()->updateKeyMap(key , (KeyboardInput)i );
 	}
-	usrptr->getSettings()->saveSettingss();
+	usrptr->getSettings()->saveSettings();
 }
 
 void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVector) {
@@ -204,8 +203,8 @@ void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVec
 
 	for(int i = 19; i < 51; i+=2)
 	{
-		alignVector[i]->SetAlignment(sf::Vector2f(0.7f, 0.1 + ((i-19)*0.04));
-		alignVector[i]->SetAlignment(sf::Vector2f(0.2f, 0.1 + ((i-19)*0.04));
+		alignVector[i]->SetAlignment(sf::Vector2f(0.7f, 0.1 + ((i-19)*0.04)));
+		alignVector[i]->SetAlignment(sf::Vector2f(0.2f, 0.1 + ((i-19)*0.04)));
 	}
 
 	alignVector[51]->SetAlignment(sf::Vector2f(0.0f, 0.0f));
@@ -214,7 +213,7 @@ void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVec
 
 }
 
-void SelectShipScreen::Run() {
+void SelectShipScreen::Run(sf::Window& window) {
 	//prepare desktop.
 	//align boxes.
 	//add stuff here.
@@ -224,10 +223,10 @@ void SelectShipScreen::Run() {
 	std::vector<sfg::Alignment::Ptr> alignVector(54);
 
 	//add boxes and stuff to window
-	desktop.Add(sfwindow);
+	sfg::Desktop desktop;
+	desktop.Add(sfgwindow);
 	window->Add(hugeBox);
 
-	sfg::Desktop desktop;
 	while( !startjoin ) {
 		sf::Event event;
 		while( window.pollEvent(event) ) {
@@ -239,6 +238,6 @@ void SelectShipScreen::Run() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		//render the selected ship.
 		//shipDisplayList[currentShip]->render(true);//TODO
-		sfgui.Display(/*TODO*/);
+		sfgui.Display(window);
 	}
 }

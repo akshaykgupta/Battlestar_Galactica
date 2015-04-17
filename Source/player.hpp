@@ -39,7 +39,7 @@ private:
 	NetworkManager* network;
 	Message* myMessage;
 	/* Rendering geometry */
-	sf::Window wnd; //Window that things run on.
+	//sf::Window* wnd; //Window that things run on. <-- deprecated.
 	/* Physics geometry. */
 	BulletWorld* bulletWorld;
 	sf::Music* music;

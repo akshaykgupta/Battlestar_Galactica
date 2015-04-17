@@ -45,6 +45,10 @@ private:
 	sfg::Box::Ptr mapBox;
 	sfg::Box::Ptr hugeBox;
 
+	sfg::RadioButton::Ptr RedButton;
+	sfg::RadioButton::Ptr GreenButton;
+	sfg::RadioButton::Ptr BlueButton;
+	sfg::RadioButton::RadioButtonGroup::Ptr rgbGroup;
 
 	int currentShip;
 	bool startjoin;
@@ -66,6 +70,16 @@ public:
 
 	void setMouseSensitivity();
 
+	void setUserSettings();
 
+	void setCrosshairColor();
+
+	void setUserName();
+
+	void onResetSettingsButtonClick();
+
+	void onSaveSettingsButtonClick();
+
+	void Run();
 };
 #endif
