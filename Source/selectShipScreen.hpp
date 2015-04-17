@@ -1,7 +1,7 @@
 #ifndef SELECT_SHIP_SCREEN
 #define SELECT_SHIP_SCREEN
 
-#include "helpers.h"
+#include "helpers.hpp"
 
 class SelectShipScreen {
 private:
@@ -33,7 +33,9 @@ private:
 	std::vector<SpaceObject*> shipDisplayList;
 
 	int currentShip;
+	bool startjoin;
 
+	sfg::SFGUI sfgui;
 public:
 
 	SelectShipScreen();
