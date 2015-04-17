@@ -96,7 +96,7 @@ enum KeyboardInput {
 
 };
 
-#include "keyToString.cpp"
+#include "keyToString.hpp"
 
 typedef boost::bimap< sf::Keyboard::Key , KeyboardInput > KeyboardMapping;
 typedef KeyboardMapping::value_type keymap_type;

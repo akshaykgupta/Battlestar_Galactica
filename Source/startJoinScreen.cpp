@@ -15,7 +15,7 @@ void StartJoinScreen::onStartButtonClick() {
 	std::string str_myport = myPortEntry->GetText();
 	unsigned short myport = (unsigned short) stoul(str_myport);
 	
-	usrptr->setGameMode(myip, myport , /*joinmode=*/false);
+	usrptr->setGameMode(myip, myport , /*joinmode=*/true);
 }
 
 void StartJoinScreen::onJoinButtonClick() {
@@ -25,7 +25,7 @@ void StartJoinScreen::onJoinButtonClick() {
 	
 	std::string otherip = otherIPEntry->GetText();
 	unsigned short otherport = (unsigned short) stoul( otherPortEntry->GetText() );
-	usrptr->setGameMode(myip, myport , /*joinmode=*/true , otherip , otherport );
+	usrptr->setGameMode(myip, myport , /*joinmode=*/false , otherip , otherport );
 }
 
 void StartJoinScreen::Run() {
