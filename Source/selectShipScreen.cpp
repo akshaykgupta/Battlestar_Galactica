@@ -1,11 +1,15 @@
 #include "selectShipScreen.hpp"
 
-SelectShipScreen::SelectShipScreen(Player* _usrptr) {
+SelectShipScreen::SelectShipScreen(Player* _usrptr , vector<SpaceObject*>*& displayList) {
 	usrptr = _usrptr;
 	currentShip = 0;
 	leftShift = sfg::Button::Create();
+	rightShift = sfg::Button::Create();
+	shipDisplayList = displayList;
+	startjoin = false;
 	//sf::Image leftsfImage;
 	//leftsfImage.loadFromFile("");
+	//shipName = sfg::Label::Create(shipDisplayList->getName()); // default ship name goes here
 	// sfg::Image::Ptr leftsfgImage = sfg::Image::Create(leftsfImage);
 	// leftShift->setImage(leftsfgImage);
 	//sf::Image rightsfImage;
@@ -14,30 +18,34 @@ SelectShipScreen::SelectShipScreen(Player* _usrptr) {
 	// rightShift->setImage(rightsfgImage);
 	startJoin = sfg::Button::Create();
 	resetSettings = sfg::Button::Create();
+	saveSettings = sfg::Button::Create();
 	XMouseSense = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	YMouseSense = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	ColourMeter = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
 	playerName = sfg::Label::Create("Your Name : ");
-	//shipName = sfg::Label::Create(shipDisplayList->getName()); // default ship name goes here
+
 	rgbGroup = sfg::RadioButton::RadioButtonGroup::Create();
 	RedButton = sfg::RadioButton::Create("Red", rgbGroup);
 	GreenButton = sfg::RadioButton::Create("Blue", rgbGroup);
 	BlueButton = sfg::RadioButton::Create("Green", rgbGroup);
 
-	RedButton->SetGroup(rgbGroup);
-	GreenButton->SetGroup(rgbGroup);
-	BlueButton->SetGroup(rgbGroup);
 	enterName = sfg::Entry::Create();
+	
 	leftShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onLeftShiftButtonClick, this ) );
 	rightShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onRightShiftButtonClick, this ) );
 	startJoin->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onStartJoinButtonClick, this ) );
 	resetSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onResetSettingsButtonClick , this) );
 	saveSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onSaveSettingsButtonClick , this) );
-
+	
 	scaleBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 	displayBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 	mapBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 	hugeBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+
+	scaleBoxFrame = sfg::Frame::Create();
+	displayBoxFrame = sfg::Frame::Create();
+	mapBoxFrame = sfg::Frame::Create();
+	hugeBoxFrame = sfg::Frame::Create();
 
 	userSettingsLabels.resize(16);
 	userSettingsEntries.resize(16);
@@ -61,12 +69,12 @@ SelectShipScreen::~SelectShipScreen() {
 
 void SelectShipScreen::onRightShiftButtonClick() {
 	currentShip++;
-	if(currentShip == (int) shipDisplayList.size()) {
+	if(currentShip == (int) shipDisplayList->size()) {
 		currentShip = 0;
 	}
 
-	gluLookAt(0,0,0
-		shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getZ()
+	gluLookAt(0,0,0,
+		(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getX(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getY(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getZ(),
 		0.0,1.0,0.0
 		);		
 }
@@ -74,11 +82,11 @@ void SelectShipScreen::onRightShiftButtonClick() {
 void SelectShipScreen::onLeftShiftButtonClick() {
 	currentShip --;
 	if(currentShip < 0) {
-		currentShip = ((int) shipDisplayList.size()) - 1;
+		currentShip = ((int) shipDisplayList->size()) - 1;
 	}
 
-	gluLookAt(0,0,0
-		shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getX(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getY(),shipDisplayList[currentShip]->getRigidBody()->getCentreOfMassPosition().getZ()
+	gluLookAt(0,0,0,
+		(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getX(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getY(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getZ(),
 		0.0,1.0,0.0
 		);	
 }
@@ -129,16 +137,14 @@ void SelectShipScreen::setUserSettings() {
 	//ASSERT: userSettings.size() <= #(keyboard inputs)
 	for(int i=0; i<userSettingsLabels.size(); ++i) {
 		//KeyboardInput(i)
-		std::string entryText = userSettingsEntries[i].GetText();
+		std::string entryText = userSettingsEntries[i]->GetText();
 		sf::Keyboard::Key key = keyFromString(entryText);
 		usrptr->getSettings()->updateKeyMap(key , (KeyboardInput)i );
 	}
-	usrptr->getSettings()->saveSettings();
+	usrptr->getSettings()->save_settings();
 }
 
 void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVector) {
-	for(int i = 0; i < 54; i++)
-		alignVector[i] = sfg::Alignment::Create();
 	for (int i = 0; i < 13; ++i)
 		scaleBox->Pack(alignVector[i], true, false);
 	for(int i = 13; i < 19; ++i)
@@ -178,7 +184,7 @@ void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVec
 	alignVector[52]->Add(displayBox);
 	alignVector[53]->Add(mapBox);
 	
-	for(int i = 0; i < 51; i++)
+	for(int i = 0; i < 54; i++)
 		alignVector[i]->SetScale(sf::Vector2f(0.0f, 0.0f));
 
 	alignVector[0]->SetAlignment(sf::Vector2f(0.8f, 0.1f));
@@ -211,6 +217,13 @@ void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVec
 	alignVector[52]->SetAlignment(sf::Vector2f(0.25f, 0.0f));
 	alignVector[53]->SetAlignment(sf::Vector2f(0.75f, 0.0f));
 
+	// scaleBoxFrame->Add(scaleBox);
+	// displayBoxFrame->Add(displayBox);
+	// mapBoxFrame->Add(mapBox);
+
+	// hugeBox-
+
+
 }
 
 void SelectShipScreen::Run(sf::Window& window) {
@@ -222,13 +235,23 @@ void SelectShipScreen::Run(sf::Window& window) {
 	
 	std::vector<sfg::Alignment::Ptr> alignVector(54);
 
+	for(int i = 0; i < 54; i++)
+	{
+		//auto tempPtr = sfg::Alignment::Create();
+		alignVector[i] = (sfg::Alignment::Create());
+		cout << "hi\n";
+	}
+	cout << "#brk2.05\n";
+	setupAlignment(alignVector);
 	//add boxes and stuff to window
 	sfg::Desktop desktop;
 	desktop.Add(sfgwindow);
-	window->Add(hugeBox);
+	sfgwindow->Add(hugeBox);
+	cout << "#brk2.1\n";
+	sf::Clock clock;
 
+	sf::Event event;
 	while( !startjoin ) {
-		sf::Event event;
 		while( window.pollEvent(event) ) {
 			desktop.HandleEvent(event);
 			if ( event.type == sf::Event::Closed ) {
@@ -237,7 +260,11 @@ void SelectShipScreen::Run(sf::Window& window) {
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		//render the selected ship.
-		//shipDisplayList[currentShip]->render(true);//TODO
+		//(*shipDisplayList)[currentShip]->render(true);//TODO
+		desktop.Update( clock.restart().asSeconds() );
+
 		sfgui.Display(window);
+		window.display();
+		clock.restart();
 	}
 }

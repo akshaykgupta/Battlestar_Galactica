@@ -61,6 +61,5 @@ void Player::readWorld(std::string worldfilepath /*=WORLD_PHY_FNAME*/) {
 		++nline;
 	}
 	f.close();
-	std::cout << "#brk2\n";
 }
 #endif

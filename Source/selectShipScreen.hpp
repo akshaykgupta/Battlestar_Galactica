@@ -38,12 +38,17 @@ private:
 	sfg::Label::Ptr ySenseName;
 	sfg::Label::Ptr crossName;
 	//List of ships
-	std::vector<SpaceObject*> shipDisplayList;
+	std::vector<SpaceObject*>* shipDisplayList;
 
 	sfg::Box::Ptr scaleBox;
 	sfg::Box::Ptr displayBox;
 	sfg::Box::Ptr mapBox;
 	sfg::Box::Ptr hugeBox;
+
+	sfg::Frame::Ptr scaleBoxFrame;
+	sfg::Frame::Ptr displayBoxFrame;
+	sfg::Frame::Ptr mapBoxFrame;
+	sfg::Frame::Ptr hugeBoxFrame;
 
 	sfg::RadioButton::Ptr RedButton;
 	sfg::RadioButton::Ptr GreenButton;
@@ -56,7 +61,7 @@ private:
 	sfg::SFGUI sfgui;
 public:
 
-	SelectShipScreen(Player*);
+	SelectShipScreen(Player* , vector<SpaceObject*>*&);
 
 	~SelectShipScreen();
 
@@ -80,6 +85,6 @@ public:
 
 	void onSaveSettingsButtonClick();
 
-	void Run();
+	void Run(sf::Window&);
 };
 #endif
