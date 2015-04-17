@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     window.setVerticalSyncEnabled(true);
 	bool running = true;
     usr->playMusic(true);
-    Player* usr2 = new Player();
+    //Player* usr2 = new Player();
     SpaceObject* otr;
     
     // otr = new SpaceObject(UFO);
@@ -53,6 +53,15 @@ int main(int argc, char** argv) {
         exit(1);
     }
     
+    std::vector<SpaceObject*>* displayList= new vector<SpaceObject*>(1) ;
+    (*displayList)[0] = usr->getFighter();
+    
+    cout << "#brk1\n";
+    SelectShipScreen* selectShipScreen = new SelectShipScreen(usr , displayList);
+    cout << "#brk2\n";
+    selectShipScreen->Run(window);
+    cout << "#brk3\n";
+
     while (running)
     {
         // handle events

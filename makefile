@@ -108,7 +108,7 @@ all:
 
 
 $(OBJ)selectShipScreen.o: $(SRC)selectShipScreen.hpp $(SRC)selectShipScreen.cpp
-	$(Compile) -c $^ $(INCS)
+	$(Compiler) -c $^ $(INCS)
 	mv selectShipScreen.o $@
 
 $(OBJ)spaceObject_load.o: $(SRC)spaceObject_load.cpp
