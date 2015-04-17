@@ -1,6 +1,7 @@
 #include "selectShipScreen.hpp"
 
-void SelectShipScreen::SelectShipScreen() {
+void SelectShipScreen::SelectShipScreen(Player* _usrptr) {
+	usrptr = _usrptr;
 	currentShip = 0;
 	leftShift = sfg::Button::Create();
 	//sf::Image leftsfImage;
@@ -33,6 +34,26 @@ void SelectShipScreen::SelectShipScreen() {
 	startJoin->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onStartJoinButtonClick, this ) );
 	resetSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onResetSettingsButtonClick , this) );
 	saveSettingss->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onSaveSettingsButtonClick , this) );
+
+	scaleBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+	displayBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+	mapBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+	hugeBox = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
+
+	userSettingsLabels.resize(16);
+	userSettingsEntries.resize(16);
+	for(int i = 0; i < 16; i++)
+	{
+		userSettingsLabels[i] = sfg::Label::Create();
+		userSettingsEntries[i] = sfg::Entry::Create();
+	}
+
+	redName = sfg::Label::Create("Red");
+	blueName = sfg::Label::Create("Green");
+	greenName = sfg::Label::Create("Blue");
+	crossName = sfg::Label::Create("Cross-hair Color");
+	xSenseName = sfg::Label::Create("Mouse X");
+	ySenseName = sfg::Label::Create("Mouse Y");
 }
 
 void SelectShipScreen::~SelectShipScreen() {
@@ -116,23 +137,108 @@ void SelectShipScreen::setUserSettings() {
 	usrptr->getSettings()->saveSettingss();
 }
 
+void SelectShipScreen::setupAlignment(std::vector<sfg::Alignment::Ptr>& alignVector) {
+	for(int i = 0; i < 54; i++)
+		alignVector[i] = sfg::Alignment::Create();
+	for (int i = 0; i < 13; ++i)
+		scaleBox->Pack(alignVector[i], true, false);
+	for(int i = 13; i < 19; ++i)
+		displayBox->Pack(alignVector[i], true, false);
+	for(int i = 19; i < 51; ++i)
+		displayBox->Pack(alignVector[i], true, false);
+	for(int i = 51; i<54; ++i)
+		hugeBox->Pack(alignVector[i], true, false);
+
+	alignVector[0]->Add(xSenseName);
+	alignVector[1]->Add(XMouseSense);
+	alignVector[2]->Add(ySenseName);
+	alignVector[3]->Add(YMouseSense);
+	alignVector[4]->Add(crossName);
+	alignVector[5]->Add(ColourMeter);
+	alignVector[6]->Add(redName);
+	alignVector[7]->Add(RedButton);
+	alignVector[8]->Add(greenName);
+	alignVector[9]->Add(GreenButton);
+	alignVector[10]->Add(blueName);
+	alignVector[11]->Add(BlueButton);
+	alignVector[12]->Add(resetSettings);
+	alignVector[13]->Add(playerName);
+	alignVector[14]->Add(enterName);
+	alignVector[15]->Add(leftShift);
+	alignVector[16]->Add(rightShift);
+	alignVector[17]->Add(startJoin);
+	alignVector[18]->Add(saveSettings);
+	
+	for(int i = 0, j = 19; i < 16; ++i, j+=2)
+	{
+		alignVector[j]->Add(userSettingsLabels[i]);
+		alignVector[j+1]->Add(userSettingsEntries[i]);
+	}
+
+	alignVector[51]->Add(scaleBox);
+	alignVector[52]->Add(displayBox);
+	alignVector[53]->Add(mapBox);
+	
+	for(int i = 0; i < 51; i++)
+		alignVector[i]->SetScale(sf::Vector2f(0.0f, 0.0f));
+
+	alignVector[0]->SetAlignment(sf::Vector2f(0.8f, 0.1f));
+	alignVector[1]->SetAlignment(sf::Vector2f(0.1f, 0.1f));
+	alignVector[2]->SetAlignment(sf::Vector2f(0.8f, 0.15f));
+	alignVector[3]->SetAlignment(sf::Vector2f(0.1f, 0.15f));
+	alignVector[4]->SetAlignment(sf::Vector2f(0.5f, 0.25f));
+	alignVector[5]->SetAlignment(sf::Vector2f(0.2f, 0.3f));
+	alignVector[6]->SetAlignment(sf::Vector2f(0.8f, 0.4f));
+	alignVector[7]->SetAlignment(sf::Vector2f(0.7f, 0.4f));
+	alignVector[8]->SetAlignment(sf::Vector2f(0.5f, 0.4f));
+	alignVector[9]->SetAlignment(sf::Vector2f(0.4f, 0.4f));
+	alignVector[10]->SetAlignment(sf::Vector2f(0.2f, 0.4f));
+	alignVector[11]->SetAlignment(sf::Vector2f(0.1f, 0.4f));
+	alignVector[12]->SetAlignment(sf::Vector2f(0.25f, 0.8f));
+	alignVector[13]->SetAlignment(sf::Vector2f(0.5f, 0.1f));
+	alignVector[14]->SetAlignment(sf::Vector2f(0.2f, 0.1f));
+	alignVector[15]->SetAlignment(sf::Vector2f(0.8f, 0.7f));
+	alignVector[16]->SetAlignment(sf::Vector2f(0.2f, 0.7f));
+	alignVector[17]->SetAlignment(sf::Vector2f(0.25f, 0.8f));
+	alignVector[18]->SetAlignment(sf::Vector2f(0.25f, 0.8f));
+
+	for(int i = 19; i < 51; i+=2)
+	{
+		alignVector[i]->SetAlignment(sf::Vector2f(0.7f, 0.1 + ((i-19)*0.04));
+		alignVector[i]->SetAlignment(sf::Vector2f(0.2f, 0.1 + ((i-19)*0.04));
+	}
+
+	alignVector[51]->SetAlignment(sf::Vector2f(0.0f, 0.0f));
+	alignVector[52]->SetAlignment(sf::Vector2f(0.25f, 0.0f));
+	alignVector[53]->SetAlignment(sf::Vector2f(0.75f, 0.0f));
+
+}
+
 void SelectShipScreen::Run() {
 	//prepare desktop.
 	//align boxes.
-	sfg::Desktop desktop;
 	//add stuff here.
+	sfg::SFGUI sfgui;
+	auto sfgwindow = sfg::Window::Create();
+	
+	std::vector<sfg::Alignment::Ptr> alignVector(54);
 
+	//add boxes and stuff to window
+	desktop.Add(sfwindow);
+	window->Add(hugeBox);
+
+	sfg::Desktop desktop;
 	while( !startjoin ) {
 		sf::Event event;
 		while( window.pollEvent(event) ) {
 			desktop.HandleEvent(event);
 			if ( event.type == sf::Event::Closed ) {
-				//TODO: Left the app. what now?
+				startjoin = true;
 			}
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		//render the selected ship.
-		shipDisplayList[currentShip]->render(true);//TODO
+		//shipDisplayList[currentShip]->render(true);//TODO
 		sfgui.Display(/*TODO*/);
 	}
 }
