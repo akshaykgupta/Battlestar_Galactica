@@ -3,7 +3,25 @@
 
 #include "helpers.hpp"
 #include "player.hpp"
+/**
+Explanation of flow:
+It is constructed by passing a user-pointer and a display list of ships.
+Theres a shit ton of buttons which are instantiated during the call of the procedure Run().
 
+Their function binding can probably be set upon their creation.
+
+A sf::Window is generated in Run, it is later closed.
+A couple of sfg:;Windows are created, with style set to 0. Their position Needs to be correctly set.
+Each of these windows contains something called a table. These tables can be modified aptly, just needs to be done.
+
+Before adding kids to tables, set the spacing for the table. you can probably change this in the middle of the attachment too, H doesn't know.
+
+Table's Attach function gives the Table-container children ( such as boxes, labels , etc. )
+The syntax for Attach:
+ptr_table->Attach( ptr_child , sf::Rect<sf::Uint32>(col# , row#, colSpan, rowSpan) , sfg::TableEXPAND|sfg::Table::FILL,sfg::TableEXPAND|sfg::Table::FILL ). 
+	Note: The use of the enum above.
+
+*/
 class SelectShipScreen {
 private:
 	//Player that calls this window
