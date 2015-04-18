@@ -54,6 +54,9 @@ const std::string OBJ_EXTENSION = ".obj";
 const std::string PHY_EXTENSION = ".lhc";
 const std::string MUSIC_EXTENSION = ".ogg";
 const std::string WORLD_PHY_FNAME = "Resource/myWorld.avril";
+/* This file contains parsers for user settings. */
+const std::string SETTINGS_FILE = "thereisaspoon.tang";
+
 class SpaceObject;
 class Player;
 class NetworkManager;
@@ -160,6 +163,7 @@ public:
 	void save_settings(); //Save to setting files
 	/* wrappers for the bimap. */
 	void 				updateKeyMap(sf::Keyboard::Key _key , KeyboardInput _action);
+	void				updateKeyMapLeft(sf::Keyboard::Key _key , KeyboardInput _action);
 	KeyboardInput 		getAction(sf::Keyboard::Key _key); // -1 returns NONE.
 	sf::Keyboard::Key 	getKey(KeyboardInput _action); //returns -1 if nothing is mapped.
 };

@@ -85,10 +85,13 @@ void SelectShipScreen::onRightShiftButtonClick() {
 		currentShip = 0;
 	}
 
-	gluLookAt(0,0,0,
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(-1.0,0,2,
 		(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getX(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getY(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getZ(),
 		0.0,1.0,0.0
-		);		
+		);
+	glFlush();
 }
 
 void SelectShipScreen::onLeftShiftButtonClick() {
@@ -97,10 +100,13 @@ void SelectShipScreen::onLeftShiftButtonClick() {
 		currentShip = ((int) shipDisplayList->size()) - 1;
 	}
 
-	gluLookAt(0,0,0,
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(-1.0,0,2,
 		(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getX(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getY(),(*shipDisplayList)[currentShip]->getRigidBody()->getCenterOfMassPosition().getZ(),
 		0.0,1.0,0.0
-		);	
+		);
+	glFlush();
 }
 
 void SelectShipScreen::onStartJoinButtonClick() {
@@ -135,6 +141,13 @@ void SelectShipScreen::setUserName() {
 void SelectShipScreen::onResetSettingsButtonClick() {
 	XMouseSense->SetValue( usrptr->getSettings()->mouseSensitivity.getX());
 	YMouseSense->SetValue( usrptr->getSettings()->mouseSensitivity.getY());
+
+	for(int i=0; i<userSettingsLabels.size(); ++i) {
+		//KeyboardInput(i)
+		sf::Keyboard::Key key = usrptr->getSettings()->getKey( (KeyboardInput)i );
+		std::string entryText = toString(key);
+		userSettingsEntries[i]->SetText(entryText);
+	}
 }
 
 void SelectShipScreen::onSaveSettingsButtonClick() {
@@ -150,7 +163,7 @@ void SelectShipScreen::setUserSettings() {
 		//KeyboardInput(i)
 		std::string entryText = userSettingsEntries[i]->GetText();
 		sf::Keyboard::Key key = keyFromString(entryText);
-		usrptr->getSettings()->updateKeyMap(key , (KeyboardInput)i );
+		usrptr->getSettings()->updateKeyMapLeft(key , (KeyboardInput)i );
 	}
 	usrptr->getSettings()->save_settings();
 }
@@ -323,7 +336,7 @@ void SelectShipScreen::initButtonTable() {
 	rightShift = sfg::Button::Create(">>");
 	resetSettings = sfg::Button::Create("Reset Settings");
 	saveSettings = sfg::Button::Create("Save Settings");
-	playerName = sfg::Label::Create("name=");
+	playerName = sfg::Label::Create("Name : ");
 	enterName = sfg::Entry::Create( usrptr->getSettings()->name);
 	
 	//playername-entryname
@@ -341,6 +354,12 @@ void SelectShipScreen::initButtonTable() {
 	
 	btnTable->Attach(startJoin , sf::Rect<sf::Uint32>(0,3,1,1) ,  sfg::Table::EXPAND | sfg::Table::FILL , sfg::Table::EXPAND | sfg::Table::FILL);
 
+	leftShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onLeftShiftButtonClick, this ) );
+	rightShift->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onRightShiftButtonClick, this ) );
+	startJoin->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &SelectShipScreen::onStartJoinButtonClick, this ) );
+	resetSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onResetSettingsButtonClick , this) );
+	saveSettings->GetSignal(sfg::Widget::OnLeftClick ).Connect( std::bind(&SelectShipScreen::onSaveSettingsButtonClick , this) );
+
 }
 void SelectShipScreen::initScaleTable() {
 	scaleTable = sfg::Table::Create();
@@ -348,22 +367,24 @@ void SelectShipScreen::initScaleTable() {
 	scaleTable->SetColumnSpacings(5.f);
 	//initScaleBox();
 	XMouseSense = sfg::Scale::Create(0.f, 1.f, .001f, sfg::Scale::Orientation::HORIZONTAL);
-		XMouseSense->SetValue(0.1f);
+	XMouseSense->SetRequisition(sf::Vector2f(50.0f, 0.0f));
 	YMouseSense = sfg::Scale::Create(0.f, 1.f, .001f, sfg::Scale::Orientation::HORIZONTAL);
-		YMouseSense->SetValue(0.1f);
-	xSenseName = sfg::Label::Create("x-sens");
-	ySenseName = sfg::Label::Create("y-sens");
-		redName = sfg::Label::Create("r");
-	blueName = sfg::Label::Create("g");
-	greenName = sfg::Label::Create("b");
-	crossName = sfg::Label::Create("cross-hair");
+	YMouseSense->SetRequisition(sf::Vector2f(100.0f, 0.0f));
+	xSenseName = sfg::Label::Create("X Mouse Sensitivity");
+	ySenseName = sfg::Label::Create("Y Mouse Sensitivity");
+	
+	redName = sfg::Label::Create("Red");
+	blueName = sfg::Label::Create("Green");
+	greenName = sfg::Label::Create("Blue");
+	crossName = sfg::Label::Create("Cross-hair Colour");
 
 	ColourMeter = sfg::Scale::Create(0.f, 1.f, .01f, sfg::Scale::Orientation::HORIZONTAL);
+	ColourMeter->SetRequisition(sf::Vector2f(100.0f, 0.0f));
 	
 	rgbGroup = sfg::RadioButton::RadioButtonGroup::Create();
-	RedButton = sfg::RadioButton::Create("r", rgbGroup);
-	GreenButton = sfg::RadioButton::Create("g", rgbGroup);
-	BlueButton = sfg::RadioButton::Create("b", rgbGroup);
+	RedButton = sfg::RadioButton::Create("Red", rgbGroup);
+	GreenButton = sfg::RadioButton::Create("Green", rgbGroup);
+	BlueButton = sfg::RadioButton::Create("Blue", rgbGroup);
 
 
 	scaleTable->Attach(xSenseName , sf::Rect<sf::Uint32>(0,0,1,1) , sfg::Table::EXPAND | sfg::Table::FILL , sfg::Table::EXPAND | sfg::Table::FILL);
@@ -380,12 +401,13 @@ void SelectShipScreen::initScaleTable() {
 }
 
 void SelectShipScreen::initMapTable() {
-	for(int action=0; action <20; ++action) {
+	for(int action = 0; action < 20; ++action) {
 		KeyboardInput kaction = (KeyboardInput)action;
 		sf::Keyboard::Key key = usrptr->getSettings()->getKey( kaction);
 		cout << "inserting value into table:" << toString(kaction) << " =:= " << toString(key) << "\n";
 		userSettingsLabels.push_back( sfg::Label::Create(toString(kaction)) );
 		userSettingsEntries.push_back( sfg::Entry::Create(toString(key)) );
+		userSettingsEntries[action]->SetRequisition(sf::Vector2f(70.0f, 0.0f));
 	}
 	//ASSERT : Data vecs Populated.
 	mapTable = sfg::Table::Create();
@@ -420,11 +442,12 @@ void SelectShipScreen::Run2(bool& selectionDone) {
 	//prepare the highest level.
 	auto scalewindow = sfg::Window::Create();
 	scalewindow->SetTitle("Scales");
+	scalewindow->SetPosition(sf::Vector2f(0.0f, 200.0f));
 	auto mapwindow = sfg::Window::Create();
 	mapwindow->SetTitle("Keyboard bindings\n");
 	mapwindow->SetPosition(sf::Vector2f(600.0f,0.0f));
 	auto btnwindow = sfg::Window::Create();
-	btnwindow->SetPosition(sf::Vector2f(0.0f,100.0f));
+	btnwindow->SetPosition(sf::Vector2f(300.0f,400.0f));
 	
 	scalewindow->SetStyle(0);
 	mapwindow->SetStyle(0);
@@ -445,7 +468,7 @@ void SelectShipScreen::Run2(bool& selectionDone) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(90.0f, (wnd.getPosition().x/(double)wnd.getPosition().y) , 0.01f, 10000.0f);
-	gluLookAt(-1.0,0,2, 0.0,0,0, 0.0,1.0,0.0);
+	//gluLookAt(-1.0,0,2, 0.0,0,0, 0.0,1.0,0.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glFlush();

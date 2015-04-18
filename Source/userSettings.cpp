@@ -15,8 +15,6 @@ inline bool doesFileExist(std::string fname) {
 }
 
 using namespace std;
-/* This file contains parsers for user settings. */
-const std::string SETTINGS_FILE = "thereisaspoon.tang";
 
 //class user settings. 
 /**
@@ -42,6 +40,16 @@ void UserSettings::updateKeyMap(sf::Keyboard::Key _key , KeyboardInput _action) 
 		keyboardMapping.insert(keymap_type(_key, _action));
 	}
 }
+
+void UserSettings::updateKeyMapLeft(sf::Keyboard::Key _key , KeyboardInput _action) {
+	KeyboardMapping::right_iterator keyiter = keyboardMapping.right.find(_action);
+	if ( keyiter!= keyboardMapping.right.end() ) {
+		keyboardMapping.right.replace_data( keyiter , _key );
+	} else {
+		keyboardMapping.insert(keymap_type(_key, _action));
+	}
+}
+
 KeyboardInput UserSettings::getAction(sf::Keyboard::Key _key) {
 	//returns the appropriate action for the given key.
 	//see if key is bound. if bound, return action
