@@ -23,6 +23,8 @@ int main(int argc, char** argv) {
     SelectShipScreen* selectShipScreen = new SelectShipScreen(usr , displayList);
     cout << "#brk2\n";
     selectShipScreen->Run2(selectionDone);
+    StartJoinScreen* startJoinScreen = new StartJoinScreen(usr);
+    startJoinScreen->Run();
     cout << "#brk3\n";
     
 

@@ -404,7 +404,6 @@ void SelectShipScreen::initMapTable() {
 	for(int action = 0; action < 20; ++action) {
 		KeyboardInput kaction = (KeyboardInput)action;
 		sf::Keyboard::Key key = usrptr->getSettings()->getKey( kaction);
-		cout << "inserting value into table:" << toString(kaction) << " =:= " << toString(key) << "\n";
 		userSettingsLabels.push_back( sfg::Label::Create(toString(kaction)) );
 		userSettingsEntries.push_back( sfg::Entry::Create(toString(key)) );
 		userSettingsEntries[action]->SetRequisition(sf::Vector2f(70.0f, 0.0f));
