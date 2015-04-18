@@ -105,7 +105,7 @@ void SelectShipScreen::onLeftShiftButtonClick() {
 
 void SelectShipScreen::onStartJoinButtonClick() {
 	//go to next window
-	startjoin = true;
+	internalSelectionDone = true;
 }
 
 void SelectShipScreen::setMouseSensitivity() {
