@@ -111,7 +111,7 @@ all:
 	make $(EXE)$(EXEC)
 
 $(OBJ)selectShipScreen.o: $(SRC)selectShipScreen.hpp $(SRC)selectShipScreen.cpp
-	$(Compiler) -c $^ $(INCS)
+	$(Compiler) -c $(SRC)selectShipScreen.cpp $(INCS)
 	mv selectShipScreen.o $@
 
 $(OBJ)startJoinScreen.o: $(SRC)startJoinScreen.hpp $(SRC)startJoinScreen.cpp
