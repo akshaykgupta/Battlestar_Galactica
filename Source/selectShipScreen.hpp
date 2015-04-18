@@ -8,7 +8,7 @@ class SelectShipScreen {
 private:
 	//Player that calls this window
 	Player* usrptr;
-	
+	bool internalSelectionDone;
 	//All the buttons on this window
 	sfg::Button::Ptr leftShift;
 	sfg::Button::Ptr rightShift;
@@ -40,9 +40,9 @@ private:
 	//List of ships
 	std::vector<SpaceObject*>* shipDisplayList;
 
-	sfg::Box::Ptr scaleBox;
-	sfg::Box::Ptr displayBox;
-	sfg::Box::Ptr mapBox;
+	sfg::Table::Ptr scaleTable; //contains scales.
+	sfg::Table::Ptr mapTable;	//contains keyboard mappings.
+	sfg::Table::Ptr btnTable;	//contains buttons.	
 	sfg::Box::Ptr hugeBox;
 
 	sfg::Frame::Ptr scaleBoxFrame;
@@ -56,12 +56,11 @@ private:
 	sfg::RadioButton::RadioButtonGroup::Ptr rgbGroup;
 
 	int currentShip;
-	bool startjoin;
 
 	sfg::SFGUI sfgui;
 public:
 
-	SelectShipScreen(Player* , vector<SpaceObject*>*&);
+	SelectShipScreen(Player*& , vector<SpaceObject*>*&);
 
 	~SelectShipScreen();
 
@@ -71,7 +70,7 @@ public:
 
 	void onStartJoinButtonClick();
 
-	void setupAlignment(std::vector<sfg::Alignment::Ptr>&);
+	//void setupAlignment(std::vector<sfg::Alignment::Ptr>&);
 
 	void setMouseSensitivity();
 
@@ -85,6 +84,13 @@ public:
 
 	void onSaveSettingsButtonClick();
 
-	void Run(sf::Window&);
+	//void Run(sf::Window&);
+	
+	void init2(); // -H wip.
+	void initScaleTable(); //-H wip, need to add event handlers and prettify.
+	void initMapTable(); //-H wip. need to add event handlers, and test.
+	void initButtonTable();
+	void initHugeBox();
+	void Run2(bool&); // -H wip.
 };
 #endif

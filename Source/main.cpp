@@ -14,21 +14,18 @@ int main(int argc, char** argv) {
     Player* usr = new Player();
     usr->setFighterType(UFO);
     usr->init_fighter();
-    sf::Window window(sf::VideoMode(usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY), "spaceRash" , sf::Style::Default, sf::ContextSettings(32));
-    usr->setup_game_screen( usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY );
-    gContactAddedCallback=(Player::collisionCallback);
+    
+    std::vector<SpaceObject*>* displayList= new vector<SpaceObject*>(1) ;
+    (*displayList)[0] = usr->getFighter();
+    
+    cout << "#brk1\n";
+    bool selectionDone=false;
+    SelectShipScreen* selectShipScreen = new SelectShipScreen(usr , displayList);
+    cout << "#brk2\n";
+    selectShipScreen->Run2(selectionDone);
+    cout << "#brk3\n";
+    
 
-    window.setVerticalSyncEnabled(true);
-	bool running = true;
-    usr->playMusic(true);
-    //Player* usr2 = new Player();
-    SpaceObject* otr;
-    
-    // otr = new SpaceObject(UFO);
-    // otr->init(usr->getBulletWorld());
-    // otr->getRigidBody()->translate(btVector3(0,0,-10));
-    // usr->addToEveryOne(1,otr);
-    
     unsigned short myport, connect_to_port;
     string myip, connect_to_ip;
 
@@ -53,14 +50,20 @@ int main(int argc, char** argv) {
         exit(1);
     }
     
-    std::vector<SpaceObject*>* displayList= new vector<SpaceObject*>(1) ;
-    (*displayList)[0] = usr->getFighter();
+    sf::Window window(sf::VideoMode(usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY), "spaceRash" , sf::Style::Default, sf::ContextSettings(32));
+    usr->setup_game_screen( usr->getSettings()->defaultScreenSizeX , usr->getSettings()->defaultScreenSizeY );
+    gContactAddedCallback=(Player::collisionCallback);
+
+    window.setVerticalSyncEnabled(true);
+    bool running = true;
+    usr->playMusic(true);
+    //Player* usr2 = new Player();
+    SpaceObject* otr;
     
-    cout << "#brk1\n";
-    SelectShipScreen* selectShipScreen = new SelectShipScreen(usr , displayList);
-    cout << "#brk2\n";
-    selectShipScreen->Run(window);
-    cout << "#brk3\n";
+    // otr = new SpaceObject(UFO);
+    // otr->init(usr->getBulletWorld());
+    // otr->getRigidBody()->translate(btVector3(0,0,-10));
+    // usr->addToEveryOne(1,otr);
 
     while (running)
     {
