@@ -1,10 +1,10 @@
 #ifndef START_JOIN_SCREEN
 #define START_JOIN_SCREEN
 #include "helpers.hpp"
-
+#include "player.hpp"
 class StartJoinScreen {
 public:
-	StartJoinScreen();
+	StartJoinScreen(Player*& _usrptr);
 	~StartJoinScreen();
 
 	void onStartButtonClick();
@@ -12,8 +12,9 @@ public:
 	void Run();
 private:
 	Player* usrptr;
-	sfg::Label::Ptr ipLabel,portLabel,helpLabel, nPlayersLabel;
-	sfg::Entry::Ptr myIPEntry , myPortEntry, otherIPEntry, otherPortEntry, nPlayersEntry;
+	bool internalRunning;
+	sfg::Label::Ptr myIPLabel,myPortLabel,helpLabel, nPlayersLabel, nAIPlayersLabel, otrIPLabel, otrPortLabel;
+	sfg::Entry::Ptr myIPEntry , myPortEntry, otherIPEntry, otherPortEntry, nPlayersEntry, nAIPlayersEntry;
 	sfg::Button::Ptr startButton , joinButton;
 };
 #endif
