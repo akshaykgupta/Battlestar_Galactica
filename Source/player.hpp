@@ -6,7 +6,7 @@
 #include "networkManager.hpp"
 #include "skybox.hpp"
 #include "selectShipScreen.hpp"
-
+#include "startJoinScreen.hpp"
 typedef boost::bimap< int, SpaceObject* > spaceObjWeed;
 typedef spaceObjWeed::value_type spaceObjWeedNormal;
 typedef spaceObjWeed::left_value_type spaceObjWeedLeft; 
